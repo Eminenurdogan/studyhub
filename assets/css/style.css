@@ -56,7 +56,7 @@ header {
 .logo {
   display: flex;
   align-items: center;
-  gap: var(--space-sm);
+  gap: 12px;
 }
 header .container {
   display: flex;
@@ -79,13 +79,11 @@ button {
   font-weight: 600;
 }
 .logo-icon {
-  width: 42px;
-  height: 42px;
-
-  background: linear-gradient(135deg, var(--color-pink), var(--color-lavender));
-
-  border-radius: var(--radius-lg);
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
 }
+
 .login-btn {
   background-color: white;
   color: var(--color-pink);
