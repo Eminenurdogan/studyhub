@@ -94,3 +94,43 @@ button {
   background-color: var(--color-pink);
   color: white;
 }
+.hero {
+  padding: 80px 0;
+}
+.hero-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.hero-text {
+  flex: 1;
+}
+.hero-image {
+  flex: 1;
+}
+.hero-text h2 {
+  font-size: 56px;
+  line-height: 1.1;
+  font-family: var(--font-heading);
+  margin-bottom: 24px;
+}
+.hero-text p {
+  font-size: 18px;
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  margin-bottom: 32px;
+}
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+}
+.primary-btn {
+  background: var(--color-pink);
+  color: white;
+}
+.secondary-btn {
+  background: white;
+  color: var(--color-text);
+
+  border: 2px solid var(--color-border);
+}
