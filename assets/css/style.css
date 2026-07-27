@@ -263,3 +263,73 @@ button {
 
   color: var(--color-text-secondary);
 }
+.features {
+  padding: 120px 0;
+}
+.section-title {
+  text-align: center;
+
+  max-width: 650px;
+
+  margin: 0 auto 70px;
+}
+.section-title h2 {
+  font-size: 44px;
+
+  margin-bottom: 20px;
+
+  font-family: var(--font-heading);
+}
+.section-title p {
+  font-size: 18px;
+
+  color: var(--color-text-secondary);
+
+  line-height: 1.8;
+}
+.features-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 30px;
+}
+.feature-card {
+  background: white;
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  text-align: center;
+  border: 1px solid var(--color-border);
+  transition: 0.3s;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+.feature-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-pink), var(--color-lavender));
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 30px;
+
+  margin: 0 auto 24px;
+}
+
+.feature-card h3 {
+  margin-bottom: 16px;
+  font-size: 24px;
+  font-family: var(--font-heading);
+}
+
+.feature-card p {
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+}
