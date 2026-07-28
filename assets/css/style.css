@@ -997,3 +997,16 @@ button {
   border-color: #22c55e !important;
   box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.15) !important;
 }
+
+/* Scroll Animation */
+
+.hidden {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.7s ease;
+}
+
+.show {
+  opacity: 1;
+  transform: translateY(0);
+}
