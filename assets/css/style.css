@@ -3887,6 +3887,222 @@ button {
   }
 }
 
+/* ========================= */
+/* POMODORO MVP */
+/* ========================= */
+
+.pomodoro-page .pomodoro-heading { margin-bottom: var(--space-lg); }
+.pomodoro-page .pomodoro-heading h2,
+.pomodoro-page .pomodoro-settings-card h3,
+.pomodoro-page .pomodoro-goal-card h3,
+.pomodoro-page .pomodoro-statistics > h3,
+.pomodoro-page .pomodoro-section-heading h3 {
+  color: var(--color-text);
+  font-family: var(--font-heading);
+}
+.pomodoro-page .pomodoro-heading h2 { margin-bottom: var(--space-xs); font-size: 28px; }
+.pomodoro-page .pomodoro-heading p:last-child { color: var(--color-text-secondary); line-height: 1.7; }
+.pomodoro-page .pomodoro-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-md);
+}
+.pomodoro-page .pomodoro-timer-card,
+.pomodoro-page .pomodoro-settings-card,
+.pomodoro-page .pomodoro-goal-card,
+.pomodoro-page .pomodoro-statistics,
+.pomodoro-page .pomodoro-sessions-card {
+  min-width: 0;
+  margin-bottom: var(--space-md);
+  padding: var(--space-sm);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+.pomodoro-page .pomodoro-timer-card { text-align: center; }
+.pomodoro-page .pomodoro-mode-selector,
+.pomodoro-page .pomodoro-controls,
+.pomodoro-page .pomodoro-form-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-xs);
+}
+.pomodoro-page .pomodoro-mode-selector button,
+.pomodoro-page .pomodoro-controls button,
+.pomodoro-page .pomodoro-break-suggestion button,
+.pomodoro-page .pomodoro-settings-card button {
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-sm);
+  color: var(--color-text);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-weight: 700;
+}
+.pomodoro-page .pomodoro-mode-selector button.is-active,
+.pomodoro-page .pomodoro-primary-button,
+.pomodoro-page .pomodoro-settings-card button[type="submit"] {
+  color: var(--color-surface);
+  background: linear-gradient(135deg, var(--color-coral), var(--color-lavender));
+  border-color: transparent;
+}
+.pomodoro-page .pomodoro-task-field {
+  display: flex;
+  margin: var(--space-md) 0;
+  flex-direction: column;
+  gap: var(--space-xs);
+  text-align: left;
+}
+.pomodoro-page .pomodoro-task-field label,
+.pomodoro-page .pomodoro-settings-card label {
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 700;
+}
+.pomodoro-page .pomodoro-task-field select,
+.pomodoro-page .pomodoro-settings-card input {
+  width: 100%;
+  min-width: 0;
+  height: 46px;
+  padding: 0 var(--space-sm);
+  color: var(--color-text);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+.pomodoro-page .pomodoro-field-error,
+.pomodoro-page .pomodoro-form-feedback { color: var(--color-coral); font-size: 12px; }
+.pomodoro-page .pomodoro-phase-label {
+  margin-top: var(--space-md);
+  color: var(--color-text-secondary);
+  font-weight: 700;
+}
+.pomodoro-page .pomodoro-timer {
+  display: block;
+  margin: var(--space-xs) 0;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: clamp(52px, 14vw, 88px);
+  font-weight: 800;
+  letter-spacing: -3px;
+}
+.pomodoro-page .pomodoro-timer-context {
+  margin-bottom: var(--space-md);
+  color: var(--color-text-secondary);
+}
+.pomodoro-page .pomodoro-controls { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pomodoro-page button:disabled { cursor: not-allowed; opacity: 0.55; }
+.pomodoro-page .pomodoro-break-suggestion {
+  margin-top: var(--space-md);
+  padding: var(--space-sm);
+  background: color-mix(in srgb, var(--color-mint) 15%, var(--color-surface));
+  border-radius: var(--radius-md);
+}
+.pomodoro-page .pomodoro-break-suggestion p { margin-bottom: var(--space-xs); color: var(--color-text); }
+.pomodoro-page .pomodoro-settings-card h3 { margin-bottom: var(--space-sm); }
+.pomodoro-page .pomodoro-settings-card form { display: grid; gap: var(--space-sm); }
+.pomodoro-page .pomodoro-settings-card label { display: grid; grid-template-columns: 1fr 88px auto; align-items: center; gap: var(--space-xs); }
+.pomodoro-page .pomodoro-settings-card label input { text-align: center; }
+.pomodoro-page .pomodoro-settings-card label span { color: var(--color-text-secondary); font-size: 12px; }
+.pomodoro-page .pomodoro-goal-card { display: grid; gap: var(--space-sm); }
+.pomodoro-page .pomodoro-goal-card h3 { margin: 4px 0; }
+.pomodoro-page .pomodoro-goal-card p { color: var(--color-text-secondary); }
+.pomodoro-page .pomodoro-progress {
+  height: 12px;
+  overflow: hidden;
+  background: var(--color-background);
+  border-radius: 999px;
+}
+.pomodoro-page .pomodoro-progress span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-mint), var(--color-sky));
+  border-radius: inherit;
+  transition: width 0.25s ease;
+}
+.pomodoro-page .pomodoro-goal-success {
+  padding: var(--space-xs) var(--space-sm);
+  color: var(--color-text) !important;
+  background: color-mix(in srgb, var(--color-mint) 18%, var(--color-surface));
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+.pomodoro-page .pomodoro-statistics > h3 { margin-bottom: var(--space-sm); }
+.pomodoro-page .pomodoro-stat-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-xs);
+}
+.pomodoro-page .pomodoro-stat-grid article {
+  display: flex;
+  min-width: 0;
+  padding: var(--space-sm);
+  justify-content: space-between;
+  gap: var(--space-xs);
+  background: var(--color-background);
+  border-radius: var(--radius-md);
+}
+.pomodoro-page .pomodoro-stat-grid span { color: var(--color-text-secondary); font-size: 13px; }
+.pomodoro-page .pomodoro-stat-grid strong { color: var(--color-text); overflow-wrap: anywhere; }
+.pomodoro-page .pomodoro-section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+.pomodoro-page .pomodoro-section-heading span { color: var(--color-text-secondary); font-size: 13px; }
+.pomodoro-page .pomodoro-session-list { display: grid; gap: var(--space-xs); padding-top: var(--space-sm); }
+.pomodoro-page .pomodoro-session {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+  background: var(--color-background);
+  border-radius: var(--radius-md);
+}
+.pomodoro-page .pomodoro-session time,
+.pomodoro-page .pomodoro-session span { color: var(--color-text-secondary); font-size: 12px; }
+.pomodoro-page .pomodoro-session strong { color: var(--color-text); overflow-wrap: anywhere; }
+.pomodoro-page .pomodoro-empty-state { padding: var(--space-xl) var(--space-sm); color: var(--color-text-secondary); text-align: center; }
+.pomodoro-page [hidden] { display: none !important; }
+.pomodoro-page .pomodoro-toast {
+  position: fixed;
+  right: var(--space-sm);
+  bottom: var(--space-sm);
+  z-index: 60;
+  max-width: min(360px, calc(100vw - 2 * var(--space-sm)));
+  padding: 12px var(--space-sm);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-mint);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px color-mix(in srgb, var(--color-text) 12%, transparent);
+  font-weight: 700;
+}
+.pomodoro-page button:focus-visible,
+.pomodoro-page input:focus-visible,
+.pomodoro-page select:focus-visible { outline: 3px solid var(--color-sky); outline-offset: 2px; }
+@media (max-width: 374px) {
+  .pomodoro-page .pomodoro-controls { grid-template-columns: minmax(0, 1fr); }
+  .pomodoro-page .pomodoro-settings-card label { grid-template-columns: minmax(0, 1fr); }
+}
+@media (min-width: 768px) {
+  .pomodoro-page .pomodoro-timer-card,
+  .pomodoro-page .pomodoro-settings-card,
+  .pomodoro-page .pomodoro-goal-card,
+  .pomodoro-page .pomodoro-statistics,
+  .pomodoro-page .pomodoro-sessions-card { padding: var(--space-md); }
+  .pomodoro-page .pomodoro-layout { grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr); align-items: start; }
+  .pomodoro-page .pomodoro-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pomodoro-page .pomodoro-session { grid-template-columns: 64px minmax(0, 1fr) auto auto; align-items: center; }
+}
+@media (min-width: 1280px) {
+  .pomodoro-page .pomodoro-stat-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
 @media (min-width: 768px) {
   .dashboard-page .task-page-heading {
     flex-direction: row;

@@ -186,6 +186,39 @@ Lists the selected date's tasks and their course, priority, status, and due date
 - Show a dedicated empty state when the selected date has no tasks.
 - Keep all task actions in Task Management.
 
+### Pomodoro: pomodoro-timer-card
+
+**Purpose**
+
+Runs task-linked or free-study focus and break sessions.
+
+**Rules**
+- Persist active timer state using an absolute end timestamp.
+- Allow start, pause, resume, reset, and suggested break flows.
+- Require an active task only in task-linked work mode.
+
+### Pomodoro: pomodoro-goal-card
+
+**Purpose**
+
+Shows today's completed work sessions, configurable goal, and equivalent study time.
+
+**Rules**
+- Derive daily progress from completed work sessions.
+- Preserve the goal across days while daily progress resets naturally by date.
+- Continue counting when the goal is exceeded.
+
+### Pomodoro: pomodoro-session
+
+**Purpose**
+
+Stores reusable completed work and break records for future analytics.
+
+**Rules**
+- Record type, mode, duration, start, completion, date, and optional task identity.
+- Update task study metrics only for task-linked work sessions.
+- Never update a task for free-study or break sessions.
+
 ### Courses: course-workspace
 
 **Purpose**

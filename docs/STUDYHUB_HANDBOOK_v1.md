@@ -120,6 +120,8 @@ Current stylesheet
 - Shared course storage used by Courses and Task Management
 - Shared accessible confirmation dialog for destructive actions
 - Read-only monthly Calendar with task intensity and selected-day details
+- Pomodoro timer with task/free modes, custom intervals, breaks and reload recovery
+- Daily Pomodoro goals, statistics, session history and task study metrics
 
 # 7. Planned Features
 

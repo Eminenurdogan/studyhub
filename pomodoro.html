@@ -7,7 +7,7 @@
     <title>Pomodoro | StudyHub</title>
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
-  <body class="dashboard-page">
+  <body class="dashboard-page pomodoro-page">
     <div class="app-layout">
       <aside class="app-sidebar" id="appSidebar" aria-label="Ana navigasyon">
         <div class="sidebar-brand">
@@ -44,12 +44,82 @@
           <div class="dashboard-header-end" aria-label="Kullanıcı işlemleri"><div class="dashboard-user-summary"><div class="dashboard-user-avatar" aria-hidden="true">K</div><span class="dashboard-user-name">Kullanıcı</span></div></div>
         </header>
         <main class="dashboard-main" id="mainContent">
-          <section class="dashboard-introduction" aria-labelledby="pomodoroTitle"><div><p class="dashboard-section-label">Çalışma Alanı</p><h2 id="pomodoroTitle">Pomodoro</h2><p>Bu bölüm geliştirme aşamasındadır.</p></div></section>
-          <section class="dashboard-content" aria-label="Pomodoro modül alanı"></section>
+          <section class="pomodoro-heading" aria-labelledby="pomodoroTitle">
+            <div><p class="dashboard-section-label">Odak Sistemi</p><h2 id="pomodoroTitle">Pomodoro</h2><p>Çalışma oturumlarını görevlerine bağla ve günlük hedefini takip et.</p></div>
+          </section>
+
+          <div class="pomodoro-layout">
+            <section class="pomodoro-timer-card" aria-labelledby="timerPhaseLabel">
+              <div class="pomodoro-mode-selector" aria-label="Çalışma modu">
+                <button type="button" data-work-mode="task" aria-pressed="true" class="is-active">Göreve Bağlı</button>
+                <button type="button" data-work-mode="free" aria-pressed="false">Serbest Çalışma</button>
+              </div>
+
+              <div class="pomodoro-task-field" id="pomodoroTaskField">
+                <label for="pomodoroTask">Çalışılacak görev</label>
+                <select id="pomodoroTask"><option value="">Görev seçin</option></select>
+                <p class="pomodoro-field-error" id="pomodoroTaskError"></p>
+              </div>
+
+              <p class="pomodoro-phase-label" id="timerPhaseLabel">Çalışma</p>
+              <output class="pomodoro-timer" id="pomodoroTimer" aria-live="off">25:00</output>
+              <p class="pomodoro-timer-context" id="pomodoroTimerContext">Odaklanmaya hazır olduğunda başlat.</p>
+
+              <div class="pomodoro-controls">
+                <button type="button" class="pomodoro-primary-button" id="pomodoroStart">Başlat</button>
+                <button type="button" id="pomodoroPause" disabled>Duraklat</button>
+                <button type="button" id="pomodoroReset">Sıfırla</button>
+              </div>
+
+              <div class="pomodoro-break-suggestion" id="pomodoroBreakSuggestion" hidden>
+                <p id="pomodoroBreakMessage"></p>
+                <button type="button" id="startSuggestedBreak">Molayı Başlat</button>
+              </div>
+            </section>
+
+            <aside class="pomodoro-settings-card" aria-labelledby="pomodoroSettingsTitle">
+              <h3 id="pomodoroSettingsTitle">Pomodoro Ayarları</h3>
+              <form id="pomodoroSettingsForm">
+                <label>Çalışma süresi <input type="number" id="workMinutes" min="1" max="180" required /><span>dakika</span></label>
+                <label>Kısa mola <input type="number" id="shortBreakMinutes" min="1" max="60" required /><span>dakika</span></label>
+                <label>Uzun mola <input type="number" id="longBreakMinutes" min="1" max="120" required /><span>dakika</span></label>
+                <label>Günlük hedef <input type="number" id="dailyGoal" min="1" max="50" required /><span>Pomodoro</span></label>
+                <p class="pomodoro-form-feedback" id="pomodoroSettingsFeedback" role="alert" hidden></p>
+                <button type="submit">Ayarları Kaydet</button>
+              </form>
+            </aside>
+          </div>
+
+          <section class="pomodoro-goal-card" aria-labelledby="pomodoroGoalTitle">
+            <div><p class="dashboard-section-label">Bugünkü Hedef</p><h3 id="pomodoroGoalTitle"><span id="goalProgressText">0 / 4</span> Pomodoro</h3><p id="goalTimeText">≈ 1 saat 40 dakika hedef</p></div>
+            <div class="pomodoro-progress" role="progressbar" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0" aria-labelledby="pomodoroGoalTitle"><span id="goalProgressBar"></span></div>
+            <p id="goalCompletedTime">0 dakika tamamlandı</p>
+            <p class="pomodoro-goal-success" id="goalSuccess" hidden>Tebrikler! Bugünkü çalışma hedefini tamamladın.</p>
+          </section>
+
+          <section class="pomodoro-statistics" aria-labelledby="pomodoroStatsTitle">
+            <h3 id="pomodoroStatsTitle">Bugünkü İstatistikler</h3>
+            <div class="pomodoro-stat-grid">
+              <article><span>Tamamlanan Pomodoro</span><strong id="todayPomodoros">0</strong></article>
+              <article><span>Çalışma Süresi</span><strong id="todayWorkTime">0 dk</strong></article>
+              <article><span>Mola Sayısı</span><strong id="todayBreaks">0</strong></article>
+              <article><span>Göreve Bağlı</span><strong id="todayTaskTime">0 dk</strong></article>
+              <article><span>Serbest Çalışma</span><strong id="todayFreeTime">0 dk</strong></article>
+            </div>
+          </section>
+
+          <section class="pomodoro-sessions-card" aria-labelledby="recentSessionsTitle">
+            <div class="pomodoro-section-heading"><h3 id="recentSessionsTitle">Bugünkü Oturumlar</h3><span id="recentSessionCount">0 oturum</span></div>
+            <div id="recentSessions" class="pomodoro-session-list"></div>
+            <div id="recentSessionsEmpty" class="pomodoro-empty-state"><p>Bugün henüz tamamlanmış bir oturum yok.</p></div>
+          </section>
+
+          <div class="pomodoro-toast" id="pomodoroToast" role="status" aria-live="polite" hidden></div>
         </main>
       </div>
     </div>
     <div class="sidebar-backdrop" aria-hidden="true"></div>
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/pomodoro.js"></script>
   </body>
 </html>
