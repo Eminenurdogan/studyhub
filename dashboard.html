@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="StudyHub çalışma planlama uygulaması kontrol paneli."
+      content="StudyHub bugünkü çalışma planı ve günlük görev özeti."
     />
 
-    <title>Genel Bakış | StudyHub</title>
+    <title>Bugün | StudyHub</title>
 
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
@@ -46,32 +46,40 @@
                   class="sidebar-navigation-item is-active"
                   aria-current="page"
                 >
-                  <span>Genel Bakış</span>
+                  <svg class="sidebar-navigation-icon" aria-hidden="true">
+                    <use href="assets/icons/dashboard-nav.svg#today"></use>
+                  </svg>
+                  <span>Bugün</span>
                 </a>
               </li>
               <li>
                 <a href="courses.html" class="sidebar-navigation-item">
-                  Dersler
+                  <svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#courses"></use></svg>
+                  <span>Dersler</span>
                 </a>
               </li>
               <li>
                 <a href="tasks.html" class="sidebar-navigation-item">
-                  Görevler
+                  <svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#tasks"></use></svg>
+                  <span>Görevler</span>
                 </a>
               </li>
               <li>
                 <a href="calendar.html" class="sidebar-navigation-item">
-                  Takvim
+                  <svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#calendar"></use></svg>
+                  <span>Takvim</span>
                 </a>
               </li>
               <li>
                 <a href="pomodoro.html" class="sidebar-navigation-item">
-                  Pomodoro
+                  <svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#pomodoro"></use></svg>
+                  <span>Pomodoro</span>
                 </a>
               </li>
               <li>
                 <a href="analytics.html" class="sidebar-navigation-item">
-                  Analiz
+                  <svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#analytics"></use></svg>
+                  <span>Analiz</span>
                 </a>
               </li>
             </ul>
@@ -83,12 +91,14 @@
             <ul class="sidebar-navigation-list">
               <li>
                 <a href="account.html" class="sidebar-navigation-item">
-                  Hesap
+                  <svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#account"></use></svg>
+                  <span>Hesap</span>
                 </a>
               </li>
               <li>
                 <a href="settings.html" class="sidebar-navigation-item">
-                  Ayarlar
+                  <svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#settings"></use></svg>
+                  <span>Ayarlar</span>
                 </a>
               </li>
             </ul>
@@ -119,7 +129,7 @@
 
             <div class="dashboard-page-identity">
               <p class="dashboard-page-context">Dashboard</p>
-              <h1>Genel Bakış</h1>
+              <h1>Bugün</h1>
             </div>
           </div>
 
@@ -134,19 +144,140 @@
         <main class="dashboard-main" id="mainContent">
           <section class="dashboard-introduction" aria-labelledby="welcomeTitle">
             <div>
-              <p class="dashboard-section-label">Genel Bakış</p>
-              <h2 id="welcomeTitle">Çalışma alanına hoş geldin</h2>
+              <p class="dashboard-section-label">Bugünün Planı</p>
+              <h2 id="welcomeTitle">Günaydın, Kullanıcı</h2>
               <p>
-                Dashboard modülleri sonraki geliştirme adımlarında bu alanın
-                üzerine eklenecek.
+                Bugünkü planına göz at ve çalışmalarına kaldığın yerden devam et.
               </p>
             </div>
           </section>
 
-          <section
-            class="dashboard-content"
-            aria-label="Dashboard modül alanı"
-          ></section>
+          <section class="today-summary-grid" aria-label="Günlük özet">
+            <article class="dashboard-card today-summary-card">
+              <div class="today-summary-heading">
+                <span class="today-summary-icon today-summary-icon--tasks" aria-hidden="true">
+                  <svg><use href="assets/icons/dashboard-nav.svg#tasks"></use></svg>
+                </span>
+                <p class="today-summary-label">Bugünkü görevler</p>
+              </div>
+              <strong class="today-summary-value">4</strong>
+              <span class="today-summary-meta">3 görev sırada</span>
+            </article>
+            <article class="dashboard-card today-summary-card">
+              <div class="today-summary-heading">
+                <span class="today-summary-icon today-summary-icon--duration" aria-hidden="true">
+                  <svg><use href="assets/icons/dashboard-nav.svg#pomodoro"></use></svg>
+                </span>
+                <p class="today-summary-label">Planlanan süre</p>
+              </div>
+              <strong class="today-summary-value">2 sa 30 dk</strong>
+              <span class="today-summary-meta">3 çalışma oturumu</span>
+            </article>
+            <article class="dashboard-card today-summary-card">
+              <div class="today-summary-heading">
+                <span class="today-summary-icon today-summary-icon--completed" aria-hidden="true">
+                  <svg><use href="assets/icons/dashboard-nav.svg#completed"></use></svg>
+                </span>
+                <p class="today-summary-label">Tamamlanan</p>
+              </div>
+              <strong class="today-summary-value">%25</strong>
+              <span class="today-summary-meta">1 görev tamamlandı</span>
+            </article>
+            <article class="dashboard-card today-summary-card">
+              <div class="today-summary-heading">
+                <span class="today-summary-icon today-summary-icon--streak" aria-hidden="true">
+                  <svg><use href="assets/icons/dashboard-nav.svg#streak"></use></svg>
+                </span>
+                <p class="today-summary-label">Çalışma serisi</p>
+              </div>
+              <strong class="today-summary-value">15 gün</strong>
+              <span class="today-summary-meta">Düzenini koruyorsun</span>
+            </article>
+          </section>
+
+          <section class="today-content-grid" aria-label="Bugünün çalışma özeti">
+            <article class="dashboard-card today-plan-card">
+              <div class="dashboard-card__header">
+                <div>
+                  <p class="dashboard-card__eyebrow">Günlük program</p>
+                  <h3 class="dashboard-card__title">Bugünkü çalışma planı</h3>
+                </div>
+                <span class="today-card-badge">3 oturum</span>
+              </div>
+              <div class="dashboard-card__body">
+                <ol class="today-plan-list">
+                  <li class="today-plan-item">
+                    <time datetime="09:30">09:30</time>
+                    <span class="today-plan-marker" aria-hidden="true"></span>
+                    <div>
+                      <strong>JavaScript DOM tekrarı</strong>
+                      <span>Web Programlama · 45 dakika</span>
+                    </div>
+                  </li>
+                  <li class="today-plan-item">
+                    <time datetime="14:00">14:00</time>
+                    <span class="today-plan-marker" aria-hidden="true"></span>
+                    <div>
+                      <strong>Veri yapıları çalışma notları</strong>
+                      <span>Algoritmalar · 60 dakika</span>
+                    </div>
+                  </li>
+                  <li class="today-plan-item">
+                    <time datetime="19:30">19:30</time>
+                    <span class="today-plan-marker" aria-hidden="true"></span>
+                    <div>
+                      <strong>Haftalık konu tekrarı</strong>
+                      <span>Matematik · 45 dakika</span>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </article>
+
+            <div class="today-side-column">
+              <article class="dashboard-card today-upcoming-card">
+                <div class="dashboard-card__header">
+                  <div>
+                    <p class="dashboard-card__eyebrow">Sonraki adımlar</p>
+                    <h3 class="dashboard-card__title">Yaklaşan görevler</h3>
+                  </div>
+                </div>
+                <div class="dashboard-card__body">
+                  <ul class="today-upcoming-list">
+                    <li>
+                      <div>
+                        <strong>Proje raporunu tamamla</strong>
+                        <span>Yazılım Mühendisliği</span>
+                      </div>
+                      <time datetime="2026-07-29">Yarın</time>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>Algoritma sorularını çöz</strong>
+                        <span>Algoritmalar</span>
+                      </div>
+                      <time datetime="2026-07-31">31 Tem</time>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>Sunum taslağını hazırla</strong>
+                        <span>İletişim Teknikleri</span>
+                      </div>
+                      <time datetime="2026-08-02">2 Ağu</time>
+                    </li>
+                  </ul>
+                </div>
+              </article>
+
+              <article class="dashboard-card today-motivation-card">
+                <p class="dashboard-card__eyebrow">Günün motivasyonu</p>
+                <blockquote>
+                  Küçük ama düzenli adımlar, büyük hedefleri ulaşılabilir kılar.
+                </blockquote>
+                <p>Bugünkü planının ilk adımı hazır.</p>
+              </article>
+            </div>
+          </section>
         </main>
       </div>
     </div>

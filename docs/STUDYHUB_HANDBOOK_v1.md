@@ -108,6 +108,8 @@ Current stylesheet
 - Responsive dashboard application shell
 - Accessible mobile dashboard sidebar
 - Navigable dashboard module page architecture
+- Today-focused dashboard visual components
+- Lucide-based dashboard navigation icons
 
 # 7. Planned Features
 

@@ -72,6 +72,23 @@ Body font:
 - Progress Section
 - Statistics Section
 
+## Dashboard Module Accents
+
+Dashboard navigation uses the existing palette to distinguish modules without introducing new colors.
+
+| Module | Accent token |
+|---|---|
+| Today | `--color-coral` |
+| Courses | `--color-lavender` |
+| Tasks | `--color-mint` |
+| Calendar | `--color-sky` |
+| Pomodoro | `--color-peach` |
+| Analytics | `--color-pink` |
+| Account | `--color-lavender` |
+| Settings | `--color-sky` |
+
+Summary card icons reuse the same pastel accent treatment as dashboard navigation icons.
+
 ## Rules For Agents
 
 1. Never hardcode colors if a CSS variable exists.

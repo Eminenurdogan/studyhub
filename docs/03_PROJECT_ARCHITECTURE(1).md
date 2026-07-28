@@ -63,14 +63,17 @@ Responsibilities:
 
 ### dashboard.html
 
-Responsive application shell.
+Responsive "Bugün" dashboard experience.
 
 Responsibilities:
 
 - Dashboard page structure
 - Sidebar navigation shell
 - Dashboard header
-- Main module content area
+- Daily summary presentation
+- Today's study plan presentation
+- Upcoming tasks presentation
+- Motivation presentation
 - Accessible mobile sidebar controls
 
 ### Dashboard module pages

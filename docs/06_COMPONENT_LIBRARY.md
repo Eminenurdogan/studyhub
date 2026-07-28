@@ -42,6 +42,47 @@ Provides desktop navigation and an accessible off-canvas navigation pattern on m
 - Restore focus when the sidebar closes.
 - Keep active and disabled navigation states distinguishable.
 
+### Dashboard: today-summary-card
+
+**Purpose**
+
+Presents a compact visual summary of the current day's study activity.
+
+**Rules**
+- Use static presentation only until the data layer is implemented.
+- Preserve the shared card foundation and the `1 → 2 → 4` responsive summary grid.
+- Use meaningful Lucide icons with the existing pastel accent tokens.
+
+### Dashboard: today-plan-card
+
+**Purpose**
+
+Presents the visual structure of the current day's planned study sessions.
+
+**Rules**
+- Keep time and session details semantic.
+- Do not add task or timer behavior inside this component.
+
+### Dashboard: today-upcoming-card
+
+**Purpose**
+
+Presents a short visual list of upcoming tasks.
+
+**Rules**
+- Keep this component read-only until Task Management is implemented.
+- Use semantic list and time elements.
+
+### Dashboard: today-motivation-card
+
+**Purpose**
+
+Provides a lightweight motivational message within the Today experience.
+
+**Rules**
+- Keep the content visually secondary to the study plan.
+- Preserve the existing pastel design language.
+
 ### Header: header
 
 **Purpose**
