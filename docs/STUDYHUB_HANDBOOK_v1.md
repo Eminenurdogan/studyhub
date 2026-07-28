@@ -7,7 +7,7 @@ Version: 1.0 (Draft)
 
 # 1. Product Vision
 
-StudyHub is a Turkish study planning platform for university students.
+StudyHub is a Turkish study planning platform for anyone pursuing a learning goal, including school and university students, exam candidates, software and language learners, certificate participants, and independent learners.
 The objective is to build a production-quality frontend portfolio project with clean architecture,
 excellent UI/UX and maintainable code.
 
@@ -116,6 +116,10 @@ Current stylesheet
 - LocalStorage-backed course creation and duplicate prevention
 - Task search, course/priority/status filters and live status counters
 - Task editing, status changes and confirmed deletion
+- Courses CRUD with validation, linked-task warnings and responsive cards
+- Shared course storage used by Courses and Task Management
+- Shared accessible confirmation dialog for destructive actions
+- Read-only monthly Calendar with task intensity and selected-day details
 
 # 7. Planned Features
 
@@ -125,7 +129,6 @@ These are planned only.
 - Forgot password
 - Dashboard
 - Sidebar
-- Calendar
 - Analytics
 - Settings
 - Dark mode
@@ -145,6 +148,7 @@ These are planned only.
 - Reuse existing spacing values.
 - Write readable code.
 - Explain planned changes before implementation.
+- Never use browser-native `alert()`, `confirm()`, or `prompt()`; use an application component.
 
 ## Never
 

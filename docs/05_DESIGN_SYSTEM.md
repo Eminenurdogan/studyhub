@@ -4,7 +4,7 @@
 
 ## Design Philosophy
 
-StudyHub uses a clean, modern and soft visual language aimed at university students.
+StudyHub uses a clean, modern and soft visual language for learners across formal education, exam preparation, professional development, and self-directed study.
 The interface should feel calm, organized and motivating instead of corporate or playful.
 
 ## Design Principles

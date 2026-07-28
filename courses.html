@@ -7,7 +7,7 @@
     <title>Dersler | StudyHub</title>
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
-  <body class="dashboard-page">
+  <body class="dashboard-page courses-page">
     <div class="app-layout">
       <aside class="app-sidebar" id="appSidebar" aria-label="Ana navigasyon">
         <div class="sidebar-brand">
@@ -64,18 +64,119 @@
           </div>
         </header>
         <main class="dashboard-main" id="mainContent">
-          <section class="dashboard-introduction" aria-labelledby="coursesTitle">
+          <section class="course-page-heading" aria-labelledby="coursesTitle">
             <div>
-              <p class="dashboard-section-label">Çalışma Alanı</p>
-              <h2 id="coursesTitle">Dersler</h2>
-              <p>Bu bölüm geliştirme aşamasındadır.</p>
+              <p class="dashboard-section-label">Ders Yönetimi</p>
+              <h2 id="coursesTitle">Derslerini yönet</h2>
+              <p>Ders bilgilerini oluştur, düzenle ve görev planında kullan.</p>
             </div>
+            <button
+              type="button"
+              class="course-new-button"
+              id="openCourseDrawer"
+              aria-controls="courseDrawer"
+              aria-expanded="false"
+            >
+              Yeni Ders
+            </button>
           </section>
-          <section class="dashboard-content" aria-label="Dersler modül alanı"></section>
+
+          <section class="course-workspace" aria-labelledby="courseListTitle">
+            <div class="course-list-heading">
+              <h3 id="courseListTitle">Ders listesi</h3>
+              <span id="courseCount">0 ders</span>
+            </div>
+
+            <div class="course-list" id="courseList" aria-live="polite" hidden></div>
+
+            <div class="course-empty-state" id="courseEmptyState">
+              <h4>Henüz bir dersin yok</h4>
+              <p>İlk dersini oluşturarak görevlerini derslerle ilişkilendirebilirsin.</p>
+            </div>
+            <p class="course-sr-only" id="coursePageFeedback" aria-live="polite"></p>
+          </section>
+
+          <aside
+            class="course-drawer"
+            id="courseDrawer"
+            role="dialog"
+            aria-modal="true"
+            aria-hidden="true"
+            aria-labelledby="courseDrawerTitle"
+            aria-describedby="courseDrawerDescription"
+          >
+            <div class="course-drawer__header">
+              <div>
+                <p class="dashboard-section-label">Ders Yönetimi</p>
+                <h2 id="courseDrawerTitle">Yeni Ders</h2>
+              </div>
+              <button
+                type="button"
+                class="course-drawer-close"
+                data-course-drawer-close
+                aria-label="Ders panelini kapat"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+
+            <div class="course-drawer__body">
+              <p id="courseDrawerDescription">Dersin temel bilgilerini gir.</p>
+
+              <form class="course-form" id="courseForm" novalidate>
+                <div class="course-form-feedback" id="courseFormFeedback" role="alert" hidden></div>
+
+                <div class="course-form-field">
+                  <label for="courseName">Ders adı</label>
+                  <input
+                    type="text"
+                    id="courseName"
+                    name="name"
+                    autocomplete="off"
+                    aria-describedby="courseNameError"
+                    required
+                  />
+                  <p class="course-form-error" id="courseNameError"></p>
+                </div>
+
+                <div class="course-form-field">
+                  <label for="courseColor">Ders rengi</label>
+                  <select id="courseColor" name="color">
+                    <option value="lavender">Lavanta</option>
+                    <option value="mint">Nane</option>
+                    <option value="sky">Gökyüzü</option>
+                    <option value="coral">Mercan</option>
+                    <option value="peach">Şeftali</option>
+                    <option value="pink">Pembe</option>
+                  </select>
+                </div>
+
+                <div class="course-form-field">
+                  <label for="courseDescription">Açıklama</label>
+                  <textarea id="courseDescription" name="description" rows="4"></textarea>
+                </div>
+
+                <div class="course-form-actions">
+                  <button type="button" class="course-cancel-button" data-course-drawer-close>
+                    İptal
+                  </button>
+                  <button type="submit" class="course-save-button" id="courseSaveButton">
+                    Kaydet
+                  </button>
+                </div>
+              </form>
+            </div>
+          </aside>
+
+          <div class="course-drawer-backdrop" aria-hidden="true"></div>
+          <div class="course-toast" id="courseToast" role="status" aria-live="polite" aria-atomic="true" hidden></div>
         </main>
       </div>
     </div>
     <div class="sidebar-backdrop" aria-hidden="true"></div>
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/confirmation-dialog.js"></script>
+    <script src="assets/js/course-storage.js"></script>
+    <script src="assets/js/courses.js"></script>
   </body>
 </html>

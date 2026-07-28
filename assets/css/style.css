@@ -2580,27 +2580,6 @@ button {
   );
 }
 
-.dashboard-page .task-course-create-control {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: var(--space-xs);
-}
-
-.dashboard-page .task-course-create-control button {
-  min-width: 64px;
-  padding: 0 var(--space-sm);
-  color: var(--color-text);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  font-weight: 700;
-}
-
-.dashboard-page .task-course-create-control button:focus-visible {
-  outline: 3px solid var(--color-sky);
-  outline-offset: 2px;
-}
-
 .dashboard-page .task-list {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -2914,13 +2893,8 @@ button {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .dashboard-page .task-course-create-control,
   .dashboard-page .task-form-actions {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .dashboard-page .task-course-create-control button {
-    min-height: 44px;
   }
 
   .dashboard-page .task-item__status-control,
@@ -2931,6 +2905,985 @@ button {
   .dashboard-page .task-item__actions {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ========================= */
+/* COURSES MVP */
+/* ========================= */
+
+.courses-page.course-drawer-open {
+  overflow: hidden;
+}
+
+.courses-page .course-page-heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+
+.courses-page .course-page-heading h2 {
+  margin-bottom: var(--space-xs);
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 28px;
+}
+
+.courses-page .course-page-heading p:last-child {
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.courses-page .course-new-button,
+.courses-page .course-save-button {
+  min-height: 48px;
+  padding: var(--space-xs) var(--space-sm);
+  color: var(--color-surface);
+  background: linear-gradient(
+    135deg,
+    var(--color-coral),
+    var(--color-lavender)
+  );
+  border: 1px solid transparent;
+}
+
+.courses-page .course-new-button {
+  width: 100%;
+}
+
+.courses-page .course-workspace {
+  min-width: 0;
+  padding: var(--space-sm);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.courses-page .course-list-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.courses-page .course-list-heading h3 {
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 18px;
+}
+
+.courses-page .course-list-heading span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.courses-page .course-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-sm);
+  padding-top: var(--space-md);
+}
+
+.courses-page .course-card {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: var(--space-sm);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.courses-page .course-card__accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background-color: var(--color-lavender);
+}
+
+.courses-page .course-card--mint .course-card__accent {
+  background-color: var(--color-mint);
+}
+
+.courses-page .course-card--sky .course-card__accent {
+  background-color: var(--color-sky);
+}
+
+.courses-page .course-card--coral .course-card__accent {
+  background-color: var(--color-coral);
+}
+
+.courses-page .course-card--peach .course-card__accent {
+  background-color: var(--color-peach);
+}
+
+.courses-page .course-card--pink .course-card__accent {
+  background-color: var(--color-pink);
+}
+
+.courses-page .course-card__header,
+.courses-page .course-card__title-group {
+  min-width: 0;
+}
+
+.courses-page .course-card__title {
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.courses-page .course-card__description {
+  margin-top: var(--space-sm);
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.courses-page .course-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+}
+
+.courses-page .course-card__edit,
+.courses-page .course-card__delete,
+.courses-page .course-cancel-button {
+  min-height: 40px;
+  padding: var(--space-xs) var(--space-sm);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.courses-page .course-card__delete {
+  color: var(--color-coral);
+}
+
+.courses-page .course-empty-state {
+  padding: var(--space-xl) var(--space-sm);
+  text-align: center;
+}
+
+.courses-page .course-empty-state h4 {
+  margin-bottom: var(--space-xs);
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 20px;
+}
+
+.courses-page .course-empty-state p {
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.courses-page .course-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 40;
+  width: min(440px, 100vw);
+  height: 100vh;
+  overflow-y: auto;
+  visibility: hidden;
+  background-color: var(--color-surface);
+  border-left: 1px solid var(--color-border);
+  box-shadow: -20px 0 50px color-mix(
+    in srgb,
+    var(--color-text) 10%,
+    transparent
+  );
+  transform: translateX(100%);
+  transition:
+    transform 0.3s ease,
+    visibility 0.3s ease;
+}
+
+.courses-page .course-drawer.is-open {
+  visibility: visible;
+  transform: translateX(0);
+}
+
+.courses-page .course-drawer__header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.courses-page .course-drawer__header h2 {
+  font-family: var(--font-heading);
+  font-size: 24px;
+}
+
+.courses-page .course-drawer-close {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 24px;
+}
+
+.courses-page .course-drawer__body {
+  padding: var(--space-md);
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.courses-page .course-drawer__body > p {
+  margin-bottom: var(--space-md);
+}
+
+.courses-page .course-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-sm);
+}
+
+.courses-page .course-form-field {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.courses-page .course-form-field label {
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.courses-page .course-form-field input,
+.courses-page .course-form-field select,
+.courses-page .course-form-field textarea {
+  width: 100%;
+  min-width: 0;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  outline: 0;
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.courses-page .course-form-field input,
+.courses-page .course-form-field select {
+  height: 48px;
+  padding: 0 var(--space-sm);
+}
+
+.courses-page .course-form-field textarea {
+  min-height: 112px;
+  padding: 12px var(--space-sm);
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.courses-page .course-form-error {
+  min-height: 18px;
+  color: var(--color-coral);
+  font-size: 12px;
+}
+
+.courses-page .course-form-field.has-error input {
+  border-color: var(--color-coral);
+  box-shadow: 0 0 0 3px color-mix(
+    in srgb,
+    var(--color-coral) 14%,
+    transparent
+  );
+}
+
+.courses-page .course-form-feedback {
+  padding: 12px var(--space-sm);
+  color: var(--color-text);
+  background-color: color-mix(
+    in srgb,
+    var(--color-coral) 14%,
+    var(--color-surface)
+  );
+  border: 1px solid color-mix(
+    in srgb,
+    var(--color-coral) 34%,
+    var(--color-border)
+  );
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.courses-page .course-form-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--color-border);
+}
+
+.courses-page .course-drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  display: none;
+  background-color: color-mix(
+    in srgb,
+    var(--color-text) 36%,
+    transparent
+  );
+}
+
+.courses-page .course-drawer-backdrop.is-visible {
+  display: block;
+}
+
+.courses-page .course-toast {
+  position: fixed;
+  right: var(--space-sm);
+  bottom: var(--space-sm);
+  z-index: 60;
+  max-width: min(360px, calc(100vw - (2 * var(--space-sm))));
+  padding: 12px var(--space-sm);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid color-mix(
+    in srgb,
+    var(--color-mint) 40%,
+    var(--color-border)
+  );
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px color-mix(
+    in srgb,
+    var(--color-text) 12%,
+    transparent
+  );
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.courses-page .course-list[hidden],
+.courses-page .course-empty-state[hidden],
+.courses-page .course-form-feedback[hidden],
+.courses-page .course-toast[hidden] {
+  display: none;
+}
+
+.courses-page .course-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.courses-page .course-new-button:focus-visible,
+.courses-page .course-card button:focus-visible,
+.courses-page .course-drawer button:focus-visible,
+.courses-page .course-form input:focus-visible,
+.courses-page .course-form select:focus-visible,
+.courses-page .course-form textarea:focus-visible {
+  outline: 3px solid var(--color-sky);
+  outline-offset: 2px;
+}
+
+@media (max-width: 374px) {
+  .courses-page .course-form-actions,
+  .courses-page .course-card__actions {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .courses-page .course-page-heading {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .courses-page .course-new-button {
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .courses-page .course-workspace {
+    padding: var(--space-md);
+  }
+
+  .courses-page .course-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .courses-page .course-card {
+    padding: var(--space-md);
+  }
+}
+
+@media (min-width: 1280px) {
+  .courses-page .course-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .courses-page .course-drawer {
+    transition: none;
+  }
+}
+
+/* ========================= */
+/* SHARED CONFIRMATION DIALOG */
+/* ========================= */
+
+.dashboard-page.confirmation-dialog-open {
+  overflow: hidden;
+}
+
+.dashboard-page .confirmation-dialog-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm);
+
+  background-color: color-mix(
+    in srgb,
+    var(--color-text) 62%,
+    transparent
+  );
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.dashboard-page .confirmation-dialog-overlay.is-visible {
+  opacity: 1;
+}
+
+.dashboard-page .confirmation-dialog-overlay[hidden] {
+  display: none;
+}
+
+.dashboard-page .confirmation-dialog {
+  width: min(100%, 440px);
+  max-height: calc(100vh - (2 * var(--space-sm)));
+  overflow-y: auto;
+  padding: var(--space-md);
+
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 64px color-mix(
+    in srgb,
+    var(--color-text) 24%,
+    transparent
+  );
+  transform: translateY(8px) scale(0.98);
+  transition: transform 0.2s ease;
+}
+
+.dashboard-page
+  .confirmation-dialog-overlay.is-visible
+  .confirmation-dialog {
+  transform: translateY(0) scale(1);
+}
+
+.dashboard-page .confirmation-dialog__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: var(--space-sm);
+
+  color: var(--color-coral);
+  background-color: color-mix(
+    in srgb,
+    var(--color-coral) 16%,
+    var(--color-surface)
+  );
+  border: 1px solid color-mix(
+    in srgb,
+    var(--color-coral) 32%,
+    var(--color-border)
+  );
+  border-radius: var(--radius-md);
+}
+
+.dashboard-page .confirmation-dialog__icon svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dashboard-page .confirmation-dialog__title {
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 22px;
+  line-height: 1.35;
+}
+
+.dashboard-page .confirmation-dialog__description,
+.dashboard-page .confirmation-dialog__details {
+  margin-top: var(--space-xs);
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+}
+
+.dashboard-page .confirmation-dialog__details {
+  padding: var(--space-xs) var(--space-sm);
+  background-color: color-mix(
+    in srgb,
+    var(--color-peach) 18%,
+    var(--color-surface)
+  );
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+}
+
+.dashboard-page .confirmation-dialog__details[hidden] {
+  display: none;
+}
+
+.dashboard-page .confirmation-dialog__actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.dashboard-page .confirmation-dialog__cancel,
+.dashboard-page .confirmation-dialog__confirm {
+  min-height: 46px;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-md);
+  font-weight: 700;
+}
+
+.dashboard-page .confirmation-dialog__cancel {
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.dashboard-page .confirmation-dialog__confirm {
+  color: var(--color-surface);
+  background-color: var(--color-coral);
+  border: 1px solid var(--color-coral);
+}
+
+.dashboard-page .confirmation-dialog__cancel:focus-visible,
+.dashboard-page .confirmation-dialog__confirm:focus-visible {
+  outline: 3px solid var(--color-sky);
+  outline-offset: 2px;
+}
+
+@media (max-width: 374px) {
+  .dashboard-page .confirmation-dialog__actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-page .confirmation-dialog-overlay,
+  .dashboard-page .confirmation-dialog {
+    transition: none;
+  }
+}
+
+/* ========================= */
+/* CALENDAR MVP */
+/* ========================= */
+
+.calendar-page .calendar-page-heading {
+  margin-bottom: var(--space-lg);
+}
+
+.calendar-page .calendar-page-heading h2 {
+  margin-bottom: var(--space-xs);
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 28px;
+}
+
+.calendar-page .calendar-page-heading p:last-child {
+  max-width: 680px;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.calendar-page .calendar-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-md);
+  min-width: 0;
+}
+
+.calendar-page .calendar-workspace,
+.calendar-page .calendar-day-panel {
+  min-width: 0;
+  padding: var(--space-sm);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.calendar-page .calendar-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.calendar-page .calendar-toolbar h3 {
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 20px;
+  text-transform: capitalize;
+}
+
+.calendar-page .calendar-navigation {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-xs);
+}
+
+.calendar-page .calendar-navigation button {
+  min-width: 0;
+  min-height: 42px;
+  padding: var(--space-xs);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.calendar-page .calendar-weekdays,
+.calendar-page .calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 2px;
+  min-width: 0;
+}
+
+.calendar-page .calendar-weekdays {
+  margin-bottom: var(--space-xs);
+}
+
+.calendar-page .calendar-week-row {
+  display: contents;
+}
+
+.calendar-page .calendar-weekdays span {
+  min-width: 0;
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.calendar-page .calendar-day {
+  display: flex;
+  align-items: flex-start;
+  min-width: 0;
+  min-height: 62px;
+  padding: 6px 4px;
+  flex-direction: column;
+  gap: 5px;
+
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  text-align: left;
+}
+
+.calendar-page .calendar-day.is-outside-month {
+  color: var(--color-text-secondary);
+  background-color: var(--color-background);
+  opacity: 0.62;
+}
+
+.calendar-page .calendar-day.is-today {
+  border-color: var(--color-sky);
+  box-shadow: inset 0 0 0 1px var(--color-sky);
+}
+
+.calendar-page .calendar-day.is-selected {
+  background-color: color-mix(
+    in srgb,
+    var(--color-sky) 14%,
+    var(--color-surface)
+  );
+  border-color: var(--color-sky);
+}
+
+.calendar-page .calendar-day__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.calendar-page .calendar-day.is-today .calendar-day__number {
+  color: var(--color-surface);
+  background-color: var(--color-sky);
+}
+
+.calendar-page .calendar-day__indicators {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  gap: 3px;
+}
+
+.calendar-page .calendar-priority-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  flex-shrink: 0;
+  background-color: var(--color-mint);
+  border-radius: 50%;
+}
+
+.calendar-page .calendar-priority-dot--medium {
+  background-color: var(--color-peach);
+}
+
+.calendar-page .calendar-priority-dot--high {
+  background-color: var(--color-coral);
+}
+
+.calendar-page .calendar-day__overflow {
+  color: var(--color-text-secondary);
+  font-size: 9px;
+  font-weight: 700;
+}
+
+.calendar-page .calendar-day__task-preview {
+  display: none;
+  width: 100%;
+  color: var(--color-text-secondary);
+  font-size: 10px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendar-page .calendar-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.calendar-page .calendar-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.calendar-page .calendar-day-panel__header {
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.calendar-page .calendar-day-panel__header h3 {
+  margin: 4px 0;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 20px;
+  text-transform: capitalize;
+}
+
+.calendar-page .calendar-day-panel__header span {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.calendar-page .calendar-day-task-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-sm);
+  padding-top: var(--space-sm);
+}
+
+.calendar-page .calendar-task {
+  min-width: 0;
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-mint);
+  border-radius: var(--radius-md);
+}
+
+.calendar-page .calendar-task--medium {
+  border-left-color: var(--color-peach);
+}
+
+.calendar-page .calendar-task--high {
+  border-left-color: var(--color-coral);
+}
+
+.calendar-page .calendar-task__title {
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+
+.calendar-page .calendar-task__details {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+  list-style: none;
+}
+
+.calendar-page .calendar-task__details li {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.calendar-page .calendar-task__details span {
+  color: var(--color-text-secondary);
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.calendar-page .calendar-task__details strong {
+  color: var(--color-text);
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.calendar-page .calendar-day-empty {
+  padding: var(--space-xl) var(--space-sm);
+  text-align: center;
+}
+
+.calendar-page .calendar-day-empty h4 {
+  margin-bottom: var(--space-xs);
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-size: 18px;
+}
+
+.calendar-page .calendar-day-empty p {
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+}
+
+.calendar-page .calendar-day-task-list[hidden],
+.calendar-page .calendar-day-empty[hidden] {
+  display: none;
+}
+
+.calendar-page .calendar-navigation button:focus-visible,
+.calendar-page .calendar-day:focus-visible {
+  position: relative;
+  z-index: 2;
+  outline: 3px solid var(--color-sky);
+  outline-offset: 1px;
+}
+
+@media (max-width: 374px) {
+  .calendar-page .calendar-workspace,
+  .calendar-page .calendar-day-panel {
+    padding: var(--space-xs);
+  }
+
+  .calendar-page .calendar-day {
+    min-height: 56px;
+  }
+
+  .calendar-page .calendar-task__details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 768px) {
+  .calendar-page .calendar-workspace,
+  .calendar-page .calendar-day-panel {
+    padding: var(--space-md);
+  }
+
+  .calendar-page .calendar-toolbar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .calendar-page .calendar-navigation {
+    grid-template-columns: repeat(3, auto);
+  }
+
+  .calendar-page .calendar-navigation button {
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  .calendar-page .calendar-day {
+    min-height: 88px;
+    padding: var(--space-xs);
+  }
+
+  .calendar-page .calendar-day__task-preview {
+    display: block;
+  }
+}
+
+@media (min-width: 1280px) {
+  .calendar-page .calendar-layout {
+    grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+    align-items: start;
+  }
+
+  .calendar-page .calendar-day-panel {
+    position: sticky;
+    top: calc(var(--dashboard-header-height) + var(--space-md));
   }
 }
 

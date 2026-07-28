@@ -7,7 +7,7 @@
     <title>Takvim | StudyHub</title>
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
-  <body class="dashboard-page">
+  <body class="dashboard-page calendar-page">
     <div class="app-layout">
       <aside class="app-sidebar" id="appSidebar" aria-label="Ana navigasyon">
         <div class="sidebar-brand">
@@ -44,12 +44,70 @@
           <div class="dashboard-header-end" aria-label="Kullanıcı işlemleri"><div class="dashboard-user-summary"><div class="dashboard-user-avatar" aria-hidden="true">K</div><span class="dashboard-user-name">Kullanıcı</span></div></div>
         </header>
         <main class="dashboard-main" id="mainContent">
-          <section class="dashboard-introduction" aria-labelledby="calendarTitle"><div><p class="dashboard-section-label">Çalışma Alanı</p><h2 id="calendarTitle">Takvim</h2><p>Bu bölüm geliştirme aşamasındadır.</p></div></section>
-          <section class="dashboard-content" aria-label="Takvim modül alanı"></section>
+          <section class="calendar-page-heading" aria-labelledby="calendarTitle">
+            <div>
+              <p class="dashboard-section-label">Çalışma Planı</p>
+              <h2 id="calendarTitle">Aylık Takvim</h2>
+              <p>Görevlerinin teslim tarihlerini ve günlük çalışma yoğunluğunu görüntüle.</p>
+            </div>
+          </section>
+
+          <div class="calendar-layout">
+            <section class="calendar-workspace" aria-labelledby="calendarMonthTitle">
+              <div class="calendar-toolbar">
+                <h3 id="calendarMonthTitle" aria-live="polite"></h3>
+                <div class="calendar-navigation" aria-label="Takvim navigasyonu">
+                  <button type="button" id="previousMonth" aria-label="Önceki ay">Önceki</button>
+                  <button type="button" id="todayButton">Bugün</button>
+                  <button type="button" id="nextMonth" aria-label="Sonraki ay">Sonraki</button>
+                </div>
+              </div>
+
+              <div class="calendar-weekdays" aria-hidden="true">
+                <span>Pzt</span>
+                <span>Sal</span>
+                <span>Çar</span>
+                <span>Per</span>
+                <span>Cum</span>
+                <span>Cmt</span>
+                <span>Paz</span>
+              </div>
+
+              <div
+                class="calendar-grid"
+                id="calendarGrid"
+                role="grid"
+                aria-labelledby="calendarMonthTitle"
+              ></div>
+
+              <div class="calendar-legend" aria-label="Öncelik göstergeleri">
+                <span><i class="calendar-priority-dot calendar-priority-dot--low"></i>Düşük</span>
+                <span><i class="calendar-priority-dot calendar-priority-dot--medium"></i>Orta</span>
+                <span><i class="calendar-priority-dot calendar-priority-dot--high"></i>Yüksek</span>
+              </div>
+            </section>
+
+            <aside class="calendar-day-panel" aria-labelledby="selectedDayTitle">
+              <div class="calendar-day-panel__header">
+                <p class="dashboard-section-label">Gün Detayı</p>
+                <h3 id="selectedDayTitle"></h3>
+                <span id="selectedDayCount">0 görev</span>
+              </div>
+
+              <div class="calendar-day-task-list" id="selectedDayTaskList" aria-live="polite"></div>
+
+              <div class="calendar-day-empty" id="selectedDayEmpty">
+                <h4>Bu gün için görev yok</h4>
+                <p>Görevler sayfasından teslim tarihi belirlediğin görevler burada görünür.</p>
+              </div>
+            </aside>
+          </div>
         </main>
       </div>
     </div>
     <div class="sidebar-backdrop" aria-hidden="true"></div>
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/course-storage.js"></script>
+    <script src="assets/js/calendar.js"></script>
   </body>
 </html>

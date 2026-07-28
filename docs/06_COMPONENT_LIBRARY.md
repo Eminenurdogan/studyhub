@@ -138,7 +138,7 @@ Provides the accessible right-side task creation flow.
 - Close and reset the form only after LocalStorage persistence succeeds.
 - Keep field-level validation messages programmatically associated with their controls.
 - Reuse the same form for creation and editing, with a clear mode-specific title and submit label.
-- Persist user-created courses separately and prevent locale-aware duplicate names.
+- Populate course controls from the shared course store.
 
 ### Task Management: task-item
 
@@ -150,7 +150,90 @@ Presents a persisted task and its planning metadata in the task list.
 - Build user-entered content with DOM text nodes; do not inject it as HTML.
 - Display the saved course, due date, priority and optional planning details.
 - Allow status changes, editing and confirmed deletion.
-- Keep drag-and-drop and calendar integration outside the MVP.
+- Keep drag-and-drop outside the MVP; expose due-date data to Calendar as read-only records.
+
+### Calendar: calendar-grid
+
+**Purpose**
+
+Projects due-dated tasks into an accessible monthly view.
+
+**Rules**
+- Read from `studyhub.tasks.v1`; never create or persist calendar-owned data.
+- Render six Monday-based weeks and preserve one keyboard tab stop.
+- Support arrow-key day navigation, previous/next month, and return to today.
+- Distinguish today from the selected date.
+
+### Calendar: calendar-day
+
+**Purpose**
+
+Communicates a date, its task count, and priority intensity.
+
+**Rules**
+- Use mint, peach, and coral tokens for low, medium, and high priority.
+- Keep indicators visible without making task data editable.
+- Provide the full date and task count through an accessible label.
+
+### Calendar: calendar-day-panel
+
+**Purpose**
+
+Lists the selected date's tasks and their course, priority, status, and due date.
+
+**Rules**
+- Sort higher-priority tasks first.
+- Show a dedicated empty state when the selected date has no tasks.
+- Keep all task actions in Task Management.
+
+### Courses: course-workspace
+
+**Purpose**
+
+Lists persisted course records and communicates total or empty state.
+
+**Rules**
+- Render user content with DOM text nodes.
+- Keep course cards responsive and scoped below `.courses-page`.
+- Show the empty state only when the shared course store has no records.
+
+### Courses: course-drawer
+
+**Purpose**
+
+Provides the shared creation and editing form for courses.
+
+**Rules**
+- Require a unique learning-area name.
+- Reuse the same drawer for create and edit modes.
+- Close and reset only after persistence succeeds.
+- Trap focus while open and restore focus when closed.
+
+### Courses: course-card
+
+**Purpose**
+
+Presents a flexible learning area through its name, description and token-based color.
+
+**Rules**
+- Provide edit and confirmed delete actions.
+- Warn before deleting a course referenced by saved tasks.
+- Never delete linked tasks as a side effect of course deletion.
+- Do not introduce university-specific metadata such as course codes, instructors, semesters, credits, faculties, departments, or class years.
+
+### Shared: confirmation-dialog
+
+**Purpose**
+
+Requests explicit confirmation before destructive operations across Dashboard modules.
+
+**Rules**
+- Never use browser-native `alert()`, `confirm()`, or `prompt()`.
+- Use `role="alertdialog"`, `aria-modal`, an accessible title, and an associated description.
+- Focus the cancel action by default, trap focus while open, and restore focus after closing.
+- Close without confirming on Escape, backdrop click, or the cancel action.
+- Use the shared Triangle Alert icon and danger action styling.
+- Add contextual details without replacing the core destructive-action warning.
 
 ### Header: header
 

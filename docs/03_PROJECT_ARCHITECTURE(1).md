@@ -80,17 +80,18 @@ Responsibilities:
 
 The following pages currently provide navigable application-shell placeholders only:
 
-- courses.html
-- tasks.html
-- calendar.html
 - pomodoro.html
 - analytics.html
 - account.html
 - settings.html
 
-Except for Task Management, their module features and data are not implemented yet.
+Their module features and data are not implemented yet.
 
-The Tasks page is a standalone LocalStorage-backed MVP. It supports course creation, duplicate-course prevention, validated task creation, reload-safe rendering, combined search and filters, status changes and counters, editing, deletion confirmation, empty states, and accessible drawer feedback. Firebase, calendar integration, drag-and-drop, course deletion, and cross-module data sharing remain outside this iteration.
+The Tasks page is a LocalStorage-backed MVP. It consumes shared course records and supports validated task creation, reload-safe rendering, combined search and filters, status changes and counters, editing, deletion confirmation, empty states, and accessible drawer feedback. Its due-date records are consumed by Calendar as read-only data. Firebase and drag-and-drop remain outside this iteration.
+
+The Courses page is a LocalStorage-backed MVP. It supports validated course creation, editing, confirmed deletion, linked-task warnings, responsive course cards, reload-safe rendering, counts, empty states, and accessible drawer feedback. Its records are the single source for the task course selector and course filter.
+
+The Calendar page is a read-only projection of Task Management data. It renders due-dated tasks in an accessible monthly grid, provides month navigation and today selection, displays priority-based daily intensity, and presents selected-day task details. It never creates or persists calendar-owned records.
 
 ## JavaScript Responsibilities
 
@@ -99,7 +100,11 @@ The Tasks page is a standalone LocalStorage-backed MVP. It supports course creat
 | index.js | Landing page interactions |
 | login.js | Login interactions |
 | dashboard.js | Mobile dashboard sidebar interactions |
-| tasks.js | Task and course persistence, CRUD, filtering, status and drawer interactions |
+| confirmation-dialog.js | Reusable accessible confirmation dialog for destructive actions |
+| course-storage.js | Shared course schema, persistence and duplicate checks |
+| courses.js | Course CRUD, validation, linked-task warnings and drawer interactions |
+| tasks.js | Task persistence, CRUD, filtering, status and drawer interactions |
+| calendar.js | Read-only monthly task projection, date navigation and day details |
 | style.css | Shared design system |
 
 ## Layout Sections Found
@@ -145,7 +150,6 @@ The Tasks page is a standalone LocalStorage-backed MVP. It supports course creat
 
 ## Planned Architecture (Not Implemented Yet)
 
-- Calendar
 - Analytics
 - Settings
 - Shared LocalStorage abstraction

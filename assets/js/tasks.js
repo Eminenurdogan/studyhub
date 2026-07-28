@@ -1,12 +1,5 @@
 const TASK_STORAGE_KEY = "studyhub.tasks.v1";
-const COURSE_STORAGE_KEY = "studyhub.courses.v1";
-
-const DEFAULT_COURSES = [
-  { id: "web-programming", name: "Web Programlama" },
-  { id: "algorithms", name: "Algoritmalar" },
-  { id: "mathematics", name: "Matematik" },
-  { id: "software-engineering", name: "Yazılım Mühendisliği" },
-];
+const courseStore = window.StudyHubCourseStore;
 
 const STATUS_LABELS = {
   pending: "Bekleyen",
@@ -51,9 +44,6 @@ const elements = {
   titleError: document.querySelector("#taskTitleError"),
   courseError: document.querySelector("#taskCourseError"),
   dueDateError: document.querySelector("#taskDueDateError"),
-  newCourseName: document.querySelector("#newCourseName"),
-  newCourseError: document.querySelector("#newCourseError"),
-  addCourseButton: document.querySelector("#addCourseButton"),
 };
 
 const state = {
@@ -92,37 +82,6 @@ const writeStorageArray = (key, value) => {
     console.error(`${key} verisi kaydedilemedi.`, error);
     return false;
   }
-};
-
-const loadCourses = () => {
-  const storedCourses = readStorageArray(COURSE_STORAGE_KEY);
-  const validCourses = storedCourses.filter(
-    (course) =>
-      course &&
-      typeof course.id === "string" &&
-      typeof course.name === "string" &&
-      course.name.trim(),
-  );
-  const mergedCourses = [...validCourses];
-
-  DEFAULT_COURSES.forEach((defaultCourse) => {
-    const alreadyExists = mergedCourses.some(
-      (course) => normalizeText(course.name) === normalizeText(defaultCourse.name),
-    );
-
-    if (!alreadyExists) {
-      mergedCourses.push(defaultCourse);
-    }
-  });
-
-  if (
-    validCourses.length !== mergedCourses.length ||
-    storedCourses.length === 0
-  ) {
-    writeStorageArray(COURSE_STORAGE_KEY, mergedCourses);
-  }
-
-  return mergedCourses;
 };
 
 const loadTasks = () =>
@@ -203,18 +162,10 @@ const clearFormErrors = () => {
   }
 };
 
-const resetCourseCreator = () => {
-  if (elements.newCourseName) {
-    elements.newCourseName.value = "";
-  }
-  clearFieldError(elements.newCourseName, elements.newCourseError);
-};
-
 const resetTaskForm = () => {
   elements.form?.reset();
   state.editingTaskId = null;
   clearFormErrors();
-  resetCourseCreator();
 
   if (elements.drawerTitle) {
     elements.drawerTitle.textContent = "Yeni Görev";
@@ -366,62 +317,8 @@ const renderCourseOptions = () => {
   }
 };
 
-const handleAddCourse = () => {
-  const courseName = elements.newCourseName?.value.trim() ?? "";
-
-  clearFieldError(elements.newCourseName, elements.newCourseError);
-
-  if (!courseName) {
-    setFieldError(
-      elements.newCourseName,
-      elements.newCourseError,
-      "Eklemek istediğin dersin adını yaz.",
-    );
-    elements.newCourseName?.focus();
-    return;
-  }
-
-  const duplicateCourse = state.courses.some(
-    (course) => normalizeText(course.name) === normalizeText(courseName),
-  );
-
-  if (duplicateCourse) {
-    setFieldError(
-      elements.newCourseName,
-      elements.newCourseError,
-      "Bu isimde bir ders zaten bulunuyor.",
-    );
-    elements.newCourseName?.focus();
-    return;
-  }
-
-  const newCourse = { id: createId("course"), name: courseName };
-  const nextCourses = [...state.courses, newCourse];
-
-  if (!writeStorageArray(COURSE_STORAGE_KEY, nextCourses)) {
-    setFieldError(
-      elements.newCourseName,
-      elements.newCourseError,
-      "Ders kaydedilemedi. Tarayıcı depolama iznini kontrol et.",
-    );
-    return;
-  }
-
-  state.courses = nextCourses;
-  renderCourseOptions();
-
-  if (elements.course) {
-    elements.course.value = newCourse.id;
-  }
-
-  resetCourseCreator();
-  clearFieldError(elements.course, elements.courseError);
-  showToast(`${newCourse.name} dersi eklendi.`);
-  announce(`${newCourse.name} dersi eklendi ve seçildi.`);
-};
-
 const getCourseName = (courseId) =>
-  state.courses.find((course) => course.id === courseId)?.name ?? "Bilinmeyen ders";
+  state.courses.find((course) => course.id === courseId)?.name ?? "Silinmiş ders";
 
 const formatDate = (dateValue) => {
   const date = new Date(`${dateValue}T00:00:00`);
@@ -742,16 +639,20 @@ const openEditDrawer = (taskId) => {
   openDrawer();
 };
 
-const deleteTask = (taskId) => {
+const deleteTask = async (taskId) => {
   const task = state.tasks.find((item) => item.id === taskId);
 
-  if (!task) {
+  if (!task || !window.StudyHubConfirmationDialog) {
     return;
   }
 
-  const isConfirmed = window.confirm(
-    `"${task.title}" görevini silmek istediğine emin misin?`,
-  );
+  const isConfirmed = await window.StudyHubConfirmationDialog.open({
+    title: "Görevi sil",
+    description:
+      "Bu görevi silmek istediğine emin misin? Bu işlem geri alınamaz.",
+    cancelLabel: "İptal",
+    confirmLabel: "Sil",
+  });
 
   if (!isConfirmed) {
     return;
@@ -840,7 +741,7 @@ const initializeTaskManagement = () => {
     return;
   }
 
-  state.courses = loadCourses();
+  state.courses = courseStore?.getAll() ?? [];
   state.tasks = loadTasks();
   renderCourseOptions();
   renderTasks();
@@ -852,13 +753,6 @@ const initializeTaskManagement = () => {
   });
   document.addEventListener("keydown", handleDrawerKeydown);
   elements.form.addEventListener("submit", handleTaskFormSubmit);
-  elements.addCourseButton?.addEventListener("click", handleAddCourse);
-  elements.newCourseName?.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      handleAddCourse();
-    }
-  });
   elements.list.addEventListener("click", handleTaskListClick);
   elements.list.addEventListener("change", handleTaskListChange);
   elements.search?.addEventListener("input", renderTasks);
@@ -866,6 +760,13 @@ const initializeTaskManagement = () => {
   elements.priorityFilter?.addEventListener("change", renderTasks);
   elements.statusTabs.forEach((tab) => {
     tab.addEventListener("click", handleStatusTabClick);
+  });
+  window.addEventListener("storage", (event) => {
+    if (event.key === courseStore?.STORAGE_KEY) {
+      state.courses = courseStore.getAll();
+      renderCourseOptions();
+      renderTasks();
+    }
   });
 
   elements.title?.addEventListener("input", () => {
@@ -876,9 +777,6 @@ const initializeTaskManagement = () => {
   });
   elements.dueDate?.addEventListener("change", () => {
     clearFieldError(elements.dueDate, elements.dueDateError);
-  });
-  elements.newCourseName?.addEventListener("input", () => {
-    clearFieldError(elements.newCourseName, elements.newCourseError);
   });
 };
 
