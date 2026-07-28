@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="StudyHub çalışma planlama uygulaması kontrol paneli."
+    />
+
+    <title>Genel Bakış | StudyHub</title>
+
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+
+  <body class="dashboard-page">
+    <div class="app-layout">
+      <aside class="app-sidebar" id="appSidebar" aria-label="Ana navigasyon">
+        <div class="sidebar-brand">
+          <a href="index.html" class="logo" aria-label="StudyHub ana sayfası">
+            <img
+              src="assets/images/studyhub-logo.png"
+              alt=""
+              class="logo-icon"
+            />
+            <span class="sidebar-brand-name">StudyHub</span>
+          </a>
+        </div>
+
+        <nav class="sidebar-navigation" aria-label="Dashboard bölümleri">
+          <div class="sidebar-navigation-group">
+            <p class="sidebar-navigation-label">Çalışma Alanı</p>
+
+            <ul class="sidebar-navigation-list">
+              <li>
+                <a
+                  href="dashboard.html"
+                  class="sidebar-navigation-item is-active"
+                  aria-current="page"
+                >
+                  <span>Genel Bakış</span>
+                </a>
+              </li>
+              <li>
+                <span
+                  class="sidebar-navigation-item is-disabled"
+                  aria-disabled="true"
+                >
+                  Dersler
+                </span>
+              </li>
+              <li>
+                <span
+                  class="sidebar-navigation-item is-disabled"
+                  aria-disabled="true"
+                >
+                  Görevler
+                </span>
+              </li>
+              <li>
+                <span
+                  class="sidebar-navigation-item is-disabled"
+                  aria-disabled="true"
+                >
+                  Takvim
+                </span>
+              </li>
+              <li>
+                <span
+                  class="sidebar-navigation-item is-disabled"
+                  aria-disabled="true"
+                >
+                  Pomodoro
+                </span>
+              </li>
+              <li>
+                <span
+                  class="sidebar-navigation-item is-disabled"
+                  aria-disabled="true"
+                >
+                  Analiz
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="sidebar-navigation-group">
+            <p class="sidebar-navigation-label">Hesap</p>
+
+            <ul class="sidebar-navigation-list">
+              <li>
+                <span
+                  class="sidebar-navigation-item is-disabled"
+                  aria-disabled="true"
+                >
+                  Ayarlar
+                </span>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <div class="sidebar-profile" aria-label="Kullanıcı alanı">
+          <div class="sidebar-profile-avatar" aria-hidden="true">K</div>
+          <div class="sidebar-profile-details">
+            <span class="sidebar-profile-name">Kullanıcı</span>
+            <span class="sidebar-profile-label">Öğrenci</span>
+          </div>
+        </div>
+      </aside>
+
+      <div class="dashboard-shell">
+        <header class="dashboard-header">
+          <div class="dashboard-header-start">
+            <button
+              type="button"
+              class="sidebar-menu-button"
+              aria-label="Navigasyon menüsünü aç"
+              aria-controls="appSidebar"
+              aria-expanded="false"
+            >
+              <span aria-hidden="true">☰</span>
+            </button>
+
+            <div class="dashboard-page-identity">
+              <p class="dashboard-page-context">Dashboard</p>
+              <h1>Genel Bakış</h1>
+            </div>
+          </div>
+
+          <div class="dashboard-header-end" aria-label="Kullanıcı işlemleri">
+            <div class="dashboard-user-summary">
+              <div class="dashboard-user-avatar" aria-hidden="true">K</div>
+              <span class="dashboard-user-name">Kullanıcı</span>
+            </div>
+          </div>
+        </header>
+
+        <main class="dashboard-main" id="mainContent">
+          <section class="dashboard-introduction" aria-labelledby="welcomeTitle">
+            <div>
+              <p class="dashboard-section-label">Genel Bakış</p>
+              <h2 id="welcomeTitle">Çalışma alanına hoş geldin</h2>
+              <p>
+                Dashboard modülleri sonraki geliştirme adımlarında bu alanın
+                üzerine eklenecek.
+              </p>
+            </div>
+          </section>
+
+          <section
+            class="dashboard-content"
+            aria-label="Dashboard modül alanı"
+          ></section>
+        </main>
+      </div>
+    </div>
+
+    <div class="sidebar-backdrop" hidden></div>
+  </body>
+</html>
