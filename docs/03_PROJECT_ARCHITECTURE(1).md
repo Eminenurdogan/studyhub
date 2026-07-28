@@ -88,7 +88,9 @@ The following pages currently provide navigable application-shell placeholders o
 - account.html
 - settings.html
 
-Their module features and data are not implemented yet.
+Except for Task Management, their module features and data are not implemented yet.
+
+The Tasks page is a standalone LocalStorage-backed MVP. It supports course creation, duplicate-course prevention, validated task creation, reload-safe rendering, combined search and filters, status changes and counters, editing, deletion confirmation, empty states, and accessible drawer feedback. Firebase, calendar integration, drag-and-drop, course deletion, and cross-module data sharing remain outside this iteration.
 
 ## JavaScript Responsibilities
 
@@ -97,6 +99,7 @@ Their module features and data are not implemented yet.
 | index.js | Landing page interactions |
 | login.js | Login interactions |
 | dashboard.js | Mobile dashboard sidebar interactions |
+| tasks.js | Task and course persistence, CRUD, filtering, status and drawer interactions |
 | style.css | Shared design system |
 
 ## Layout Sections Found
@@ -143,10 +146,9 @@ Their module features and data are not implemented yet.
 ## Planned Architecture (Not Implemented Yet)
 
 - Calendar
-- Task Manager
 - Analytics
 - Settings
-- LocalStorage abstraction
+- Shared LocalStorage abstraction
 - Firebase integration (optional)
 
 Every planned feature must preserve the current visual language and architecture.

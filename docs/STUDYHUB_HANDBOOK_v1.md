@@ -110,6 +110,12 @@ Current stylesheet
 - Navigable dashboard module page architecture
 - Today-focused dashboard visual components
 - Lucide-based dashboard navigation icons
+- Task Management presentation shell and empty state
+- Accessible task creation drawer and form interface
+- LocalStorage-backed task creation, validation, list rendering and task count
+- LocalStorage-backed course creation and duplicate prevention
+- Task search, course/priority/status filters and live status counters
+- Task editing, status changes and confirmed deletion
 
 # 7. Planned Features
 
@@ -120,7 +126,6 @@ These are planned only.
 - Dashboard
 - Sidebar
 - Calendar
-- Tasks
 - Analytics
 - Settings
 - Dark mode

@@ -42,6 +42,15 @@ Provides desktop navigation and an accessible off-canvas navigation pattern on m
 - Restore focus when the sidebar closes.
 - Keep active and disabled navigation states distinguishable.
 
+### Header: dashboard-header
+
+**Purpose**
+
+Presents the active page title.
+
+**Rules**
+- Show only the active page title; do not repeat the Dashboard label.
+
 ### Dashboard: today-summary-card
 
 **Purpose**
@@ -82,6 +91,66 @@ Provides a lightweight motivational message within the Today experience.
 **Rules**
 - Keep the content visually secondary to the study plan.
 - Preserve the existing pastel design language.
+
+### Task Management: task-workspace
+
+**Purpose**
+
+Provides the structural UI for searching, filtering and listing tasks.
+
+**Rules**
+- Preserve the responsive single-column and multi-column toolbar layouts.
+- Keep all task-specific styles scoped below `.dashboard-page`.
+- Render saved task records in the list and show the empty state only when no records exist.
+
+### Task Management: task-status-tabs
+
+**Purpose**
+
+Presents the available task status views: all, pending, in progress and completed.
+
+**Rules**
+- Use `aria-pressed` to represent the selected visual state.
+- Filter task records by the selected state without discarding the other active filters.
+- Keep each status count synchronized with persisted task data.
+
+### Task Management: task-empty-state
+
+**Purpose**
+
+Communicates that no task records are currently available.
+
+**Rules**
+- Keep the message actionable without implying saved data.
+- Hide the empty state when at least one saved task is rendered.
+- Use a separate no-results state when tasks exist but active filters return no matches.
+
+### Task Management: task-create-panel
+
+**Purpose**
+
+Provides the accessible right-side task creation flow.
+
+**Rules**
+- Open the panel from the right with backdrop, Escape and explicit close controls.
+- Trap focus while open and restore focus to the trigger when closed.
+- Require a task name, course and due date before saving.
+- Close and reset the form only after LocalStorage persistence succeeds.
+- Keep field-level validation messages programmatically associated with their controls.
+- Reuse the same form for creation and editing, with a clear mode-specific title and submit label.
+- Persist user-created courses separately and prevent locale-aware duplicate names.
+
+### Task Management: task-item
+
+**Purpose**
+
+Presents a persisted task and its planning metadata in the task list.
+
+**Rules**
+- Build user-entered content with DOM text nodes; do not inject it as HTML.
+- Display the saved course, due date, priority and optional planning details.
+- Allow status changes, editing and confirmed deletion.
+- Keep drag-and-drop and calendar integration outside the MVP.
 
 ### Header: header
 

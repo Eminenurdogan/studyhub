@@ -16,7 +16,6 @@
         </div>
         <nav class="sidebar-navigation" aria-label="Dashboard bölümleri">
           <div class="sidebar-navigation-group">
-            <p class="sidebar-navigation-label">Çalışma Alanı</p>
             <ul class="sidebar-navigation-list">
               <li><a href="dashboard.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#today"></use></svg><span>Bugün</span></a></li>
               <li><a href="courses.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#courses"></use></svg><span>Dersler</span></a></li>
@@ -40,17 +39,267 @@
         <header class="dashboard-header">
           <div class="dashboard-header-start">
             <button type="button" class="sidebar-menu-button" aria-label="Navigasyon menüsünü aç" aria-controls="appSidebar" aria-expanded="false"><span aria-hidden="true">☰</span></button>
-            <div class="dashboard-page-identity"><p class="dashboard-page-context">Dashboard</p><h1>Görevler</h1></div>
+            <div class="dashboard-page-identity"><h1>Görevler</h1></div>
           </div>
           <div class="dashboard-header-end" aria-label="Kullanıcı işlemleri"><div class="dashboard-user-summary"><div class="dashboard-user-avatar" aria-hidden="true">K</div><span class="dashboard-user-name">Kullanıcı</span></div></div>
         </header>
         <main class="dashboard-main" id="mainContent">
-          <section class="dashboard-introduction" aria-labelledby="tasksTitle"><div><p class="dashboard-section-label">Çalışma Alanı</p><h2 id="tasksTitle">Görevler</h2><p>Bu bölüm geliştirme aşamasındadır.</p></div></section>
-          <section class="dashboard-content" aria-label="Görevler modül alanı"></section>
+          <section class="task-page-heading" aria-labelledby="taskWorkspaceTitle">
+            <div>
+              <p class="dashboard-section-label">Görev Yönetimi</p>
+              <h2 id="taskWorkspaceTitle">Görevlerini planla</h2>
+              <p>Yapılacak çalışmalarını tek bir alanda düzenle ve takip et.</p>
+            </div>
+            <button
+              type="button"
+              class="task-new-button"
+              id="openTaskDrawer"
+              aria-controls="taskCreatePanel"
+              aria-expanded="false"
+            >
+              <svg aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#plus"></use></svg>
+              <span>Yeni Görev</span>
+            </button>
+          </section>
+
+          <section class="task-workspace" aria-label="Görev çalışma alanı">
+            <div class="task-toolbar">
+              <div class="task-search">
+                <label for="taskSearch">Görevlerde ara</label>
+                <div class="task-search-control">
+                  <svg aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#search"></use></svg>
+                  <input
+                    type="search"
+                    id="taskSearch"
+                    name="task-search"
+                    placeholder="Görev adı veya ders ara"
+                    autocomplete="off"
+                  />
+                </div>
+              </div>
+
+              <div class="task-filters" aria-label="Görev filtreleri">
+                <div class="task-filter-field">
+                  <label for="courseFilter">Ders</label>
+                  <select id="courseFilter" name="course-filter">
+                    <option value="">Tüm dersler</option>
+                  </select>
+                </div>
+                <div class="task-filter-field">
+                  <label for="priorityFilter">Öncelik</label>
+                  <select id="priorityFilter" name="priority-filter">
+                    <option value="">Tüm öncelikler</option>
+                    <option value="low">Düşük</option>
+                    <option value="medium">Orta</option>
+                    <option value="high">Yüksek</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="task-status-tabs" aria-label="Görev durumu">
+              <button type="button" data-task-status="" aria-pressed="true" class="is-active">
+                Tümü <span data-task-status-count="all">0</span>
+              </button>
+              <button type="button" data-task-status="pending" aria-pressed="false">
+                Bekleyen <span data-task-status-count="pending">0</span>
+              </button>
+              <button type="button" data-task-status="in-progress" aria-pressed="false">
+                Devam Ediyor <span data-task-status-count="in-progress">0</span>
+              </button>
+              <button type="button" data-task-status="completed" aria-pressed="false">
+                Tamamlandı <span data-task-status-count="completed">0</span>
+              </button>
+            </div>
+
+            <section class="task-list-area" aria-labelledby="taskListTitle">
+              <div class="task-list-heading">
+                <h3 id="taskListTitle">Görev listesi</h3>
+                <span id="taskCount">0 görev</span>
+              </div>
+
+              <div class="task-list" id="taskList" aria-live="polite" hidden></div>
+
+              <div class="task-empty-state" id="taskEmptyState">
+                <div class="task-empty-icon" aria-hidden="true">
+                  <svg><use href="assets/icons/dashboard-nav.svg#clipboard-list"></use></svg>
+                </div>
+                <h4>Henüz bir görevin yok</h4>
+                <p>
+                  Çalışma planını oluşturmaya başladığında görevlerin burada
+                  listelenecek.
+                </p>
+              </div>
+              <div class="task-empty-state" id="taskFilterEmptyState" hidden>
+                <h4>Eşleşen görev bulunamadı</h4>
+                <p>Arama veya filtrelerini değiştirerek tekrar dene.</p>
+              </div>
+              <p class="task-sr-only" id="taskPageFeedback" aria-live="polite"></p>
+            </section>
+          </section>
+
+          <aside
+            class="task-create-panel"
+            id="taskCreatePanel"
+            aria-labelledby="taskCreatePanelTitle"
+            aria-describedby="taskCreatePanelDescription"
+            aria-hidden="true"
+            aria-modal="true"
+            role="dialog"
+          >
+            <div class="task-create-panel__header">
+              <div>
+                <p class="dashboard-section-label">Görev Yönetimi</p>
+                <h2 id="taskCreatePanelTitle">Yeni Görev</h2>
+              </div>
+              <button
+                type="button"
+                class="task-panel-close"
+                data-task-drawer-close
+                aria-label="Görev panelini kapat"
+              >
+                <svg aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#x"></use></svg>
+              </button>
+            </div>
+            <div class="task-create-panel__body">
+              <p id="taskCreatePanelDescription">
+                Görevin çalışma planındaki ayrıntılarını belirle.
+              </p>
+
+              <form class="task-create-form" id="taskCreateForm" novalidate>
+                <div
+                  class="task-form-feedback task-form-field--full"
+                  id="taskFormFeedback"
+                  role="alert"
+                  hidden
+                ></div>
+
+                <div class="task-form-field task-form-field--full">
+                  <label for="taskTitle">Görev adı</label>
+                  <input
+                    type="text"
+                    id="taskTitle"
+                    name="title"
+                    placeholder="Örneğin: Algoritma sorularını çöz"
+                    autocomplete="off"
+                    aria-describedby="taskTitleError"
+                    required
+                  />
+                  <p class="task-form-error" id="taskTitleError"></p>
+                </div>
+
+                <div class="task-form-field task-form-field--full">
+                  <label for="taskDescription">Açıklama</label>
+                  <textarea
+                    id="taskDescription"
+                    name="description"
+                    rows="4"
+                    placeholder="Görevle ilgili kısa bir not ekle"
+                  ></textarea>
+                </div>
+
+                <div class="task-form-field">
+                  <label for="taskCourse">Ders</label>
+                  <select
+                    id="taskCourse"
+                    name="course"
+                    aria-describedby="taskCourseError"
+                    required
+                  >
+                    <option value="">Ders seçin</option>
+                  </select>
+                  <p class="task-form-error" id="taskCourseError"></p>
+                </div>
+
+                <div class="task-form-field">
+                  <label for="newCourseName">Yeni ders ekle</label>
+                  <div class="task-course-create-control">
+                    <input
+                      type="text"
+                      id="newCourseName"
+                      name="new-course"
+                      placeholder="Ders adı"
+                      autocomplete="off"
+                      aria-describedby="newCourseError"
+                    />
+                    <button type="button" id="addCourseButton">Ekle</button>
+                  </div>
+                  <p class="task-form-error" id="newCourseError"></p>
+                </div>
+
+                <div class="task-form-field">
+                  <label for="taskPriority">Öncelik</label>
+                  <select id="taskPriority" name="priority">
+                    <option value="low">Düşük</option>
+                    <option value="medium" selected>Orta</option>
+                    <option value="high">Yüksek</option>
+                  </select>
+                </div>
+
+                <div class="task-form-field">
+                  <label for="taskDueDate">Son teslim tarihi</label>
+                  <input
+                    type="date"
+                    id="taskDueDate"
+                    name="due-date"
+                    aria-describedby="taskDueDateError"
+                    required
+                  />
+                  <p class="task-form-error" id="taskDueDateError"></p>
+                </div>
+
+                <div class="task-form-field">
+                  <label for="taskDuration">Tahmini çalışma süresi</label>
+                  <div class="task-duration-control">
+                    <input
+                      type="number"
+                      id="taskDuration"
+                      name="duration"
+                      min="5"
+                      step="5"
+                      inputmode="numeric"
+                      placeholder="45"
+                    />
+                    <span>dakika</span>
+                  </div>
+                </div>
+
+                <div class="task-form-field task-form-field--full">
+                  <label for="taskTags">Etiketler</label>
+                  <input
+                    type="text"
+                    id="taskTags"
+                    name="tags"
+                    placeholder="Örneğin: sınav, tekrar"
+                    autocomplete="off"
+                  />
+                  <span class="task-form-hint">Birden fazla etiketi virgülle ayır.</span>
+                </div>
+
+                <div class="task-form-actions task-form-field--full">
+                  <button type="button" class="task-cancel-button" data-task-drawer-close>
+                    İptal
+                  </button>
+                  <button type="submit" class="task-save-button" id="taskSaveButton">Kaydet</button>
+                </div>
+              </form>
+            </div>
+          </aside>
+
+          <div class="task-drawer-backdrop" aria-hidden="true"></div>
+          <div
+            class="task-toast"
+            id="taskToast"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            hidden
+          ></div>
         </main>
       </div>
     </div>
     <div class="sidebar-backdrop" aria-hidden="true"></div>
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/tasks.js"></script>
   </body>
 </html>
