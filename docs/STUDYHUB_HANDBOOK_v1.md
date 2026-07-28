@@ -35,11 +35,20 @@ Current pages
 
 - index.html
 - login.html
+- dashboard.html
+- courses.html
+- tasks.html
+- calendar.html
+- pomodoro.html
+- analytics.html
+- account.html
+- settings.html
 
 Current scripts
 
 - assets/js/index.js
 - assets/js/login.js
+- assets/js/dashboard.js
 
 Current stylesheet
 
@@ -96,6 +105,9 @@ Current stylesheet
 - Scroll reveal animation
 - Login validation
 - Password visibility toggle
+- Responsive dashboard application shell
+- Accessible mobile dashboard sidebar
+- Navigable dashboard module page architecture
 
 # 7. Planned Features
 

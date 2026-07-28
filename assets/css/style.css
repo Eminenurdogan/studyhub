@@ -1024,6 +1024,10 @@ button {
   background-color: var(--color-background);
 }
 
+.dashboard-page.sidebar-open {
+  overflow: hidden;
+}
+
 .dashboard-page .app-layout {
   display: block;
   min-height: 100vh;
@@ -1062,6 +1066,10 @@ button {
 }
 
 .dashboard-page .sidebar-brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
   padding-bottom: var(--space-md);
   border-bottom: 1px solid var(--color-border);
 }
@@ -1080,6 +1088,26 @@ button {
   font-family: var(--font-heading);
   font-size: 22px;
   font-weight: 700;
+}
+
+.dashboard-page .sidebar-close-button {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+
+  color: var(--color-text);
+  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.dashboard-page .sidebar-close-button:focus-visible {
+  outline: 3px solid var(--color-sky);
+  outline-offset: 2px;
 }
 
 .dashboard-page .sidebar-navigation {
@@ -1409,6 +1437,7 @@ button {
 }
 
 .dashboard-page .sidebar-backdrop {
+  display: none;
   position: fixed;
   inset: 0;
   z-index: 15;
@@ -1420,7 +1449,7 @@ button {
   );
 }
 
-.dashboard-page .sidebar-backdrop:not([hidden]) {
+.dashboard-page .sidebar-backdrop.is-visible {
   display: block;
 }
 
@@ -1487,6 +1516,10 @@ button {
   }
 
   .dashboard-page .sidebar-menu-button {
+    display: none;
+  }
+
+  .dashboard-page .sidebar-close-button {
     display: none;
   }
 

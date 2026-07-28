@@ -20,6 +20,28 @@ Every component must be:
 
 ## Current Components
 
+### Application Shell: dashboard
+
+**Purpose**
+
+Provides the responsive structural foundation for future dashboard modules.
+
+**Rules**
+- Keep dashboard styles scoped to `.dashboard-page`.
+- Preserve the shared design tokens.
+- Keep module content independent from the application shell.
+
+### Navigation: app-sidebar
+
+**Purpose**
+
+Provides desktop navigation and an accessible off-canvas navigation pattern on mobile and tablet layouts.
+
+**Rules**
+- Keep focus inside the open mobile sidebar.
+- Restore focus when the sidebar closes.
+- Keep active and disabled navigation states distinguishable.
+
 ### Header: header
 
 **Purpose**
@@ -158,7 +180,6 @@ Describe or preserve this component's current responsibility. Do not redesign it
 
 These are planned only and are not implemented in the current project.
 
-- Sidebar
 - Dashboard Card
 - Calendar Widget
 - Task Card

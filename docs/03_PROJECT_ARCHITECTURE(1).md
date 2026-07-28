@@ -20,13 +20,22 @@ StudyHub/
 │   ├── css/
 │   │   └── style.css
 │   ├── js/
+│   │   ├── dashboard.js
 │   │   ├── index.js
 │   │   └── login.js
 │   ├── images/
 │   ├── icons/
 │   └── fonts/
+├── account.html
+├── analytics.html
+├── calendar.html
+├── courses.html
+├── dashboard.html
 ├── index.html
-└── login.html
+├── login.html
+├── pomodoro.html
+├── settings.html
+└── tasks.html
 ```
 
 ## Current Pages
@@ -52,12 +61,39 @@ Responsibilities:
 - Form validation
 - Password visibility toggle
 
+### dashboard.html
+
+Responsive application shell.
+
+Responsibilities:
+
+- Dashboard page structure
+- Sidebar navigation shell
+- Dashboard header
+- Main module content area
+- Accessible mobile sidebar controls
+
+### Dashboard module pages
+
+The following pages currently provide navigable application-shell placeholders only:
+
+- courses.html
+- tasks.html
+- calendar.html
+- pomodoro.html
+- analytics.html
+- account.html
+- settings.html
+
+Their module features and data are not implemented yet.
+
 ## JavaScript Responsibilities
 
 | File | Responsibility |
 |------|----------------|
 | index.js | Landing page interactions |
 | login.js | Login interactions |
+| dashboard.js | Mobile dashboard sidebar interactions |
 | style.css | Shared design system |
 
 ## Layout Sections Found
@@ -103,8 +139,6 @@ Responsibilities:
 
 ## Planned Architecture (Not Implemented Yet)
 
-- Dashboard
-- Sidebar
 - Calendar
 - Task Manager
 - Analytics

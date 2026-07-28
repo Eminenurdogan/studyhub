@@ -25,6 +25,14 @@
             />
             <span class="sidebar-brand-name">StudyHub</span>
           </a>
+
+          <button
+            type="button"
+            class="sidebar-close-button"
+            aria-label="Navigasyon menüsünü kapat"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
         </div>
 
         <nav class="sidebar-navigation" aria-label="Dashboard bölümleri">
@@ -42,44 +50,29 @@
                 </a>
               </li>
               <li>
-                <span
-                  class="sidebar-navigation-item is-disabled"
-                  aria-disabled="true"
-                >
+                <a href="courses.html" class="sidebar-navigation-item">
                   Dersler
-                </span>
+                </a>
               </li>
               <li>
-                <span
-                  class="sidebar-navigation-item is-disabled"
-                  aria-disabled="true"
-                >
+                <a href="tasks.html" class="sidebar-navigation-item">
                   Görevler
-                </span>
+                </a>
               </li>
               <li>
-                <span
-                  class="sidebar-navigation-item is-disabled"
-                  aria-disabled="true"
-                >
+                <a href="calendar.html" class="sidebar-navigation-item">
                   Takvim
-                </span>
+                </a>
               </li>
               <li>
-                <span
-                  class="sidebar-navigation-item is-disabled"
-                  aria-disabled="true"
-                >
+                <a href="pomodoro.html" class="sidebar-navigation-item">
                   Pomodoro
-                </span>
+                </a>
               </li>
               <li>
-                <span
-                  class="sidebar-navigation-item is-disabled"
-                  aria-disabled="true"
-                >
+                <a href="analytics.html" class="sidebar-navigation-item">
                   Analiz
-                </span>
+                </a>
               </li>
             </ul>
           </div>
@@ -89,12 +82,14 @@
 
             <ul class="sidebar-navigation-list">
               <li>
-                <span
-                  class="sidebar-navigation-item is-disabled"
-                  aria-disabled="true"
-                >
+                <a href="account.html" class="sidebar-navigation-item">
+                  Hesap
+                </a>
+              </li>
+              <li>
+                <a href="settings.html" class="sidebar-navigation-item">
                   Ayarlar
-                </span>
+                </a>
               </li>
             </ul>
           </div>
@@ -156,6 +151,8 @@
       </div>
     </div>
 
-    <div class="sidebar-backdrop" hidden></div>
+    <div class="sidebar-backdrop" aria-hidden="true"></div>
+
+    <script src="assets/js/dashboard.js"></script>
   </body>
 </html>
