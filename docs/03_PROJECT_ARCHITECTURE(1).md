@@ -80,7 +80,6 @@ Responsibilities:
 
 The following pages currently provide navigable application-shell placeholders only:
 
-- analytics.html
 - account.html
 - settings.html
 
@@ -93,6 +92,8 @@ The Courses page is a LocalStorage-backed MVP. It supports validated course crea
 The Calendar page is a read-only projection of Task Management data. It renders due-dated tasks in an accessible monthly grid, provides month navigation and today selection, displays priority-based daily intensity, and presents selected-day task details. It never creates or persists calendar-owned records.
 
 The Pomodoro page is a LocalStorage-backed focus system with task-linked and free-study modes, customizable work/break settings, a reload-safe timer, short/long break cycles, daily goals, session history, daily statistics, and reusable task study metrics.
+
+The Analytics page is a minimal, read-only calculation layer over tasks, courses, and Pomodoro sessions. It provides four date-filtered summaries, one primary study chart, course distribution bars, a 365-day heatmap, three concise data-backed insights, and personal bests without creating analytics-owned data.
 
 ## JavaScript Responsibilities
 
@@ -107,6 +108,7 @@ The Pomodoro page is a LocalStorage-backed focus system with task-linked and fre
 | tasks.js | Task persistence, CRUD, filtering, status and drawer interactions |
 | calendar.js | Read-only monthly task projection, date navigation and day details |
 | pomodoro.js | Focus timer, settings, sessions, goals, statistics and task study integration |
+| analytics.js | Read-only date filtering, aggregation, charts and productivity insights |
 | style.css | Shared design system |
 
 ## Layout Sections Found

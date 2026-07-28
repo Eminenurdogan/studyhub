@@ -122,6 +122,7 @@ Current stylesheet
 - Read-only monthly Calendar with task intensity and selected-day details
 - Pomodoro timer with task/free modes, custom intervals, breaks and reload recovery
 - Daily Pomodoro goals, statistics, session history and task study metrics
+- Minimal read-only Analytics with four summaries, one study chart, course bars, heatmap, three insights, and personal bests
 
 # 7. Planned Features
 

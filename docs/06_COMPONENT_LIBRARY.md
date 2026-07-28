@@ -219,6 +219,19 @@ Stores reusable completed work and break records for future analytics.
 - Update task study metrics only for task-linked work sessions.
 - Never update a task for free-study or break sessions.
 
+### Analytics: analytics-insight-card
+
+**Purpose**
+
+Communicates one concise, factual learning insight.
+
+**Rules**
+- Render exactly three insights in the minimal Analytics view.
+- Integrate equal-period trend information naturally instead of creating a separate trend section.
+- Calculate every statement from stored task and completed Pomodoro records.
+- Use neutral text when previous-period data is insufficient.
+- Keep comparison functions reusable for future reports and coaching features.
+
 ### Courses: course-workspace
 
 **Purpose**

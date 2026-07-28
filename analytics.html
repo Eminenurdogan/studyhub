@@ -7,7 +7,7 @@
     <title>Analiz | StudyHub</title>
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
-  <body class="dashboard-page">
+  <body class="dashboard-page analytics-page">
     <div class="app-layout">
       <aside class="app-sidebar" id="appSidebar" aria-label="Ana navigasyon">
         <div class="sidebar-brand">
@@ -44,12 +44,34 @@
           <div class="dashboard-header-end" aria-label="Kullanıcı işlemleri"><div class="dashboard-user-summary"><div class="dashboard-user-avatar" aria-hidden="true">K</div><span class="dashboard-user-name">Kullanıcı</span></div></div>
         </header>
         <main class="dashboard-main" id="mainContent">
-          <section class="dashboard-introduction" aria-labelledby="analyticsTitle"><div><p class="dashboard-section-label">Çalışma Alanı</p><h2 id="analyticsTitle">Analiz</h2><p>Bu bölüm geliştirme aşamasındadır.</p></div></section>
-          <section class="dashboard-content" aria-label="Analiz modül alanı"></section>
+          <section class="analytics-heading" aria-labelledby="analyticsTitle">
+            <div><p class="dashboard-section-label">Gelişim Özeti</p><h2 id="analyticsTitle">Analytics</h2><p>Çalışma alışkanlıklarını analiz et.</p></div>
+            <label for="analyticsRange">Tarih aralığı
+              <select id="analyticsRange">
+                <option value="today">Bugün</option><option value="7d" selected>Son 7 Gün</option>
+                <option value="30d">Son 30 Gün</option><option value="3m">Son 3 Ay</option>
+                <option value="1y">Son 1 Yıl</option><option value="all">Tüm Zamanlar</option>
+              </select>
+            </label>
+          </section>
+          <p class="analytics-dynamic-summary" id="analyticsDynamicSummary" aria-live="polite"></p>
+          <section class="analytics-summary-grid" id="analyticsSummary" aria-label="Genel bakış"></section>
+          <section class="analytics-panel" aria-labelledby="studyChartTitle">
+            <div class="analytics-section-heading"><div><h3 id="studyChartTitle">Çalışma Süresi</h3><p id="studyChartSummary"></p></div></div>
+            <div class="analytics-chart" id="studyChart" aria-label="Çalışma süresi grafiği"></div>
+          </section>
+          <div class="analytics-two-column">
+            <section class="analytics-panel" aria-labelledby="courseAnalyticsTitle"><h3 id="courseAnalyticsTitle">Ders Dağılımı</h3><div id="courseAnalytics" class="analytics-course-distribution"></div></section>
+            <section class="analytics-panel" aria-labelledby="insightsTitle"><h3 id="insightsTitle">Akıllı İçgörüler</h3><div id="productivityInsights" class="analytics-insight-list"></div></section>
+          </div>
+          <section class="analytics-panel" aria-labelledby="heatmapTitle"><div class="analytics-section-heading"><div><h3 id="heatmapTitle">Çalışma Isı Haritası</h3><p>Son 365 günlük çalışma yoğunluğu</p></div></div><div class="analytics-heatmap-scroll"><div id="analyticsHeatmap" class="analytics-heatmap" role="img" aria-label="Son bir yıllık çalışma yoğunluğu"></div></div><div class="analytics-heatmap-legend"><span>Az</span><i data-level="1"></i><i data-level="2"></i><i data-level="3"></i><i data-level="4"></i><span>Çok</span></div></section>
+          <section class="analytics-panel" aria-labelledby="personalBestsTitle"><h3 id="personalBestsTitle">Kişisel Rekorlar</h3><div id="personalBests" class="analytics-personal-bests"></div></section>
+          <p class="analytics-empty" id="analyticsEmpty" hidden>Seçilen tarih aralığında analiz edilecek çalışma verisi bulunmuyor.</p>
         </main>
       </div>
     </div>
     <div class="sidebar-backdrop" aria-hidden="true"></div>
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/analytics.js"></script>
   </body>
 </html>
