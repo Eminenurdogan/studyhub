@@ -1,37 +1,440 @@
-const HUBBY_KEYS={tasks:"studyhub.tasks.v1",courses:"studyhub.courses.v1",sessions:"studyhub.pomodoro.sessions.v1",settings:"studyhub.pomodoro.settings.v1",plan:"studyhub.hubby.plan.v1"};
-const $=s=>document.querySelector(s);
-const E={plan:$("#dailyPlan"),insights:$("#hubbyInsights"),report:$("#weeklyReport"),create:$("#createTodayPlan"),transfer:$("#transferPlan"),file:$("#hubbyFile"),fileStatus:$("#fileStatus"),uploadStage:$("#hubbyUploadStage"),analysisStage:$("#hubbyAnalysisStage"),analysisTitle:$("#hubbyAnalysisTitle"),progress:$("#hubbyAnalysisProgress"),results:$("#hubbyAnalysisResults"),importActions:$("#hubbyImportActions"),dropzone:$("#hubbyDropzone"),changeFile:$("#changeHubbyFile"),form:$("#hubbyChatForm"),prompt:$("#hubbyPrompt"),messages:$("#hubbyMessages"),toast:$("#hubbyToast")};
-const read=(k,f)=>{try{return JSON.parse(localStorage.getItem(k)??"null")??f}catch{return f}};
-const S={tasks:[],courses:[],sessions:[],settings:{workMinutes:25,dailyGoal:4},plan:[]};
-const date=v=>{const d=new Date(v);return Number.isNaN(d.getTime())?null:d};
-const courseName=id=>S.courses.find(c=>c.id===id)?.name??"Genel çalışma";
-const active=()=>S.tasks.filter(t=>t.status!=="completed");
-const completedSessions=()=>S.sessions.filter(s=>s?.status==="completed"&&s.type==="work");
-const minutesText=m=>{const n=Math.round(m||0),h=Math.floor(n/60),r=n%60;return h?`${h} sa${r?` ${r} dk`:""}`:`${r} dk`};
-const showToast=m=>{E.toast.textContent=m;E.toast.hidden=false;setTimeout(()=>E.toast.hidden=true,2800)};
-const priorityScore=t=>({high:30,medium:20,low:10}[t.priority]??20)+(t.dueDate?Math.max(0,14-Math.ceil((date(t.dueDate)-new Date())/86400000))*3:0);
-const suggestedMinutes=t=>{const d=Number(t.duration)||Number(t.estimatedDuration)||25;if(d>=90)return 50;if(d>=45)return 45;return 25};
-const buildPlan=()=>active().sort((a,b)=>priorityScore(b)-priorityScore(a)).slice(0,4).map((t,i)=>({taskId:t.id,title:t.title,course:courseName(t.course),minutes:suggestedMinutes(t),order:i+1}));
-const renderPlan=()=>{E.plan.replaceChildren();if(!S.plan.length){E.plan.innerHTML='<p class="hubby-empty">Planlanabilecek aktif görev bulunamadı. Önce Görevler modülünden görev oluştur.</p>';E.transfer.disabled=true;return}S.plan.forEach(x=>{const a=document.createElement("article");a.innerHTML=`<span>${x.order}</span><div><strong></strong><small></small></div><b></b>`;a.querySelector("strong").textContent=x.title;a.querySelector("small").textContent=x.course;a.querySelector("b").textContent=`${x.minutes}/10 dk`;E.plan.append(a)});E.transfer.disabled=false};
-const renderInsights=()=>{const items=[],tasks=active(),overdue=tasks.filter(t=>date(t.dueDate)&&date(t.dueDate)<new Date());if(overdue.length)items.push(`${overdue.length} geciken görevin var; önce bunları ele almanı öneriyorum.`);const high=tasks.filter(t=>t.priority==="high");if(high.length)items.push(`${high.length} yüksek öncelikli görev plan bekliyor.`);const recent=completedSessions().filter(s=>date(s.completedAt)>new Date(Date.now()-3*86400000));if(!recent.length)items.push("Son üç günde tamamlanmış odak oturumu görünmüyor. Kısa bir 25/5 oturumuyla başlayabilirsin.");if(tasks.length)items.push(`İlk sırada “${tasks.sort((a,b)=>priorityScore(b)-priorityScore(a))[0].title}” görevine odaklanmak en dengeli seçim.`);if(!items.length)items.push("Şu an acil bir görev görünmüyor. Yeni hedeflerini Görevler modülüne ekleyebilirsin.");E.insights.replaceChildren(...items.slice(0,4).map(x=>{const a=document.createElement("article");a.textContent=x;return a}))};
-const renderReport=()=>{const week=completedSessions().filter(s=>date(s.completedAt)>new Date(Date.now()-7*86400000)),mins=week.reduce((n,s)=>n+Number(s.durationMinutes||0),0),done=S.tasks.filter(t=>t.status==="completed"&&date(t.completedAt??t.updatedAt)>new Date(Date.now()-7*86400000)).length,days=new Map();week.forEach(s=>{const d=date(s.completedAt).toLocaleDateString("tr-TR",{weekday:"long"});days.set(d,(days.get(d)||0)+Number(s.durationMinutes||0))});const best=[...days].sort((a,b)=>b[1]-a[1])[0];const values=[["Toplam çalışma",minutesText(mins)],["Pomodoro",String(week.length)],["Tamamlanan görev",String(done)],["En verimli gün",best?best[0]:"Veri yok"]];E.report.replaceChildren(...values.map(([a,b])=>{const x=document.createElement("article");x.innerHTML="<span></span><strong></strong>";x.firstChild.textContent=a;x.lastChild.textContent=b;return x}))};
-const answer=q=>{const text=q.toLocaleLowerCase("tr-TR"),tasks=active();if(text.includes("bugün")||text.includes("plan")){const p=buildPlan();return p.length?`Bugün ${p.map(x=>`${x.course}: ${x.title} (${x.minutes} dk)`).join("; ")} sırasını öneriyorum.`:"Aktif görevin olmadığı için plan oluşturamıyorum."}if(text.includes("öncelik")||text.includes("ders")){const top=[...tasks].sort((a,b)=>priorityScore(b)-priorityScore(a))[0];return top?`${courseName(top.course)} alanındaki “${top.title}” şu an en yüksek önceliğe sahip.`:"Öncelik hesaplamak için aktif görev eklemelisin."}if(text.includes("pomodoro")||text.includes("dakika")){const top=[...tasks].sort((a,b)=>priorityScore(b)-priorityScore(a))[0],m=top?suggestedMinutes(top):Number(S.settings.workMinutes)||25;return `${top?`“${top.title}” için `:"Başlangıç için "}${m}/${m===25?5:10} çalışma-mola düzenini öneriyorum.`}if(text.includes("hafta")){const w=completedSessions().filter(s=>date(s.completedAt)>new Date(Date.now()-7*86400000));return `Son 7 günde ${w.length} Pomodoro ve ${minutesText(w.reduce((n,s)=>n+Number(s.durationMinutes||0),0))} çalışma kaydın var.`}return "Bu sürümde görev önceliği, günlük plan, Pomodoro süresi ve haftalık performans hakkında mevcut verilerine dayalı yanıt verebilirim."};
-const addMessage=(text,type)=>{const d=document.createElement("div");d.className=`hubby-message hubby-message--${type}`;d.textContent=text;E.messages.append(d);E.messages.scrollTop=E.messages.scrollHeight};
-const load=()=>{S.tasks=read(HUBBY_KEYS.tasks,[]);S.courses=read(HUBBY_KEYS.courses,[]);S.sessions=read(HUBBY_KEYS.sessions,[]);S.settings=read(HUBBY_KEYS.settings,S.settings);S.plan=read(HUBBY_KEYS.plan,[]);renderPlan();renderInsights();renderReport()};
-E.create.addEventListener("click",()=>{S.plan=buildPlan();renderPlan();showToast(S.plan.length?"Bugünkü plan hazırlandı.":"Plan için aktif görev bulunamadı.")});
-E.transfer.addEventListener("click",()=>{const now=new Date().toISOString(),order=new Map(S.plan.map(x=>[x.taskId,x]));S.tasks=S.tasks.map(t=>{const p=order.get(t.id);return p?{...t,hubbyPlanOrder:p.order,suggestedPomodoroMinutes:p.minutes,hubbyPlannedAt:now,updatedAt:now}:t});localStorage.setItem(HUBBY_KEYS.tasks,JSON.stringify(S.tasks));localStorage.setItem(HUBBY_KEYS.plan,JSON.stringify(S.plan));localStorage.setItem(HUBBY_KEYS.settings,JSON.stringify({...S.settings,workMinutes:S.plan[0]?.minutes||S.settings.workMinutes,dailyGoal:Math.max(1,S.plan.length)}));showToast("Plan Görevler, Takvim ve Pomodoro akışına aktarıldı.")});
-const resetFileStage=()=>{E.file.value="";E.uploadStage.hidden=false;E.analysisStage.hidden=true;E.results.hidden=true;E.importActions.hidden=true;E.results.replaceChildren();E.progress.style.setProperty("--analysis-progress","0%");E.progress.setAttribute("aria-valuenow","0")};
-const renderFileResults=items=>{E.results.replaceChildren(...items.map(text=>{const p=document.createElement("p");p.textContent=`✓ ${text}`;return p}));E.results.hidden=false};
-const analyzeCsv=async file=>{const text=await file.text(),rows=text.split(/\r?\n/).map(row=>row.trim()).filter(Boolean),dataRows=rows.slice(1),delimiter=(rows[0]?.match(/;/g)||[]).length>(rows[0]?.match(/,/g)||[]).length?";":",",cells=dataRows.map(row=>row.split(delimiter).map(cell=>cell.trim())),subjects=new Set(cells.map(row=>row[0]).filter(value=>value&&!/\d{1,2}[./-]\d{1,2}/.test(value))),dates=cells.flat().filter(value=>/\b\d{1,2}[./-]\d{1,2}(?:[./-]\d{2,4})?\b/.test(value));return{rows:dataRows.length,subjects:subjects.size,dates:dates.length}};
-const finishFileAnalysis=async file=>{const isCsv=/\.csv$/i.test(file.name);E.analysisTitle.textContent=isCsv?"Hubby Dosyanı Analiz Etti":"Dosya Analize Hazır";if(isCsv){try{const summary=await analyzeCsv(file);renderFileResults([`${summary.rows} veri satırı okundu`,`${summary.subjects} farklı çalışma alanı adayı bulundu`,`${summary.dates} tarih bilgisi algılandı`,"CSV verileri yerel olarak işlendi"]);E.importActions.hidden=false}catch{renderFileResults(["CSV içeriği okunamadı. Dosya kodlamasını kontrol et."])}}else{renderFileResults(["Dosya formatı ve boyutu doğrulandı","Dosya cihazından dışarı gönderilmedi","İçerik çıkarımı için güvenli Hubby AI servis bağlantısı gerekiyor"]);E.importActions.hidden=true}};
-const processFile=file=>{if(!file)return;const allowed=/\.(pdf|png|jpe?g|webp|xlsx|csv)$/i.test(file.name);if(!allowed||file.size>10*1024*1024){showToast("PDF, PNG, JPG, JPEG, WEBP, XLSX veya CSV biçiminde, 10 MB'dan küçük bir dosya seç.");resetFileStage();return}E.uploadStage.hidden=true;E.analysisStage.hidden=false;E.results.hidden=true;E.importActions.hidden=true;E.analysisTitle.textContent="Hubby Dosyanı Analiz Ediyor...";E.fileStatus.textContent=`${file.name} · ${(file.size/1024/1024).toFixed(2)} MB`;let value=0;const timer=setInterval(()=>{value=Math.min(100,value+20);E.progress.style.setProperty("--analysis-progress",`${value}%`);E.progress.setAttribute("aria-valuenow",String(value));if(value===100){clearInterval(timer);finishFileAnalysis(file)}},120)};
-E.file.addEventListener("change",()=>processFile(E.file.files[0]));
-E.changeFile.addEventListener("click",resetFileStage);
-["dragenter","dragover"].forEach(type=>E.dropzone.addEventListener(type,event=>{event.preventDefault();E.dropzone.classList.add("is-dragging")}));
-["dragleave","drop"].forEach(type=>E.dropzone.addEventListener(type,event=>{event.preventDefault();E.dropzone.classList.remove("is-dragging")}));
-E.dropzone.addEventListener("drop",event=>{const file=event.dataTransfer.files[0];if(file)processFile(file)});
-E.dropzone.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();E.file.click()}});
-document.querySelectorAll("[data-import-action]").forEach(button=>button.addEventListener("click",()=>showToast("CSV önizlemesi hazır. Gerçek modül aktarımı, alan eşleştirme onayı eklendiğinde etkinleşecek.")));
-document.querySelectorAll(".hubby-suggestions button").forEach(b=>b.addEventListener("click",()=>{E.prompt.value=b.textContent;E.prompt.focus()}));
-E.form.addEventListener("submit",e=>{e.preventDefault();const q=E.prompt.value.trim();if(!q)return;addMessage(q,"user");E.prompt.value="";setTimeout(()=>addMessage(answer(q),"assistant"),180)});
-window.addEventListener("storage",load);load();
+const hubbyEngine = window.StudyHubHubbyEngine;
+const selectHubby = (selector) => document.querySelector(selector);
+
+const hubbyElements = {
+  plan: selectHubby("#dailyPlan"),
+  insights: selectHubby("#hubbyInsights"),
+  report: selectHubby("#weeklyReport"),
+  create: selectHubby("#createTodayPlan"),
+  transfer: selectHubby("#transferPlan"),
+  file: selectHubby("#hubbyFile"),
+  fileStatus: selectHubby("#fileStatus"),
+  uploadStage: selectHubby("#hubbyUploadStage"),
+  analysisStage: selectHubby("#hubbyAnalysisStage"),
+  analysisTitle: selectHubby("#hubbyAnalysisTitle"),
+  progress: selectHubby("#hubbyAnalysisProgress"),
+  results: selectHubby("#hubbyAnalysisResults"),
+  generateWeekly: selectHubby("#generateWeeklyPlan"),
+  weeklyPreview: selectHubby("#hubbyWeeklyPreview"),
+  weeklyDays: selectHubby("#hubbyWeeklyDays"),
+  importActions: selectHubby("#hubbyImportActions"),
+  dropzone: selectHubby("#hubbyDropzone"),
+  changeFile: selectHubby("#changeHubbyFile"),
+  form: selectHubby("#hubbyChatForm"),
+  prompt: selectHubby("#hubbyPrompt"),
+  messages: selectHubby("#hubbyMessages"),
+  toast: selectHubby("#hubbyToast"),
+};
+
+const hubbyState = {
+  data: hubbyEngine?.getState() || {
+    tasks: [],
+    courses: [],
+    sessions: [],
+    settings: {},
+    savedPlan: [],
+  },
+  dailyPlan: [],
+  weeklyPlan: [],
+  analysis: null,
+  toastTimer: 0,
+  progressTimer: 0,
+};
+
+const showHubbyToast = (message) => {
+  window.clearTimeout(hubbyState.toastTimer);
+  hubbyElements.toast.textContent = message;
+  hubbyElements.toast.hidden = false;
+  hubbyState.toastTimer = window.setTimeout(() => {
+    hubbyElements.toast.hidden = true;
+  }, 3200);
+};
+
+const renderDailyPlan = () => {
+  hubbyElements.plan.replaceChildren();
+  if (!hubbyState.dailyPlan.length) {
+    const empty = document.createElement("p");
+    empty.className = "hubby-empty";
+    empty.textContent =
+      "Planlanabilecek aktif görev bulunamadı. Önce Görevler modülünden görev oluştur.";
+    hubbyElements.plan.append(empty);
+    hubbyElements.transfer.disabled = true;
+    return;
+  }
+
+  const fragment = document.createDocumentFragment();
+  hubbyState.dailyPlan.forEach((item) => {
+    const article = document.createElement("article");
+    const order = document.createElement("span");
+    const content = document.createElement("div");
+    const title = document.createElement("strong");
+    const course = document.createElement("small");
+    const duration = document.createElement("b");
+    order.textContent = item.order;
+    title.textContent = item.title;
+    course.textContent = item.course;
+    duration.textContent = `${item.minutes}/${item.minutes === 25 ? 5 : 10} dk`;
+    content.append(title, course);
+    article.append(order, content, duration);
+    fragment.append(article);
+  });
+  hubbyElements.plan.append(fragment);
+  hubbyElements.transfer.disabled = false;
+};
+
+const renderInsights = () => {
+  const insights = hubbyEngine.buildInsights(hubbyState.data);
+  hubbyElements.insights.replaceChildren(
+    ...insights.map((insight) => {
+      const article = document.createElement("article");
+      const icon = document.createElement("span");
+      const content = document.createElement("div");
+      const title = document.createElement("strong");
+      const detail = document.createElement("p");
+      icon.setAttribute("aria-hidden", "true");
+      icon.textContent = insight.icon;
+      title.textContent = insight.title;
+      detail.textContent = insight.detail;
+      content.append(title, detail);
+      article.append(icon, content);
+      return article;
+    }),
+  );
+};
+
+const renderReport = () => {
+  const report = hubbyEngine.buildReport(hubbyState.data);
+  hubbyElements.report.replaceChildren(
+    ...report.map(([label, value]) => {
+      const article = document.createElement("article");
+      const name = document.createElement("span");
+      const result = document.createElement("strong");
+      name.textContent = label;
+      result.textContent = value;
+      article.append(name, result);
+      return article;
+    }),
+  );
+};
+
+const createAnalysisResult = (icon, label, value, tone = "") => {
+  const article = document.createElement("article");
+  const symbol = document.createElement("span");
+  const content = document.createElement("div");
+  const name = document.createElement("small");
+  const result = document.createElement("strong");
+  if (tone) article.dataset.tone = tone;
+  symbol.setAttribute("aria-hidden", "true");
+  symbol.textContent = icon;
+  name.textContent = label;
+  result.textContent = value;
+  content.append(name, result);
+  article.append(symbol, content);
+  return article;
+};
+
+const renderAnalysis = (analysis) => {
+  const courses = analysis.detectedCourses.length
+    ? analysis.detectedCourses.join(", ")
+    : analysis.requiresRemoteExtraction
+      ? "İçerik çıkarımı bekleniyor"
+      : "Ders adı bulunamadı";
+  const priorities = analysis.priorityTasks.length
+    ? analysis.priorityTasks.join(" → ")
+    : "Aktif görev bulunmuyor";
+  const status = analysis.requiresRemoteExtraction
+    ? createAnalysisResult(
+        "🔒",
+        "Güvenli içerik analizi",
+        "AI sağlayıcısı bağlandığında etkinleşecek",
+        "notice",
+      )
+    : createAnalysisResult(
+        "✓",
+        "Yerel analiz",
+        "CSV içeriği cihazında işlendi",
+        "success",
+      );
+
+  hubbyElements.results.replaceChildren(
+    createAnalysisResult("📚", "Algılanan dersler", courses),
+    createAnalysisResult(
+      "📅",
+      "Teslim tarihleri",
+      `${analysis.deadlineCount} tarih algılandı`,
+    ),
+    createAnalysisResult(
+      "📝",
+      "Sınav tarihleri",
+      `${analysis.examCount} sınav satırı algılandı`,
+    ),
+    createAnalysisResult("🎯", "StudyHub öncelik sırası", priorities),
+    createAnalysisResult(
+      "⏱️",
+      "Mevcut görevlerin tahmini süresi",
+      hubbyEngine.minutesText(analysis.estimatedMinutes),
+    ),
+    createAnalysisResult(
+      "🗓️",
+      "Önerilen çalışma günleri",
+      `${analysis.studyDayCount} gün önerildi`,
+    ),
+    status,
+  );
+  hubbyElements.results.hidden = false;
+  hubbyElements.generateWeekly.hidden = false;
+};
+
+const renderWeeklyPreview = () => {
+  hubbyState.weeklyPlan =
+    hubbyState.analysis?.weeklyPlan ||
+    hubbyEngine.buildWeeklyPlan(hubbyState.data);
+  const fragment = document.createDocumentFragment();
+
+  hubbyState.weeklyPlan.forEach((day) => {
+    const article = document.createElement("article");
+    const header = document.createElement("div");
+    const label = document.createElement("strong");
+    const date = document.createElement("span");
+    const list = document.createElement("ul");
+    const total = document.createElement("small");
+    label.textContent = day.label;
+    date.textContent = day.shortDate;
+    header.append(label, date);
+    if (!day.tasks.length) {
+      const item = document.createElement("li");
+      item.className = "is-rest";
+      item.textContent = "Dinlenme veya tekrar günü";
+      list.append(item);
+    } else {
+      day.tasks.slice(0, 3).forEach((task) => {
+        const item = document.createElement("li");
+        const taskName = document.createElement("span");
+        const duration = document.createElement("b");
+        taskName.textContent = task.title;
+        duration.textContent = `${task.minutes} dk`;
+        item.append(taskName, duration);
+        list.append(item);
+      });
+    }
+    total.textContent = day.totalMinutes
+      ? `Toplam ${hubbyEngine.minutesText(day.totalMinutes)}`
+      : "Boş zaman";
+    article.append(header, list, total);
+    fragment.append(article);
+  });
+
+  hubbyElements.weeklyDays.replaceChildren(fragment);
+  hubbyElements.weeklyPreview.hidden = false;
+  hubbyElements.importActions.hidden = false;
+  hubbyElements.weeklyPreview.scrollIntoView({
+    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? "auto"
+      : "smooth",
+    block: "nearest",
+  });
+  showHubbyToast("Haftalık çalışma planı önizlemesi hazır.");
+};
+
+const resetFileStage = () => {
+  window.clearInterval(hubbyState.progressTimer);
+  hubbyState.analysis = null;
+  hubbyState.weeklyPlan = [];
+  hubbyElements.file.value = "";
+  hubbyElements.uploadStage.hidden = false;
+  hubbyElements.analysisStage.hidden = true;
+  hubbyElements.results.hidden = true;
+  hubbyElements.generateWeekly.hidden = true;
+  hubbyElements.weeklyPreview.hidden = true;
+  hubbyElements.importActions.hidden = true;
+  hubbyElements.results.replaceChildren();
+  hubbyElements.weeklyDays.replaceChildren();
+  hubbyElements.progress.style.setProperty("--analysis-progress", "0%");
+  hubbyElements.progress.setAttribute("aria-valuenow", "0");
+};
+
+const finishFileAnalysis = async (file) => {
+  try {
+    hubbyState.analysis =
+      await hubbyEngine.localAnalysisProvider.analyzeFile(
+        file,
+        hubbyState.data,
+      );
+    hubbyElements.analysisTitle.textContent =
+      hubbyState.analysis.requiresRemoteExtraction
+        ? "Dosyan Planlama İçin Hazır"
+        : "Hubby Dosyanı Analiz Etti";
+    renderAnalysis(hubbyState.analysis);
+  } catch {
+    hubbyElements.analysisTitle.textContent = "Dosya okunamadı";
+    hubbyElements.results.replaceChildren(
+      createAnalysisResult(
+        "⚠️",
+        "Analiz hatası",
+        "Dosya içeriğini ve kodlamasını kontrol edip tekrar dene.",
+        "notice",
+      ),
+    );
+    hubbyElements.results.hidden = false;
+  }
+};
+
+const processFile = (file) => {
+  if (!file) return;
+  const allowed = /\.(pdf|docx?|xlsx?|csv|png|jpe?g)$/i.test(file.name);
+  if (!allowed || file.size > 10 * 1024 * 1024) {
+    showHubbyToast(
+      "PDF, Word, Excel, CSV, PNG veya JPG biçiminde, 10 MB'dan küçük bir dosya seç.",
+    );
+    resetFileStage();
+    return;
+  }
+
+  window.clearInterval(hubbyState.progressTimer);
+  hubbyElements.uploadStage.hidden = true;
+  hubbyElements.analysisStage.hidden = false;
+  hubbyElements.results.hidden = true;
+  hubbyElements.generateWeekly.hidden = true;
+  hubbyElements.weeklyPreview.hidden = true;
+  hubbyElements.importActions.hidden = true;
+  hubbyElements.analysisTitle.textContent = "Hubby Dosyanı Analiz Ediyor...";
+  hubbyElements.fileStatus.textContent =
+    `${file.name} · ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+  let value = 0;
+  hubbyState.progressTimer = window.setInterval(() => {
+    value = Math.min(100, value + 10);
+    hubbyElements.progress.style.setProperty(
+      "--analysis-progress",
+      `${value}%`,
+    );
+    hubbyElements.progress.setAttribute("aria-valuenow", String(value));
+    if (value === 100) {
+      window.clearInterval(hubbyState.progressTimer);
+      finishFileAnalysis(file);
+    }
+  }, 90);
+};
+
+const addMessage = (text, type) => {
+  const message = document.createElement("div");
+  message.className = `hubby-message hubby-message--${type}`;
+  message.textContent = text;
+  hubbyElements.messages.append(message);
+  hubbyElements.messages.scrollTop = hubbyElements.messages.scrollHeight;
+};
+
+const askHubby = (question) => {
+  const prompt = String(question || "").trim();
+  if (!prompt) return;
+  addMessage(prompt, "user");
+  hubbyElements.prompt.value = "";
+  window.setTimeout(() => {
+    addMessage(hubbyEngine.answer(prompt, hubbyState.data), "assistant");
+  }, 180);
+};
+
+const loadHubby = () => {
+  hubbyState.data = hubbyEngine.getState();
+  hubbyState.dailyPlan = hubbyState.data.savedPlan;
+  renderDailyPlan();
+  renderInsights();
+  renderReport();
+};
+
+hubbyElements.create.addEventListener("click", () => {
+  hubbyState.dailyPlan = hubbyEngine.buildDailyPlan(hubbyState.data);
+  renderDailyPlan();
+  showHubbyToast(
+    hubbyState.dailyPlan.length
+      ? "Bugünkü planın gerçek görevlerine göre hazırlandı."
+      : "Plan için aktif görev bulunamadı.",
+  );
+});
+
+hubbyElements.transfer.addEventListener("click", () => {
+  const plannedAt = new Date().toISOString();
+  const planByTask = new Map(
+    hubbyState.dailyPlan.map((item) => [item.taskId, item]),
+  );
+  const tasks = hubbyState.data.tasks.map((task) => {
+    const planItem = planByTask.get(task.id);
+    return planItem
+      ? {
+          ...task,
+          hubbyPlanOrder: planItem.order,
+          suggestedPomodoroMinutes: planItem.minutes,
+          hubbyPlannedAt: plannedAt,
+          updatedAt: plannedAt,
+        }
+      : task;
+  });
+  window.localStorage.setItem(
+    hubbyEngine.KEYS.tasks,
+    JSON.stringify(tasks),
+  );
+  window.localStorage.setItem(
+    hubbyEngine.KEYS.plan,
+    JSON.stringify(hubbyState.dailyPlan),
+  );
+  hubbyState.data.tasks = tasks;
+  showHubbyToast("Günlük plan Görevler ve Pomodoro akışına hazırlandı.");
+});
+
+hubbyElements.file.addEventListener("change", () => {
+  processFile(hubbyElements.file.files[0]);
+});
+hubbyElements.changeFile.addEventListener("click", resetFileStage);
+hubbyElements.generateWeekly.addEventListener("click", renderWeeklyPreview);
+
+["dragenter", "dragover"].forEach((type) => {
+  hubbyElements.dropzone.addEventListener(type, (event) => {
+    event.preventDefault();
+    hubbyElements.dropzone.classList.add("is-dragging");
+  });
+});
+["dragleave", "drop"].forEach((type) => {
+  hubbyElements.dropzone.addEventListener(type, (event) => {
+    event.preventDefault();
+    hubbyElements.dropzone.classList.remove("is-dragging");
+  });
+});
+hubbyElements.dropzone.addEventListener("drop", (event) => {
+  processFile(event.dataTransfer.files[0]);
+});
+hubbyElements.dropzone.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    hubbyElements.file.click();
+  }
+});
+
+document.querySelectorAll("[data-import-action]").forEach((button) => {
+  button.addEventListener("click", () => {
+    if (!hubbyState.weeklyPlan.length) return;
+    window.localStorage.setItem(
+      "studyhub.hubby.weekly-plan.v1",
+      JSON.stringify({
+        createdAt: new Date().toISOString(),
+        sourceFile: hubbyState.analysis?.fileName || "",
+        days: hubbyState.weeklyPlan,
+      }),
+    );
+    showHubbyToast(
+      "Plan taslağı kaydedildi. Modül aktarımı alan eşleştirme onayıyla etkinleşecek.",
+    );
+  });
+});
+
+document.querySelectorAll(".hubby-suggestions button").forEach((button) => {
+  button.addEventListener("click", () => {
+    askHubby(button.dataset.prompt || button.textContent);
+  });
+});
+
+hubbyElements.form.addEventListener("submit", (event) => {
+  event.preventDefault();
+  askHubby(hubbyElements.prompt.value);
+});
+
+window.addEventListener("storage", loadHubby);
+loadHubby();

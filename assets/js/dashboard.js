@@ -167,9 +167,9 @@ const dashboardUserMenuHost = document.querySelector(".dashboard-header-end");
 const DASHBOARD_PAGE_EMOJIS = new Map([
   ["dashboard.html", "☀️"],
   ["courses.html", "📚"],
-  ["tasks.html", "✅"],
-  ["calendar.html", "🗓️"],
-  ["pomodoro.html", "⏱️"],
+  ["tasks.html", "📝"],
+  ["calendar.html", "📅"],
+  ["pomodoro.html", "🍅"],
   ["analytics.html", "📊"],
   ["hubby-ai.html", "✨"],
   ["account.html", "👤"],
