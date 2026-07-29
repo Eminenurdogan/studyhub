@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="StudyHub kişisel çalışma asistanı." />
+    <title>Hubby AI | StudyHub</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body class="dashboard-page hubby-page">
+    <div class="app-layout">
+      <aside class="app-sidebar" id="appSidebar" aria-label="Ana navigasyon">
+        <div class="sidebar-brand">
+          <a href="index.html" class="logo studyhub-brand" aria-label="StudyHub ana sayfası"><img src="assets/images/studyhub-logo.png" alt="" class="logo-icon studyhub-brand__mark" /><span class="sidebar-brand-name studyhub-brand__name">StudyHub</span></a>
+          <button type="button" class="sidebar-close-button" aria-label="Navigasyon menüsünü kapat"><span aria-hidden="true">×</span></button>
+        </div>
+        <nav class="sidebar-navigation" aria-label="Dashboard bölümleri">
+          <div class="sidebar-navigation-group"><ul class="sidebar-navigation-list">
+            <li><a href="dashboard.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#today"></use></svg><span>Bugün</span></a></li>
+            <li><a href="courses.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#courses"></use></svg><span>Dersler</span></a></li>
+            <li><a href="tasks.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#tasks"></use></svg><span>Görevler</span></a></li>
+            <li><a href="calendar.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#calendar"></use></svg><span>Takvim</span></a></li>
+            <li><a href="pomodoro.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#pomodoro"></use></svg><span>Pomodoro</span></a></li>
+            <li><a href="analytics.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#analytics"></use></svg><span>Analiz</span></a></li>
+            <li><a href="hubby-ai.html" class="sidebar-navigation-item sidebar-navigation-item--hubby is-active" aria-current="page"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#hubby-ai"></use></svg><span>Hubby AI</span></a></li>
+          </ul></div>
+          <div class="sidebar-navigation-group"><p class="sidebar-navigation-label">Hesap</p><ul class="sidebar-navigation-list">
+            <li><a href="account.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#account"></use></svg><span>Hesap</span></a></li>
+            <li><a href="settings.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#settings"></use></svg><span>Ayarlar</span></a></li>
+          </ul></div>
+        </nav>
+        <div class="sidebar-profile" aria-label="Kullanıcı alanı"><div class="sidebar-profile-avatar" aria-hidden="true">K</div><div class="sidebar-profile-details"><span class="sidebar-profile-name">Kullanıcı</span><span class="sidebar-profile-label">Öğrenci</span></div></div>
+      </aside>
+      <div class="dashboard-shell">
+        <header class="dashboard-header"><div class="dashboard-header-start"><button type="button" class="sidebar-menu-button" aria-label="Navigasyon menüsünü aç" aria-controls="appSidebar" aria-expanded="false"><span aria-hidden="true">☰</span></button><div class="dashboard-page-identity"><h1>Hubby AI</h1></div></div><div class="dashboard-header-end"><div class="dashboard-user-summary"><div class="dashboard-user-avatar" aria-hidden="true">K</div><span class="dashboard-user-name">Kullanıcı</span></div></div></header>
+        <main class="dashboard-main hubby-main" id="mainContent">
+          <section class="hubby-hero">
+            <div><p class="dashboard-section-label">Kişisel çalışma asistanın</p><h2>Bugün birlikte neyi kolaylaştıralım?</h2><p>Görevlerini, çalışma kayıtlarını ve hedeflerini okuyarak veriye dayalı planlar hazırlar.</p></div>
+            <button class="hubby-primary" id="createTodayPlan" type="button">Bugünkü Planı Oluştur</button>
+          </section>
+          <div class="hubby-layout">
+            <div class="hubby-workspace">
+              <section class="hubby-card" aria-labelledby="planTitle"><div class="hubby-card__head"><div><h3 id="planTitle">Günlük Plan</h3><p>Öncelik ve teslim tarihlerine göre oluşturulur.</p></div><button id="transferPlan" type="button" disabled>Planı StudyHub'a Aktar</button></div><div id="dailyPlan" class="hubby-plan" aria-live="polite"><p class="hubby-empty">Plan oluşturmak için yukarıdaki butonu kullan.</p></div></section>
+              <section class="hubby-card" aria-labelledby="insightTitle"><div class="hubby-card__head"><div><h3 id="insightTitle">Akıllı Öneriler</h3><p>Yalnızca mevcut verilerine dayanır.</p></div></div><div id="hubbyInsights" class="hubby-insights"></div></section>
+              <section class="hubby-card" aria-labelledby="reportTitle"><div class="hubby-card__head"><div><h3 id="reportTitle">Haftalık Rapor</h3><p>Son yedi günlük çalışma özeti.</p></div></div><div id="weeklyReport" class="hubby-report"></div></section>
+              <section class="hubby-card" aria-labelledby="uploadTitle"><div class="hubby-card__head"><div><h3 id="uploadTitle">Plan Dosyası</h3><p>PDF, görsel veya Excel dosyanı analize hazırla.</p></div></div><label class="hubby-upload" for="hubbyFile"><svg aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#plus"></use></svg><strong>Dosya seç veya buraya bırak</strong><span>PDF, PNG, JPG, JPEG, XLS, XLSX · En fazla 10 MB</span><input id="hubbyFile" type="file" accept=".pdf,.png,.jpg,.jpeg,.xls,.xlsx" /></label><div id="fileStatus" class="hubby-file-status" aria-live="polite"></div></section>
+            </div>
+            <section class="hubby-chat" aria-labelledby="chatTitle">
+              <div class="hubby-chat__header"><span class="hubby-orb" aria-hidden="true">✦</span><div><h3 id="chatTitle">Hubby ile konuş</h3><p>Çalışma verilerin üzerinden yanıtlar</p></div></div>
+              <div class="hubby-suggestions" aria-label="Örnek sorular"><button type="button">Bugün ne çalışayım?</button><button type="button">Hangi derse öncelik vermeliyim?</button><button type="button">Pomodoro sürem kaç dakika olmalı?</button><button type="button">Haftam nasıl geçti?</button></div>
+              <div class="hubby-messages" id="hubbyMessages" aria-live="polite"><div class="hubby-message hubby-message--assistant">Merhaba! Mevcut StudyHub verilerini kullanarak planlama ve çalışma önerileri sunabilirim.</div></div>
+              <form class="hubby-chat__form" id="hubbyChatForm"><label class="sr-only" for="hubbyPrompt">Hubby'ye mesaj yaz</label><textarea id="hubbyPrompt" rows="1" placeholder="Bugün ne çalışmalıyım?" required></textarea><button type="submit" aria-label="Mesaj gönder">Gönder</button></form>
+            </section>
+          </div>
+          <div class="hubby-toast" id="hubbyToast" role="status" hidden></div>
+        </main>
+      </div>
+    </div>
+    <div class="sidebar-backdrop" aria-hidden="true"></div>
+    <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/hubby-ai.js"></script>
+  </body>
+</html>

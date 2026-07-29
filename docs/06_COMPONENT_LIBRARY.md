@@ -232,6 +232,50 @@ Communicates one concise, factual learning insight.
 - Use neutral text when previous-period data is insufficient.
 - Keep comparison functions reusable for future reports and coaching features.
 
+### Account: account-profile-card
+
+**Purpose**
+
+Presents the user's identity, profile image, account metadata, and biography.
+
+**Rules**
+- Persist editable profile information only under the versioned profile key.
+- Validate image type and size before storing a data URL.
+- Keep email and join date read-only in the MVP.
+
+### Account: account-achievement
+
+**Purpose**
+
+Shows basic milestone state derived from existing task and Pomodoro records.
+
+**Rules**
+- Never persist calculated achievement state.
+- Distinguish completed and locked milestones accessibly without animation.
+
+### Settings: settings-section
+
+**Purpose**
+
+Groups appearance, Pomodoro, notification, language, data, and account preferences into accessible categories.
+
+**Rules**
+- Persist preferences under versioned LocalStorage keys.
+- Apply theme changes immediately while preserving light, dark, and system choices.
+- Keep notification controls preference-only until a notification service exists.
+- Keep Turkish as the only enabled language while retaining an extensible selector.
+
+### Settings: settings-data-actions
+
+**Purpose**
+
+Provides reset and local-data clearing actions without browser-native dialogs.
+
+**Rules**
+- Use the shared confirmation dialog before destructive changes.
+- Restore valid default settings after clearing local application data.
+- Treat account deletion as interface-only until authentication and backend support exist.
+
 ### Courses: course-workspace
 
 **Purpose**
@@ -414,6 +458,19 @@ Describe or preserve this component's current responsibility. Do not redesign it
 - Preserve responsive behavior.
 
 
+
+### Landing: authenticated-user-menu
+
+**Purpose**
+
+Replaces guest authentication actions with profile-aware navigation when a local session exists.
+
+**Rules**
+- Use native links and buttons for full keyboard activation.
+- Keep `aria-expanded` synchronized with the dropdown state.
+- Close on Escape and outside click, restoring trigger focus after Escape.
+- Prefer the saved profile photo and fall back to the user's initial.
+- Keep authentication state separate from learning-module data.
 
 ## Planned Components
 

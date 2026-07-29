@@ -35,6 +35,7 @@ Current pages
 
 - index.html
 - login.html
+- register.html
 - dashboard.html
 - courses.html
 - tasks.html
@@ -48,7 +49,9 @@ Current scripts
 
 - assets/js/index.js
 - assets/js/login.js
+- assets/js/register.js
 - assets/js/dashboard.js
+- assets/js/settings.js
 
 Current stylesheet
 
@@ -105,6 +108,8 @@ Current stylesheet
 - Scroll reveal animation
 - Login validation
 - Password visibility toggle
+- Local registration and LocalStorage-backed authentication state
+- Session-aware Landing navigation with accessible profile dropdown and logout
 - Responsive dashboard application shell
 - Accessible mobile dashboard sidebar
 - Navigable dashboard module page architecture
@@ -123,18 +128,16 @@ Current stylesheet
 - Pomodoro timer with task/free modes, custom intervals, breaks and reload recovery
 - Daily Pomodoro goals, statistics, session history and task study metrics
 - Minimal read-only Analytics with four summaries, one study chart, course bars, heatmap, three insights, and personal bests
+- LocalStorage-backed profile, learning goals, computed statistics, and basic achievements
+- LocalStorage-backed Settings preferences, Dashboard theme selection, Pomodoro defaults, and confirmed data-management actions
 
 # 7. Planned Features
 
 These are planned only.
 
-- Register page
 - Forgot password
 - Dashboard
 - Sidebar
-- Analytics
-- Settings
-- Dark mode
 - Firebase integration
 
 # 8. Agent Rules

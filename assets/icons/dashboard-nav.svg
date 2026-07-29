@@ -39,6 +39,10 @@
     <path d="M12 16V8" />
     <path d="M17 16v-6" />
   </symbol>
+  <symbol id="hubby-ai" viewBox="0 0 24 24">
+    <path d="M12 3l1.5 4.2L18 9l-4.5 1.8L12 15l-1.5-4.2L6 9l4.5-1.8L12 3Z" />
+    <path d="M18 14l.8 2.2L21 17l-2.2.8L18 20l-.8-2.2L15 17l2.2-.8L18 14Z" />
+  </symbol>
   <symbol id="account" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="10" />
     <circle cx="12" cy="10" r="3" />

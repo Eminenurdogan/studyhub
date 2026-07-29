@@ -7,11 +7,11 @@
     <title>Hesap | StudyHub</title>
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
-  <body class="dashboard-page">
+  <body class="dashboard-page account-page">
     <div class="app-layout">
       <aside class="app-sidebar" id="appSidebar" aria-label="Ana navigasyon">
         <div class="sidebar-brand">
-          <a href="index.html" class="logo" aria-label="StudyHub ana sayfası"><img src="assets/images/studyhub-logo.png" alt="" class="logo-icon" /><span class="sidebar-brand-name">StudyHub</span></a>
+          <a href="index.html" class="logo studyhub-brand" aria-label="StudyHub ana sayfası"><img src="assets/images/studyhub-logo.png" alt="" class="logo-icon studyhub-brand__mark" /><span class="sidebar-brand-name studyhub-brand__name">StudyHub</span></a>
           <button type="button" class="sidebar-close-button" aria-label="Navigasyon menüsünü kapat"><span aria-hidden="true">×</span></button>
         </div>
         <nav class="sidebar-navigation" aria-label="Dashboard bölümleri">
@@ -23,6 +23,7 @@
               <li><a href="calendar.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#calendar"></use></svg><span>Takvim</span></a></li>
               <li><a href="pomodoro.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#pomodoro"></use></svg><span>Pomodoro</span></a></li>
               <li><a href="analytics.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#analytics"></use></svg><span>Analiz</span></a></li>
+              <li><a href="hubby-ai.html" class="sidebar-navigation-item sidebar-navigation-item--hubby"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#hubby-ai"></use></svg><span>Hubby AI</span></a></li>
             </ul>
           </div>
           <div class="sidebar-navigation-group">
@@ -44,12 +45,39 @@
           <div class="dashboard-header-end" aria-label="Kullanıcı işlemleri"><div class="dashboard-user-summary"><div class="dashboard-user-avatar" aria-hidden="true">K</div><span class="dashboard-user-name">Kullanıcı</span></div></div>
         </header>
         <main class="dashboard-main" id="mainContent">
-          <section class="dashboard-introduction" aria-labelledby="accountTitle"><div><p class="dashboard-section-label">Hesap</p><h2 id="accountTitle">Hesap</h2><p>Bu bölüm geliştirme aşamasındadır.</p></div></section>
-          <section class="dashboard-content" aria-label="Hesap modül alanı"></section>
+          <section class="account-heading" aria-labelledby="accountTitle"><div><p class="dashboard-section-label">Profil</p><h2 id="accountTitle">Hesabım</h2><p>Profilini, öğrenme hedeflerini ve başarılarını yönet.</p></div><button type="button" id="editProfileButton">Profili Düzenle</button></section>
+          <section class="account-profile-card" aria-labelledby="profileName">
+            <div class="account-avatar" id="profileAvatar"><img id="profilePhoto" alt="Profil fotoğrafı" hidden /><span id="profileInitials">K</span></div>
+            <div class="account-profile-identity"><h3 id="profileName">Kullanıcı</h3><p id="profileUsername">@kullanici</p><p id="profileEmail">kullanici@studyhub.local</p><span id="profileJoined"></span></div>
+          </section>
+          <div class="account-content-grid">
+            <section class="account-section" aria-labelledby="aboutTitle"><h3 id="aboutTitle">Hakkımda</h3><p id="profileBio">Henüz bir biyografi eklenmedi.</p></section>
+            <section class="account-section" aria-labelledby="goalsTitle"><h3 id="goalsTitle">Hedeflerim</h3><dl class="account-goals" id="profileGoals"></dl></section>
+          </div>
+          <section class="account-statistics" aria-labelledby="accountStatsTitle"><h3 id="accountStatsTitle">Kısa İstatistikler</h3><div id="accountStats" class="account-stat-grid"></div></section>
+          <section class="account-section" aria-labelledby="achievementsTitle"><h3 id="achievementsTitle">Başarılar</h3><div id="accountAchievements" class="account-achievement-grid"></div></section>
+          <section class="account-edit-panel" id="accountEditPanel" aria-labelledby="editProfileTitle" hidden>
+            <div class="account-edit-heading"><h3 id="editProfileTitle">Profili Düzenle</h3><button type="button" id="cancelProfileEdit">İptal</button></div>
+            <form id="accountForm" novalidate>
+              <div class="account-photo-field"><label for="profilePhotoInput">Profil fotoğrafı</label><input type="file" id="profilePhotoInput" accept="image/png,image/jpeg,image/webp" /><span>PNG, JPEG veya WebP; en fazla 1 MB.</span><button type="button" id="removeProfilePhoto">Fotoğrafı Kaldır</button></div>
+              <label>Ad Soyad<input type="text" id="accountFullName" maxlength="80" required /><span class="account-field-error" id="accountFullNameError"></span></label>
+              <label>Kullanıcı adı<input type="text" id="accountUsername" maxlength="30" required /><span class="account-field-error" id="accountUsernameError"></span></label>
+              <label class="account-form-full">Biyografi<textarea id="accountBio" rows="4" maxlength="280"></textarea></label>
+              <label>Hedef meslek<input type="text" id="goalCareer" maxlength="100" /></label>
+              <label>Hedef kurum / program<input type="text" id="goalProgram" maxlength="120" /></label>
+              <label>Günlük çalışma hedefi<input type="number" id="goalDaily" min="0" max="1440" /><span>dakika</span></label>
+              <label>Haftalık çalışma hedefi<input type="number" id="goalWeekly" min="0" max="10080" /><span>dakika</span></label>
+              <label>Aylık çalışma hedefi<input type="number" id="goalMonthly" min="0" max="44640" /><span>dakika</span></label>
+              <p class="account-form-feedback account-form-full" id="accountFormFeedback" role="alert" hidden></p>
+              <div class="account-form-actions account-form-full"><button type="button" id="cancelProfileEditBottom">İptal</button><button type="submit">Kaydet</button></div>
+            </form>
+          </section>
+          <div class="account-toast" id="accountToast" role="status" aria-live="polite" hidden></div>
         </main>
       </div>
     </div>
     <div class="sidebar-backdrop" aria-hidden="true"></div>
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/account.js"></script>
   </body>
 </html>

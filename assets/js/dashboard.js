@@ -5,6 +5,35 @@ const sidebarBackdrop = document.querySelector(".sidebar-backdrop");
 const dashboardPage = document.querySelector(".dashboard-page");
 
 const desktopMediaQuery = window.matchMedia("(min-width: 1024px)");
+const dashboardThemeMediaQuery = window.matchMedia(
+  "(prefers-color-scheme: dark)",
+);
+const DASHBOARD_SETTINGS_KEY = "studyhub.settings.v1";
+
+const getDashboardThemePreference = () => {
+  try {
+    return JSON.parse(
+      window.localStorage.getItem(DASHBOARD_SETTINGS_KEY) ?? "{}",
+    ).theme ?? "system";
+  } catch {
+    return "system";
+  }
+};
+
+const applyDashboardTheme = () => {
+  if (!dashboardPage) return;
+  const preference = getDashboardThemePreference();
+  const dark =
+    preference === "dark" ||
+    (preference === "system" && dashboardThemeMediaQuery.matches);
+  dashboardPage.dataset.theme = dark ? "dark" : "light";
+};
+
+applyDashboardTheme();
+dashboardThemeMediaQuery.addEventListener("change", applyDashboardTheme);
+window.addEventListener("storage", (event) => {
+  if (event.key === DASHBOARD_SETTINGS_KEY) applyDashboardTheme();
+});
 
 let previouslyFocusedElement = null;
 

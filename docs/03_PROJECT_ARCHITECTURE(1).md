@@ -34,6 +34,7 @@ StudyHub/
 ├── index.html
 ├── login.html
 ├── pomodoro.html
+├── register.html
 ├── settings.html
 └── tasks.html
 ```
@@ -50,6 +51,8 @@ Responsibilities:
 - Hero section
 - Feature presentation
 - Navigation to Login
+- Session-aware guest actions and authenticated profile menu
+- Dashboard, Account, Settings, and logout navigation
 
 ### login.html
 
@@ -60,6 +63,17 @@ Responsibilities:
 - User login
 - Form validation
 - Password visibility toggle
+- LocalStorage-backed session creation
+
+### register.html
+
+Local registration UI.
+
+Responsibilities:
+
+- Validated name, email, and password collection
+- LocalStorage-backed session and starter profile creation
+- Navigation back to Login and Landing
 
 ### dashboard.html
 
@@ -78,13 +92,6 @@ Responsibilities:
 
 ### Dashboard module pages
 
-The following pages currently provide navigable application-shell placeholders only:
-
-- account.html
-- settings.html
-
-Their module features and data are not implemented yet.
-
 The Tasks page is a LocalStorage-backed MVP. It consumes shared course records and supports validated task creation, reload-safe rendering, combined search and filters, status changes and counters, editing, deletion confirmation, empty states, and accessible drawer feedback. Its due-date records are consumed by Calendar as read-only data. Firebase and drag-and-drop remain outside this iteration.
 
 The Courses page is a LocalStorage-backed MVP. It supports validated course creation, editing, confirmed deletion, linked-task warnings, responsive course cards, reload-safe rendering, counts, empty states, and accessible drawer feedback. Its records are the single source for the task course selector and course filter.
@@ -95,13 +102,18 @@ The Pomodoro page is a LocalStorage-backed focus system with task-linked and fre
 
 The Analytics page is a minimal, read-only calculation layer over tasks, courses, and Pomodoro sessions. It provides four date-filtered summaries, one primary study chart, course distribution bars, a 365-day heatmap, three concise data-backed insights, and personal bests without creating analytics-owned data.
 
+The Account page stores editable profile identity, biography, photo, and flexible learning goals in LocalStorage. Its statistics and achievement states are calculated read-only from Task Management and Pomodoro records.
+
+The Settings page stores appearance, Pomodoro defaults, notification preferences, and language selection in LocalStorage. It applies light, dark, or system theme preferences across the Dashboard shell and uses the shared confirmation dialog for destructive data-management actions.
+
 ## JavaScript Responsibilities
 
 | File | Responsibility |
 |------|----------------|
 | index.js | Landing page interactions |
 | login.js | Login interactions |
-| dashboard.js | Mobile dashboard sidebar interactions |
+| register.js | Local registration, validation, starter profile and session creation |
+| dashboard.js | Mobile dashboard sidebar interactions and shared Dashboard theme application |
 | confirmation-dialog.js | Reusable accessible confirmation dialog for destructive actions |
 | course-storage.js | Shared course schema, persistence and duplicate checks |
 | courses.js | Course CRUD, validation, linked-task warnings and drawer interactions |
@@ -109,6 +121,8 @@ The Analytics page is a minimal, read-only calculation layer over tasks, courses
 | calendar.js | Read-only monthly task projection, date navigation and day details |
 | pomodoro.js | Focus timer, settings, sessions, goals, statistics and task study integration |
 | analytics.js | Read-only date filtering, aggregation, charts and productivity insights |
+| account.js | Profile persistence, photo validation, learning goals, statistics and achievements |
+| settings.js | Settings persistence, theme preview, Pomodoro defaults, data management and account-action UI |
 | style.css | Shared design system |
 
 ## Layout Sections Found
@@ -154,8 +168,6 @@ The Analytics page is a minimal, read-only calculation layer over tasks, courses
 
 ## Planned Architecture (Not Implemented Yet)
 
-- Analytics
-- Settings
 - Shared LocalStorage abstraction
 - Firebase integration (optional)
 

@@ -7,11 +7,11 @@
     <title>Ayarlar | StudyHub</title>
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
-  <body class="dashboard-page">
+  <body class="dashboard-page settings-page">
     <div class="app-layout">
       <aside class="app-sidebar" id="appSidebar" aria-label="Ana navigasyon">
         <div class="sidebar-brand">
-          <a href="index.html" class="logo" aria-label="StudyHub ana sayfası"><img src="assets/images/studyhub-logo.png" alt="" class="logo-icon" /><span class="sidebar-brand-name">StudyHub</span></a>
+          <a href="index.html" class="logo studyhub-brand" aria-label="StudyHub ana sayfası"><img src="assets/images/studyhub-logo.png" alt="" class="logo-icon studyhub-brand__mark" /><span class="sidebar-brand-name studyhub-brand__name">StudyHub</span></a>
           <button type="button" class="sidebar-close-button" aria-label="Navigasyon menüsünü kapat"><span aria-hidden="true">×</span></button>
         </div>
         <nav class="sidebar-navigation" aria-label="Dashboard bölümleri">
@@ -23,6 +23,7 @@
               <li><a href="calendar.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#calendar"></use></svg><span>Takvim</span></a></li>
               <li><a href="pomodoro.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#pomodoro"></use></svg><span>Pomodoro</span></a></li>
               <li><a href="analytics.html" class="sidebar-navigation-item"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#analytics"></use></svg><span>Analiz</span></a></li>
+              <li><a href="hubby-ai.html" class="sidebar-navigation-item sidebar-navigation-item--hubby"><svg class="sidebar-navigation-icon" aria-hidden="true"><use href="assets/icons/dashboard-nav.svg#hubby-ai"></use></svg><span>Hubby AI</span></a></li>
             </ul>
           </div>
           <div class="sidebar-navigation-group">
@@ -44,12 +45,23 @@
           <div class="dashboard-header-end" aria-label="Kullanıcı işlemleri"><div class="dashboard-user-summary"><div class="dashboard-user-avatar" aria-hidden="true">K</div><span class="dashboard-user-name">Kullanıcı</span></div></div>
         </header>
         <main class="dashboard-main" id="mainContent">
-          <section class="dashboard-introduction" aria-labelledby="settingsTitle"><div><p class="dashboard-section-label">Hesap</p><h2 id="settingsTitle">Ayarlar</h2><p>Bu bölüm geliştirme aşamasındadır.</p></div></section>
-          <section class="dashboard-content" aria-label="Ayarlar modül alanı"></section>
+          <section class="settings-heading" aria-labelledby="settingsTitle"><div><p class="dashboard-section-label">Tercihler</p><h2 id="settingsTitle">Ayarlar</h2><p><span class="studyhub-word">StudyHub</span> deneyimini çalışma alışkanlıklarına göre düzenle.</p></div></section>
+          <form id="settingsForm" novalidate>
+            <section class="settings-section" aria-labelledby="appearanceTitle"><div class="settings-section__intro"><h3 id="appearanceTitle">Görünüm</h3><p>Dashboard temasını seç.</p></div><fieldset class="settings-choice-group"><legend class="settings-sr-only">Tema</legend><label><input type="radio" name="theme" value="light" /> Açık Tema</label><label><input type="radio" name="theme" value="dark" /> Koyu Tema</label><label><input type="radio" name="theme" value="system" /> Sistem Teması</label></fieldset></section>
+            <section class="settings-section" aria-labelledby="pomodoroDefaultsTitle"><div class="settings-section__intro"><h3 id="pomodoroDefaultsTitle">Pomodoro Varsayılanları</h3><p>Yeni çalışma oturumlarının başlangıç değerleri.</p></div><div class="settings-number-grid"><label>Çalışma süresi<input type="number" id="settingsWorkMinutes" min="1" max="180" required /><span>dakika</span></label><label>Kısa mola<input type="number" id="settingsShortBreak" min="1" max="60" required /><span>dakika</span></label><label>Uzun mola<input type="number" id="settingsLongBreak" min="1" max="120" required /><span>dakika</span></label><label>Günlük hedef<input type="number" id="settingsDailyGoal" min="1" max="50" required /><span>Pomodoro</span></label></div></section>
+            <section class="settings-section" aria-labelledby="notificationsTitle"><div class="settings-section__intro"><h3 id="notificationsTitle">Bildirimler</h3><p>Gelecekteki bildirim sistemi için tercihlerin.</p></div><div class="settings-toggle-list"><label><span>Pomodoro tamamlandı bildirimi</span><input type="checkbox" id="notifyPomodoro" /></label><label><span>Mola hatırlatmaları</span><input type="checkbox" id="notifyBreak" /></label><label><span>Günlük hedef hatırlatması</span><input type="checkbox" id="notifyGoal" /></label><label><span>Gün sonu çalışma özeti</span><input type="checkbox" id="notifySummary" /></label></div></section>
+            <section class="settings-section" aria-labelledby="languageTitle"><div class="settings-section__intro"><h3 id="languageTitle">Dil ve Bölge</h3><p>Çoklu dil altyapısı için tercih.</p></div><label class="settings-select-field">Dil<select id="settingsLanguage" disabled><option value="tr">Türkçe</option></select><span>Şimdilik yalnızca Türkçe kullanılabilir.</span></label></section>
+            <p class="settings-feedback" id="settingsFeedback" role="alert" hidden></p><div class="settings-save-row"><button type="submit">Tercihleri Kaydet</button></div>
+          </form>
+          <section class="settings-section" aria-labelledby="dataTitle"><div class="settings-section__intro"><h3 id="dataTitle">Veri Yönetimi</h3><p>Yerel verilerini ve tercihlerini yönet.</p></div><div class="settings-action-list"><button type="button" id="resetSettings">Varsayılan Ayarlara Dön</button><button type="button" class="is-danger" id="clearAllData">Tüm Verileri Temizle</button></div></section>
+          <section class="settings-section" aria-labelledby="securityTitle"><div class="settings-section__intro"><h3 id="securityTitle">Hesap ve Güvenlik</h3><p>Oturum ve hesap işlemleri.</p></div><div class="settings-action-list"><a href="login.html">Çıkış Yap</a><button type="button" class="is-danger" id="deleteAccount">Hesabı Sil</button></div></section>
+          <div class="settings-toast" id="settingsToast" role="status" aria-live="polite" hidden></div>
         </main>
       </div>
     </div>
     <div class="sidebar-backdrop" aria-hidden="true"></div>
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/confirmation-dialog.js"></script>
+    <script src="assets/js/settings.js"></script>
   </body>
 </html>

@@ -64,6 +64,25 @@ loginForm.addEventListener("submit", (event) => {
   emailInput.classList.add("input-success");
   passwordInput.classList.add("input-success");
 
+  const storedProfile = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("studyhub.profile.v1") ?? "null");
+    } catch {
+      return null;
+    }
+  })();
+  const email = emailInput.value.trim().toLocaleLowerCase("tr-TR");
+  const name =
+    storedProfile?.fullName?.trim() || email.split("@")[0] || "Kullanıcı";
+  localStorage.setItem(
+    "studyhub.auth.v1",
+    JSON.stringify({
+      isLoggedIn: true,
+      user: { name, email },
+      authenticatedAt: new Date().toISOString(),
+    }),
+  );
+
   loginButton.disabled = true;
   loginButton.textContent = "Giriş Yapılıyor...";
 
@@ -87,22 +106,3 @@ passwordInput.addEventListener("input", () => {
   passwordInput.classList.remove("input-error");
 });
 lucide.createIcons();
-// Ana Sayfa Butonları
-
-const startButton = document.querySelector("#startButton");
-const discoverButton = document.querySelector("#discoverButton");
-const featuresSection = document.querySelector("#features");
-
-if (startButton) {
-  startButton.addEventListener("click", () => {
-    window.location.href = "login.html";
-  });
-}
-
-if (discoverButton) {
-  discoverButton.addEventListener("click", () => {
-    featuresSection.scrollIntoView({
-      behavior: "smooth",
-    });
-  });
-}

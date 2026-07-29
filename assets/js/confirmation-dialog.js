@@ -12,6 +12,7 @@
   const details = document.createElement("p");
   const actions = document.createElement("div");
   const cancelButton = document.createElement("button");
+  const alternativeButton = document.createElement("button");
   const confirmButton = document.createElement("button");
 
   overlay.className = "confirmation-dialog-overlay";
@@ -35,10 +36,14 @@
   actions.className = "confirmation-dialog__actions";
   cancelButton.type = "button";
   cancelButton.className = "confirmation-dialog__cancel";
+  alternativeButton.type = "button";
+  alternativeButton.className =
+    "confirmation-dialog__cancel confirmation-dialog__alternative";
+  alternativeButton.hidden = true;
   confirmButton.type = "button";
   confirmButton.className = "confirmation-dialog__confirm";
 
-  actions.append(cancelButton, confirmButton);
+  actions.append(cancelButton, alternativeButton, confirmButton);
   dialog.append(icon, title, description, details, actions);
   overlay.append(dialog);
   document.body.append(overlay);
@@ -115,6 +120,7 @@
   });
   overlay.addEventListener("keydown", handleKeydown);
   cancelButton.addEventListener("click", () => finish(false));
+  alternativeButton.addEventListener("click", () => finish("alternative"));
   confirmButton.addEventListener("click", () => finish(true));
 
   const open = ({
@@ -122,6 +128,7 @@
     description: dialogDescription = "Bu işlemi gerçekleştirmek istediğine emin misin?",
     details: dialogDetails = "",
     cancelLabel = "İptal",
+    alternativeLabel = "",
     confirmLabel = "Onayla",
   } = {}) => {
     if (activeRequest) {
@@ -133,6 +140,8 @@
     details.textContent = dialogDetails;
     details.hidden = !dialogDetails;
     cancelButton.textContent = cancelLabel;
+    alternativeButton.textContent = alternativeLabel;
+    alternativeButton.hidden = !alternativeLabel;
     confirmButton.textContent = confirmLabel;
     previouslyFocusedElement = document.activeElement;
     overlay.hidden = false;

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kayıt Ol | StudyHub</title>
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+  <body class="auth-page">
+    <header class="header">
+      <div class="container">
+        <a href="index.html" class="logo studyhub-brand" aria-label="StudyHub ana sayfa">
+          <img
+            src="assets/images/studyhub-logo.png"
+            alt=""
+            class="logo-icon studyhub-brand__mark"
+          />
+          <span class="studyhub-brand__name">StudyHub</span>
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <section class="login-container">
+        <div class="login-header">
+          <h2><span class="studyhub-word">StudyHub</span>'a Katıl</h2>
+          <p>Çalışma alanını oluştur ve hedeflerine düzenli ilerle.</p>
+        </div>
+
+        <form class="login-form" id="registerForm" novalidate>
+          <div class="form-group">
+            <label for="registerName">Ad Soyad</label>
+            <input
+              type="text"
+              id="registerName"
+              name="name"
+              autocomplete="name"
+              placeholder="Adınız Soyadınız"
+              required
+            />
+            <p class="error-message" id="registerNameError"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="registerEmail">E-posta</label>
+            <input
+              type="email"
+              id="registerEmail"
+              name="email"
+              autocomplete="email"
+              placeholder="ornek@mail.com"
+              required
+            />
+            <p class="error-message" id="registerEmailError"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="registerPassword">Şifre</label>
+            <input
+              type="password"
+              id="registerPassword"
+              name="password"
+              autocomplete="new-password"
+              placeholder="En az 8 karakter"
+              minlength="8"
+              required
+            />
+            <p class="error-message" id="registerPasswordError"></p>
+          </div>
+
+          <div class="form-group">
+            <label for="registerPasswordConfirmation">Şifre Tekrar</label>
+            <input
+              type="password"
+              id="registerPasswordConfirmation"
+              name="passwordConfirmation"
+              autocomplete="new-password"
+              placeholder="Şifrenizi tekrar girin"
+              required
+            />
+            <p
+              class="error-message"
+              id="registerPasswordConfirmationError"
+            ></p>
+          </div>
+
+          <button type="submit" class="login-button">Kayıt Ol</button>
+          <p class="register-text">
+            Zaten hesabın var mı?
+            <a href="login.html">Giriş Yap</a>
+          </p>
+        </form>
+      </section>
+    </main>
+
+    <script src="assets/js/register.js"></script>
+  </body>
+</html>
