@@ -45,17 +45,20 @@
           <div class="dashboard-header-end" aria-label="Kullanıcı işlemleri"><div class="dashboard-user-summary"><div class="dashboard-user-avatar" aria-hidden="true">K</div><span class="dashboard-user-name">Kullanıcı</span></div></div>
         </header>
         <main class="dashboard-main" id="mainContent">
-          <section class="account-heading" aria-labelledby="accountTitle"><div><p class="dashboard-section-label">Profil</p><h2 id="accountTitle">Hesabım</h2><p>Profilini, öğrenme hedeflerini ve başarılarını yönet.</p></div><button type="button" id="editProfileButton">Profili Düzenle</button></section>
+          <section class="account-heading" aria-labelledby="accountTitle"><div><p class="dashboard-section-label">Kişisel çalışma alanın</p><h2 id="accountTitle">Profilim</h2><p>Hedeflerini, gelişimini ve StudyHub yolculuğunu tek yerde gör.</p></div></section>
           <section class="account-profile-card" aria-labelledby="profileName">
             <div class="account-avatar" id="profileAvatar"><img id="profilePhoto" alt="Profil fotoğrafı" hidden /><span id="profileInitials">K</span></div>
-            <div class="account-profile-identity"><h3 id="profileName">Kullanıcı</h3><p id="profileUsername">@kullanici</p><p id="profileEmail">kullanici@studyhub.local</p><span id="profileJoined"></span></div>
+            <div class="account-profile-identity"><div class="account-profile-name-row"><h3 id="profileName"></h3><span class="account-level-badge" id="profileLevel"></span></div><p id="profileUsername"></p><p id="profileEmail"></p><span id="profileRole"></span><span id="profileJoined"></span></div>
+            <div class="account-profile-actions"><button type="button" id="editProfileButton">✏️ Profili Düzenle</button><button type="button" id="changeEmailButton">📧 E-postayı Değiştir</button><a href="forgot-password.html">🔒 Şifreyi Değiştir</a></div>
           </section>
+          <section class="account-statistics" aria-labelledby="accountStatsTitle"><div class="account-section-heading"><div><p>Gelişim özeti</p><h3 id="accountStatsTitle">StudyHub İstatistiklerin</h3></div></div><div id="accountStats" class="account-stat-grid"></div></section>
           <div class="account-content-grid">
-            <section class="account-section" aria-labelledby="aboutTitle"><h3 id="aboutTitle">Hakkımda</h3><p id="profileBio">Henüz bir biyografi eklenmedi.</p></section>
-            <section class="account-section" aria-labelledby="goalsTitle"><h3 id="goalsTitle">Hedeflerim</h3><dl class="account-goals" id="profileGoals"></dl></section>
+            <section class="account-section account-about" aria-labelledby="aboutTitle"><div class="account-section-heading"><div><p>Profil notun</p><h3 id="aboutTitle">Hakkımda</h3></div><button type="button" data-open-profile aria-label="Hakkımda alanını düzenle">✎</button></div><p id="profileBio"></p></section>
+            <section class="account-section" aria-labelledby="goalsTitle"><div class="account-section-heading"><div><p>Yönünü belirle</p><h3 id="goalsTitle">Hedeflerim</h3></div></div><div class="account-goals" id="profileGoals"></div></section>
           </div>
-          <section class="account-statistics" aria-labelledby="accountStatsTitle"><h3 id="accountStatsTitle">Kısa İstatistikler</h3><div id="accountStats" class="account-stat-grid"></div></section>
-          <section class="account-section" aria-labelledby="achievementsTitle"><h3 id="achievementsTitle">Başarılar</h3><div id="accountAchievements" class="account-achievement-grid"></div></section>
+          <section class="account-section account-achievements" aria-labelledby="achievementsTitle"><div class="account-section-heading"><div><p>Başarı yolculuğun</p><h3 id="achievementsTitle">Rozetlerin</h3></div></div><div id="accountAchievements" class="account-achievement-grid"></div></section>
+          <section class="account-section account-performance" aria-labelledby="performanceTitle"><div class="account-section-heading"><div><p>Son dört hafta</p><h3 id="performanceTitle">Bu Ayki Performansın</h3></div></div><div id="accountPerformance" class="account-performance-grid"></div></section>
+          <section class="account-hubby" aria-labelledby="accountHubbyTitle"><span aria-hidden="true">✦</span><div><p>Hubby AI Senin İçin</p><h3 id="accountHubbyTitle">Kişisel gelişim notun</h3><div id="accountHubbyInsight"></div></div><a href="hubby-ai.html">Hubby ile devam et →</a></section>
           <section class="account-edit-panel" id="accountEditPanel" aria-labelledby="editProfileTitle" hidden>
             <div class="account-edit-heading"><h3 id="editProfileTitle">Profili Düzenle</h3><button type="button" id="cancelProfileEdit">İptal</button></div>
             <form id="accountForm" novalidate>
@@ -72,6 +75,18 @@
               <div class="account-form-actions account-form-full"><button type="button" id="cancelProfileEditBottom">İptal</button><button type="submit">Kaydet</button></div>
             </form>
           </section>
+          <div class="account-email-modal" id="emailModal" hidden>
+            <button class="account-email-modal__backdrop" type="button" data-email-close aria-label="E-posta penceresini kapat"></button>
+            <section class="account-email-dialog" role="dialog" aria-modal="true" aria-labelledby="emailModalTitle">
+              <div class="account-email-dialog__header"><div><p>Hesap güvenliği</p><h3 id="emailModalTitle">E-postayı değiştir</h3></div><button type="button" data-email-close aria-label="Kapat">×</button></div>
+              <form id="emailChangeForm" novalidate>
+                <label>Yeni e-posta<input type="email" id="newAccountEmail" autocomplete="email" required /><span id="newEmailError"></span></label>
+                <label>Şifre doğrulama<input type="password" id="emailPassword" autocomplete="current-password" required /><span id="emailPasswordError"></span></label>
+                <p id="emailFormFeedback" role="alert" hidden></p>
+                <div><button type="button" data-email-close>İptal</button><button type="submit">Kaydet</button></div>
+              </form>
+            </section>
+          </div>
           <div class="account-toast" id="accountToast" role="status" aria-live="polite" hidden></div>
         </main>
       </div>

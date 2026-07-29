@@ -45,29 +45,37 @@
           <div class="dashboard-header-end" aria-label="Kullanıcı işlemleri"><div class="dashboard-user-summary"><div class="dashboard-user-avatar" aria-hidden="true">K</div><span class="dashboard-user-name">Kullanıcı</span></div></div>
         </header>
         <main class="dashboard-main" id="mainContent">
-          <section class="analytics-heading" aria-labelledby="analyticsTitle">
-            <div><p class="dashboard-section-label">Gelişim Özeti</p><h2 id="analyticsTitle">Analytics</h2><p>Çalışma alışkanlıklarını analiz et.</p></div>
-            <label for="analyticsRange">Tarih aralığı
-              <select id="analyticsRange">
-                <option value="today">Bugün</option><option value="7d" selected>Son 7 Gün</option>
-                <option value="30d">Son 30 Gün</option><option value="3m">Son 3 Ay</option>
-                <option value="1y">Son 1 Yıl</option><option value="all">Tüm Zamanlar</option>
-              </select>
-            </label>
+          <section class="analytics-premium-heading" aria-labelledby="analyticsTitle">
+            <div><p class="dashboard-section-label">Gelişimin</p><h2 id="analyticsTitle">📈 Analiz</h2><p>Çalışma ritmini ve hedeflerini tek bakışta gör.</p></div>
+            <div class="analytics-period" aria-label="Analiz dönemi">Son 7 gün</div>
           </section>
-          <p class="analytics-dynamic-summary" id="analyticsDynamicSummary" aria-live="polite"></p>
-          <section class="analytics-summary-grid" id="analyticsSummary" aria-label="Genel bakış"></section>
-          <section class="analytics-panel" aria-labelledby="studyChartTitle">
-            <div class="analytics-section-heading"><div><h3 id="studyChartTitle">Çalışma Süresi</h3><p id="studyChartSummary"></p></div></div>
-            <div class="analytics-chart" id="studyChart" aria-label="Çalışma süresi grafiği"></div>
+
+          <section class="analytics-hubby" aria-labelledby="hubbyAnalysisTitle">
+            <div class="analytics-hubby__icon" aria-hidden="true">✦</div>
+            <div><p>Hubby AI Haftalık Analizi</p><h3 id="hubbyAnalysisTitle">Bu haftanın çalışma özeti</h3><div id="hubbyWeeklyAnalysis" aria-live="polite"></div></div>
+            <a href="hubby-ai.html">Hubby ile planla →</a>
           </section>
-          <div class="analytics-two-column">
-            <section class="analytics-panel" aria-labelledby="courseAnalyticsTitle"><h3 id="courseAnalyticsTitle">Ders Dağılımı</h3><div id="courseAnalytics" class="analytics-course-distribution"></div></section>
-            <section class="analytics-panel" aria-labelledby="insightsTitle"><h3 id="insightsTitle">Akıllı İçgörüler</h3><div id="productivityInsights" class="analytics-insight-list"></div></section>
+
+          <section class="analytics-focus-card" aria-labelledby="weeklyChartTitle">
+            <div class="analytics-card-heading"><div><p>Haftalık Çalışma Grafiği</p><h3 id="weeklyChartTitle">Odak süren</h3></div><strong id="weeklyTotal">0 dk</strong></div>
+            <div class="analytics-weekly-chart" id="weeklyStudyChart" role="img" aria-label="Son yedi günlük çalışma grafiği"></div>
+          </section>
+
+          <div class="analytics-visual-grid">
+            <section class="analytics-visual-card" aria-labelledby="courseDistributionTitle">
+              <div class="analytics-card-heading"><div><p>Çalışma alanların</p><h3 id="courseDistributionTitle">Ders Dağılımı</h3></div></div>
+              <div class="analytics-doughnut-layout"><div class="analytics-doughnut" id="courseDoughnut" role="img" aria-label="Ders çalışma süresi dağılımı"><div><strong id="courseCount">0</strong><span>ders</span></div></div><div class="analytics-doughnut-legend" id="courseLegend"></div></div>
+            </section>
+            <section class="analytics-visual-card" aria-labelledby="goalProgressTitle">
+              <div class="analytics-card-heading"><div><p>Haftalık ritim</p><h3 id="goalProgressTitle">Hedef Tamamlama</h3></div></div>
+              <div class="analytics-goal"><div class="analytics-goal-ring" id="goalRing" role="img" aria-label="Hedef tamamlama yüzdesi"><div><strong id="goalRate">%0</strong><span>tamamlandı</span></div></div><p id="goalSummary"></p></div>
+            </section>
           </div>
-          <section class="analytics-panel" aria-labelledby="heatmapTitle"><div class="analytics-section-heading"><div><h3 id="heatmapTitle">Çalışma Isı Haritası</h3><p>Son 365 günlük çalışma yoğunluğu</p></div></div><div class="analytics-heatmap-scroll"><div id="analyticsHeatmap" class="analytics-heatmap" role="img" aria-label="Son bir yıllık çalışma yoğunluğu"></div></div><div class="analytics-heatmap-legend"><span>Az</span><i data-level="1"></i><i data-level="2"></i><i data-level="3"></i><i data-level="4"></i><span>Çok</span></div></section>
-          <section class="analytics-panel" aria-labelledby="personalBestsTitle"><h3 id="personalBestsTitle">Kişisel Rekorlar</h3><div id="personalBests" class="analytics-personal-bests"></div></section>
-          <p class="analytics-empty" id="analyticsEmpty" hidden>Seçilen tarih aralığında analiz edilecek çalışma verisi bulunmuyor.</p>
+
+          <section class="analytics-heatmap-card" aria-labelledby="heatmapTitle">
+            <div class="analytics-card-heading"><div><p>Son 30 gün</p><h3 id="heatmapTitle">Çalışma Yoğunluğu</h3></div><span>Az <i></i><i></i><i></i><i></i> Çok</span></div>
+            <div class="analytics-premium-heatmap" id="analyticsHeatmap" role="img" aria-label="Son otuz günlük çalışma yoğunluğu"></div>
+          </section>
         </main>
       </div>
     </div>

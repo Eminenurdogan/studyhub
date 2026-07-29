@@ -110,10 +110,10 @@
         </nav>
 
         <div class="sidebar-profile" aria-label="Kullanıcı alanı">
-          <div class="sidebar-profile-avatar" aria-hidden="true">K</div>
+          <div class="sidebar-profile-avatar" aria-hidden="true"></div>
           <div class="sidebar-profile-details">
-            <span class="sidebar-profile-name">Kullanıcı</span>
-            <span class="sidebar-profile-label">Öğrenci</span>
+            <span class="sidebar-profile-name"></span>
+            <span class="sidebar-profile-label"></span>
           </div>
         </div>
       </aside>
@@ -132,15 +132,11 @@
             </button>
 
             <div class="dashboard-page-identity">
-              <h1>Bugün</h1>
+              <h1 id="dashboardTodayTitle">Bugün</h1>
             </div>
           </div>
 
           <div class="dashboard-header-end" aria-label="Kullanıcı işlemleri">
-            <div class="dashboard-user-summary">
-              <div class="dashboard-user-avatar" aria-hidden="true">K</div>
-              <span class="dashboard-user-name">Kullanıcı</span>
-            </div>
           </div>
         </header>
 
@@ -148,7 +144,7 @@
           <section class="dashboard-introduction" aria-labelledby="welcomeTitle">
             <div>
               <p class="dashboard-section-label">Bugünün Planı</p>
-              <h2 id="welcomeTitle">Günaydın, Kullanıcı</h2>
+              <h2 id="welcomeTitle"></h2>
               <p>
                 Bugünkü planına göz at ve çalışmalarına kaldığın yerden devam et.
               </p>
@@ -163,8 +159,8 @@
                 </span>
                 <p class="today-summary-label">Bugünkü görevler</p>
               </div>
-              <strong class="today-summary-value">4</strong>
-              <span class="today-summary-meta">3 görev sırada</span>
+              <strong class="today-summary-value" id="todayTaskCount">0</strong>
+              <span class="today-summary-meta" id="todayTaskMeta">Görev bulunmuyor</span>
             </article>
             <article class="dashboard-card today-summary-card">
               <div class="today-summary-heading">
@@ -173,8 +169,8 @@
                 </span>
                 <p class="today-summary-label">Planlanan süre</p>
               </div>
-              <strong class="today-summary-value">2 sa 30 dk</strong>
-              <span class="today-summary-meta">3 çalışma oturumu</span>
+              <strong class="today-summary-value" id="todayPlannedDuration">0 dk</strong>
+              <span class="today-summary-meta" id="todaySessionMeta">0 çalışma oturumu</span>
             </article>
             <article class="dashboard-card today-summary-card">
               <div class="today-summary-heading">
@@ -183,8 +179,8 @@
                 </span>
                 <p class="today-summary-label">Tamamlanan</p>
               </div>
-              <strong class="today-summary-value">%25</strong>
-              <span class="today-summary-meta">1 görev tamamlandı</span>
+              <strong class="today-summary-value" id="todayCompletionRate">%0</strong>
+              <span class="today-summary-meta" id="todayCompletedMeta">0 görev tamamlandı</span>
             </article>
             <article class="dashboard-card today-summary-card">
               <div class="today-summary-heading">
@@ -193,8 +189,8 @@
                 </span>
                 <p class="today-summary-label">Çalışma serisi</p>
               </div>
-              <strong class="today-summary-value">15 gün</strong>
-              <span class="today-summary-meta">Düzenini koruyorsun</span>
+              <strong class="today-summary-value" id="todayStreak">0 gün</strong>
+              <span class="today-summary-meta" id="todayStreakMeta">İlk oturumunu tamamla</span>
             </article>
           </section>
 
@@ -205,35 +201,10 @@
                   <p class="dashboard-card__eyebrow">Günlük program</p>
                   <h3 class="dashboard-card__title">Bugünkü çalışma planı</h3>
                 </div>
-                <span class="today-card-badge">3 oturum</span>
+                <span class="today-card-badge" id="todayPlanBadge">0 görev</span>
               </div>
               <div class="dashboard-card__body">
-                <ol class="today-plan-list">
-                  <li class="today-plan-item">
-                    <time datetime="09:30">09:30</time>
-                    <span class="today-plan-marker" aria-hidden="true"></span>
-                    <div>
-                      <strong>JavaScript DOM tekrarı</strong>
-                      <span>Web Programlama · 45 dakika</span>
-                    </div>
-                  </li>
-                  <li class="today-plan-item">
-                    <time datetime="14:00">14:00</time>
-                    <span class="today-plan-marker" aria-hidden="true"></span>
-                    <div>
-                      <strong>Veri yapıları çalışma notları</strong>
-                      <span>Algoritmalar · 60 dakika</span>
-                    </div>
-                  </li>
-                  <li class="today-plan-item">
-                    <time datetime="19:30">19:30</time>
-                    <span class="today-plan-marker" aria-hidden="true"></span>
-                    <div>
-                      <strong>Haftalık konu tekrarı</strong>
-                      <span>Matematik · 45 dakika</span>
-                    </div>
-                  </li>
-                </ol>
+                <ol class="today-plan-list" id="todayPlanList"></ol>
               </div>
             </article>
 
@@ -246,38 +217,14 @@
                   </div>
                 </div>
                 <div class="dashboard-card__body">
-                  <ul class="today-upcoming-list">
-                    <li>
-                      <div>
-                        <strong>Proje raporunu tamamla</strong>
-                        <span>Yazılım Mühendisliği</span>
-                      </div>
-                      <time datetime="2026-07-29">Yarın</time>
-                    </li>
-                    <li>
-                      <div>
-                        <strong>Algoritma sorularını çöz</strong>
-                        <span>Algoritmalar</span>
-                      </div>
-                      <time datetime="2026-07-31">31 Tem</time>
-                    </li>
-                    <li>
-                      <div>
-                        <strong>Sunum taslağını hazırla</strong>
-                        <span>İletişim Teknikleri</span>
-                      </div>
-                      <time datetime="2026-08-02">2 Ağu</time>
-                    </li>
-                  </ul>
+                  <ul class="today-upcoming-list" id="todayUpcomingList"></ul>
                 </div>
               </article>
 
               <article class="dashboard-card today-motivation-card">
                 <p class="dashboard-card__eyebrow">Günün motivasyonu</p>
-                <blockquote>
-                  Küçük ama düzenli adımlar, büyük hedefleri ulaşılabilir kılar.
-                </blockquote>
-                <p>Bugünkü planının ilk adımı hazır.</p>
+                <blockquote id="todayMotivation"></blockquote>
+                <p id="todayMotivationMeta"></p>
               </article>
             </div>
           </section>
@@ -288,5 +235,6 @@
     <div class="sidebar-backdrop" aria-hidden="true"></div>
 
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/dashboard-home.js"></script>
   </body>
 </html>
