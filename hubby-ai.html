@@ -38,6 +38,16 @@
             <div><p class="dashboard-section-label">Kişisel çalışma asistanın</p><h2>Bugün birlikte neyi kolaylaştıralım?</h2><p>Görevlerini, çalışma kayıtlarını ve hedeflerini okuyarak veriye dayalı planlar hazırlar.</p></div>
             <button class="hubby-primary" id="createTodayPlan" type="button">Bugünkü Planı Oluştur</button>
           </section>
+          <section class="hubby-plan-center" id="hubbyPlanCenter" aria-labelledby="planHistoryTitle" hidden>
+            <div class="hubby-plan-center__heading">
+              <div>
+                <p class="dashboard-section-label">Planların</p>
+                <h2 id="planHistoryTitle">Plan Geçmişi</h2>
+                <p>Önceki çalışma planlarını görüntüle ve kaldığın yerden devam et.</p>
+              </div>
+            </div>
+            <div class="hubby-plan-history" id="hubbyPlanHistory"></div>
+          </section>
           <div class="hubby-layout">
             <div class="hubby-workspace">
               <section class="hubby-card" aria-labelledby="planTitle"><div class="hubby-card__head"><div><h3 id="planTitle">Günlük Plan</h3><p>Öncelik ve teslim tarihlerine göre oluşturulur.</p></div><button id="transferPlan" type="button" disabled>Planı StudyHub'a Aktar</button></div><div id="dailyPlan" class="hubby-plan" aria-live="polite"><p class="hubby-empty">Plan oluşturmak için yukarıdaki butonu kullan.</p></div></section>
@@ -62,7 +72,7 @@
                   <div class="hubby-analysis-results" id="hubbyAnalysisResults" hidden aria-label="Dosya analiz sonucu"></div>
                   <button class="hubby-generate-weekly" id="generateWeeklyPlan" type="button" hidden><span aria-hidden="true">✨</span> Otomatik Çalışma Planı Oluştur</button>
                   <section class="hubby-weekly-preview" id="hubbyWeeklyPreview" aria-labelledby="weeklyPreviewTitle" hidden>
-                    <div class="hubby-weekly-preview__head"><div><p>Plan önizlemesi</p><h4 id="weeklyPreviewTitle">Önerilen haftalık çalışma planı</h4></div><span>7 gün</span></div>
+                    <div class="hubby-weekly-preview__head"><div><p>Plan önizlemesi</p><h4 id="weeklyPreviewTitle">Önerilen çalışma planı</h4></div><span id="hubbyWeeklyDayCount">7 gün</span></div>
                     <div class="hubby-weekly-days" id="hubbyWeeklyDays"></div>
                     <p class="hubby-weekly-note">Plan, mevcut görevlerinin öncelik ve teslim tarihlerine göre hazırlanır. Aktarmadan önce kontrol edebilirsin.</p>
                   </section>
@@ -84,7 +94,13 @@
     </div>
     <div class="sidebar-backdrop" aria-hidden="true"></div>
     <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/confirmation-dialog.js"></script>
+    <script src="assets/js/studyhub-data-store.js"></script>
     <script src="assets/js/hubby-ai-engine.js"></script>
+    <script src="assets/js/hubby-plan-store.js"></script>
+    <script src="assets/js/hubby-file-store.js"></script>
+    <script src="assets/js/hubby-memory.js"></script>
+    <script src="assets/js/hubby-plan-center.js"></script>
     <script src="assets/js/hubby-ai.js"></script>
   </body>
 </html>

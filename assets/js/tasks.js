@@ -778,6 +778,12 @@ const initializeTaskManagement = () => {
   elements.dueDate?.addEventListener("change", () => {
     clearFieldError(elements.dueDate, elements.dueDateError);
   });
+  window.addEventListener("studyhub:data-changed", () => {
+    state.tasks = loadTasks();
+    state.courses = courseStore?.getAll() ?? [];
+    renderCourseOptions();
+    renderTasks();
+  });
 };
 
 initializeTaskManagement();

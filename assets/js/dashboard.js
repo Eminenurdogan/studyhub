@@ -169,7 +169,7 @@ const DASHBOARD_PAGE_EMOJIS = new Map([
   ["courses.html", "📚"],
   ["tasks.html", "📝"],
   ["calendar.html", "📅"],
-  ["pomodoro.html", "🍅"],
+  ["pomodoro.html", "⏱️"],
   ["analytics.html", "📊"],
   ["hubby-ai.html", "✨"],
   ["account.html", "👤"],

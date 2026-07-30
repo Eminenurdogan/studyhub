@@ -51,7 +51,9 @@
     state.courses.find((course) => course.id === id)?.name || "Genel çalışma";
 
   const activeTasks = (state) =>
-    state.tasks.filter((task) => task?.status !== "completed");
+    state.tasks.filter(
+      (task) => task?.status !== "completed" && !task.hubbyImportId,
+    );
 
   const completedWorkSessions = (state) =>
     state.sessions.filter(
@@ -125,6 +127,7 @@
       target.tasks.push({
         taskId: task.id,
         title: task.title,
+        courseId: task.course,
         course: courseName(state, task.course),
         priority: task.priority || "medium",
         minutes,
@@ -231,42 +234,207 @@
     ];
   };
 
+  const normalizeCsvHeader = (value) =>
+    String(value || "")
+      .trim()
+      .toLocaleLowerCase("tr-TR")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+  const parseCsvLine = (line, delimiter) => {
+    const values = [];
+    let value = "";
+    let quoted = false;
+    for (let index = 0; index < line.length; index += 1) {
+      const character = line[index];
+      if (character === '"') {
+        if (quoted && line[index + 1] === '"') {
+          value += '"';
+          index += 1;
+        } else {
+          quoted = !quoted;
+        }
+      } else if (character === delimiter && !quoted) {
+        values.push(value.trim());
+        value = "";
+      } else {
+        value += character;
+      }
+    }
+    values.push(value.trim());
+    return values;
+  };
+
+  const parseCsvDate = (value) => {
+    const match = String(value || "")
+      .trim()
+      .match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{2}|\d{4})$/);
+    if (!match) return "";
+    const year = match[3].length === 2 ? `20${match[3]}` : match[3];
+    const date = new Date(
+      Number(year),
+      Number(match[2]) - 1,
+      Number(match[1]),
+      12,
+    );
+    if (
+      date.getFullYear() !== Number(year) ||
+      date.getMonth() !== Number(match[2]) - 1 ||
+      date.getDate() !== Number(match[1])
+    ) {
+      return "";
+    }
+    return dateKey(date);
+  };
+
+  const csvTaskTitle = (course, type) => {
+    const normalizedType = String(type || "").toLocaleLowerCase("tr-TR");
+    if (/sınav|vize|final|quiz|exam/.test(normalizedType)) {
+      return `${course} Sınavına Çalış`;
+    }
+    if (/ödev|assignment/.test(normalizedType)) {
+      return `${course} Ödevini Tamamla`;
+    }
+    if (/proje|project/.test(normalizedType)) {
+      return `${course} Projesini Tamamla`;
+    }
+    if (/sunum|presentation/.test(normalizedType)) {
+      return `${course} Sunumunu Hazırla`;
+    }
+    if (/tekrar|review/.test(normalizedType)) {
+      return `${course} Tekrarı Yap`;
+    }
+    return type ? `${course} ${type} Çalışması` : `${course} Çalış`;
+  };
+
+  const csvTaskDefaults = (type, dueDate, now = new Date()) => {
+    const normalizedType = String(type || "").toLocaleLowerCase("tr-TR");
+    const deadline = toDate(`${dueDate}T12:00:00`);
+    const daysLeft = deadline
+      ? Math.ceil((deadline - now) / DAY_MS)
+      : Number.POSITIVE_INFINITY;
+    if (/sınav|vize|final|exam/.test(normalizedType)) {
+      return {
+        priority: daysLeft <= 14 ? "high" : "medium",
+        minutes: 90,
+      };
+    }
+    if (/quiz/.test(normalizedType)) {
+      return {
+        priority: daysLeft <= 7 ? "high" : "medium",
+        minutes: 45,
+      };
+    }
+    if (/ödev|assignment/.test(normalizedType)) {
+      return {
+        priority: daysLeft <= 3 ? "high" : "medium",
+        minutes: 60,
+      };
+    }
+    if (/proje|project/.test(normalizedType)) {
+      return {
+        priority: daysLeft <= 7 ? "high" : "medium",
+        minutes: 120,
+      };
+    }
+    return { priority: "medium", minutes: 45 };
+  };
+
+  const csvCourseId = (course) =>
+    `hubby-course-${normalizeCsvHeader(course)
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "") || "genel"}`;
+
+  const buildCsvPlan = (records) => {
+    const days = new Map();
+    records.forEach((record) => {
+      if (!days.has(record.dueDate)) {
+        const date = new Date(`${record.dueDate}T12:00:00`);
+        days.set(record.dueDate, {
+          date: record.dueDate,
+          label: new Intl.DateTimeFormat("tr-TR", {
+            weekday: "long",
+          }).format(date),
+          shortDate: new Intl.DateTimeFormat("tr-TR", {
+            day: "numeric",
+            month: "short",
+          }).format(date),
+          tasks: [],
+          totalMinutes: 0,
+        });
+      }
+      const day = days.get(record.dueDate);
+      day.tasks.push({
+        taskId: record.id,
+        title: record.title,
+        courseId: record.courseId,
+        course: record.course,
+        priority: record.priority,
+        minutes: record.minutes,
+        activityType: record.type,
+      });
+      day.totalMinutes += record.minutes;
+    });
+    return [...days.values()].sort((first, second) =>
+      first.date.localeCompare(second.date),
+    );
+  };
+
   const parseCsv = async (file) => {
-    const text = await file.text();
-    const rows = text
+    const text = (await file.text()).replace(/^\uFEFF/, "");
+    const lines = text
       .split(/\r?\n/)
-      .map((row) => row.trim())
+      .map((line) => line.trim())
       .filter(Boolean);
     const delimiter =
-      (rows[0]?.match(/;/g) || []).length > (rows[0]?.match(/,/g) || []).length
+      (lines[0]?.match(/;/g) || []).length >
+      (lines[0]?.match(/,/g) || []).length
         ? ";"
         : ",";
-    const cells = rows
+    const headers = parseCsvLine(lines[0] || "", delimiter).map(
+      normalizeCsvHeader,
+    );
+    const findColumn = (...names) =>
+      headers.findIndex((header) => names.includes(header));
+    const courseIndex = findColumn("ders", "konu", "course", "subject");
+    const dateIndex = findColumn("tarih", "date", "teslim tarihi");
+    const typeIndex = findColumn("tur", "tür", "type", "etkinlik");
+    const titleIndex = findColumn("gorev", "görev", "baslik", "başlık", "title");
+    if (courseIndex < 0 || dateIndex < 0) {
+      throw new Error("CSV_DERS_TARIH_REQUIRED");
+    }
+    const records = lines
       .slice(1)
-      .map((row) => row.split(delimiter).map((cell) => cell.trim()));
-    const courses = new Set(
-      cells
-        .map((row) => row[0])
-        .filter(
-          (value) =>
-            value &&
-            !/ders|konu|başlık|title/i.test(value) &&
-            !/\d{1,2}[./-]\d{1,2}/.test(value),
-        ),
-    );
-    const dateCells = cells
-      .flat()
-      .filter((value) =>
-        /\b\d{1,2}[./-]\d{1,2}(?:[./-]\d{2,4})?\b/.test(value),
-      );
-    const examRows = cells.filter((row) =>
-      row.some((cell) => /sınav|vize|final|exam/i.test(cell)),
-    );
+      .map((line, index) => {
+        const cells = parseCsvLine(line, delimiter);
+        const course = String(cells[courseIndex] || "").trim();
+        const dueDate = parseCsvDate(cells[dateIndex]);
+        const type = String(cells[typeIndex] || "").trim();
+        const explicitTitle = String(cells[titleIndex] || "").trim();
+        if (!course || !dueDate) return null;
+        const defaults = csvTaskDefaults(type, dueDate);
+        return {
+          id: `csv-${index + 1}-${csvCourseId(course)}`,
+          course,
+          courseId: csvCourseId(course),
+          dueDate,
+          type: type || "Çalışma",
+          title: explicitTitle || csvTaskTitle(course, type),
+          priority: defaults.priority,
+          minutes: defaults.minutes,
+        };
+      })
+      .filter(Boolean);
+    if (!records.length) throw new Error("CSV_VALID_ROW_REQUIRED");
     return {
-      rowCount: cells.length,
-      courses: [...courses].slice(0, 8),
-      deadlineCount: dateCells.length,
-      examCount: examRows.length,
+      records,
+      rowCount: records.length,
+      courses: [...new Set(records.map((record) => record.course))],
+      deadlineCount: records.length,
+      examCount: records.filter((record) =>
+        /sınav|vize|final|quiz|exam/i.test(record.type),
+      ).length,
+      weeklyPlan: buildCsvPlan(records),
     };
   };
 
@@ -276,12 +444,15 @@
       const extension = file.name.split(".").pop()?.toLocaleLowerCase("tr-TR");
       const isCsv = extension === "csv";
       const csv = isCsv ? await parseCsv(file) : null;
-      const tasks = activeTasks(state);
-      const estimatedMinutes = tasks.reduce(
-        (total, task) => total + (Number(task.duration) || suggestedMinutes(task)),
-        0,
-      );
-      const weeklyPlan = buildWeeklyPlan(state);
+      const tasks = isCsv ? [] : activeTasks(state);
+      const weeklyPlan = csv?.weeklyPlan || buildWeeklyPlan(state);
+      const estimatedMinutes = isCsv
+        ? csv.records.reduce((total, record) => total + record.minutes, 0)
+        : tasks.reduce(
+            (total, task) =>
+              total + (Number(task.duration) || suggestedMinutes(task)),
+            0,
+          );
       return {
         provider: "local",
         fileName: file.name,
@@ -290,10 +461,20 @@
         detectedCourses: csv?.courses || [],
         deadlineCount: csv?.deadlineCount || 0,
         examCount: csv?.examCount || 0,
-        priorityTasks: [...tasks]
-          .sort((first, second) => taskScore(second) - taskScore(first))
-          .slice(0, 3)
-          .map((task) => task.title),
+        priorityTasks: isCsv
+          ? [...csv.records]
+              .sort((first, second) => {
+                const priority = { high: 3, medium: 2, low: 1 };
+                return (
+                  priority[second.priority] - priority[first.priority] ||
+                  first.dueDate.localeCompare(second.dueDate)
+                );
+              })
+              .map((record) => record.title)
+          : [...tasks]
+              .sort((first, second) => taskScore(second) - taskScore(first))
+              .slice(0, 3)
+              .map((task) => task.title),
         estimatedMinutes,
         studyDayCount: weeklyPlan.filter((day) => day.tasks.length).length,
         weeklyPlan,

@@ -1,4 +1,7 @@
 const hubbyEngine = window.StudyHubHubbyEngine;
+const studyHubStore = window.StudyHubDataStore;
+const hubbyPlanStore = window.StudyHubHubbyPlanStore;
+const hubbyFileStore = window.StudyHubHubbyFileStore;
 const selectHubby = (selector) => document.querySelector(selector);
 
 const hubbyElements = {
@@ -17,6 +20,7 @@ const hubbyElements = {
   generateWeekly: selectHubby("#generateWeeklyPlan"),
   weeklyPreview: selectHubby("#hubbyWeeklyPreview"),
   weeklyDays: selectHubby("#hubbyWeeklyDays"),
+  weeklyDayCount: selectHubby("#hubbyWeeklyDayCount"),
   importActions: selectHubby("#hubbyImportActions"),
   dropzone: selectHubby("#hubbyDropzone"),
   changeFile: selectHubby("#changeHubbyFile"),
@@ -37,17 +41,72 @@ const hubbyState = {
   dailyPlan: [],
   weeklyPlan: [],
   analysis: null,
+  currentPlanId: "",
+  currentFileId: "",
   toastTimer: 0,
   progressTimer: 0,
 };
 
 const showHubbyToast = (message) => {
   window.clearTimeout(hubbyState.toastTimer);
+  hubbyElements.toast.classList.remove("hubby-toast--success");
   hubbyElements.toast.textContent = message;
   hubbyElements.toast.hidden = false;
   hubbyState.toastTimer = window.setTimeout(() => {
     hubbyElements.toast.hidden = true;
   }, 3200);
+};
+
+const showImportResult = (result, action) => {
+  if (result.duplicate) {
+    showHubbyToast("Bu plan seçilen modüle daha önce aktarılmış.");
+    return;
+  }
+  window.clearTimeout(hubbyState.toastTimer);
+  const content = document.createElement("div");
+  const title = document.createElement("strong");
+  const list = document.createElement("ul");
+  const undo = document.createElement("button");
+  const labels =
+    action === "all"
+      ? [
+          `✅ ${result.created || result.updated} görev hazırlandı`,
+          "✅ Takvime eklendi",
+          "✅ Dashboard güncellendi",
+          "✅ Analiz güncellendi",
+        ]
+      : action === "calendar"
+        ? ["✅ Takvime eklendi"]
+        : action === "tasks"
+          ? [`✅ ${result.created || result.updated} görev oluşturuldu`]
+          : ["✅ Pomodoro planı oluşturuldu"];
+  title.textContent = "Aktarım tamamlandı";
+  labels.forEach((label) => {
+    const item = document.createElement("li");
+    item.textContent = label;
+    list.append(item);
+  });
+  undo.type = "button";
+  undo.textContent = "Geri Al";
+  undo.addEventListener("click", () => {
+    const undoResult = studyHubStore.undoImport(result.planId);
+    hubbyState.data = hubbyEngine.getState();
+    renderInsights();
+    renderReport();
+    showHubbyToast(
+      undoResult.removed
+        ? `${undoResult.removed} plan kaydı geri alındı.`
+        : "Geri alınacak kayıt bulunamadı.",
+    );
+  });
+  content.append(title, list);
+  hubbyElements.toast.replaceChildren(content, undo);
+  hubbyElements.toast.hidden = false;
+  hubbyElements.toast.classList.add("hubby-toast--success");
+  hubbyState.toastTimer = window.setTimeout(() => {
+    hubbyElements.toast.hidden = true;
+    hubbyElements.toast.classList.remove("hubby-toast--success");
+  }, 8000);
 };
 
 const renderDailyPlan = () => {
@@ -82,8 +141,11 @@ const renderDailyPlan = () => {
   hubbyElements.transfer.disabled = false;
 };
 
-const renderInsights = () => {
-  const insights = hubbyEngine.buildInsights(hubbyState.data);
+const renderInsights = (storedInsights = null) => {
+  const insights =
+    Array.isArray(storedInsights) && storedInsights.length
+      ? storedInsights
+      : hubbyEngine.buildInsights(hubbyState.data);
   hubbyElements.insights.replaceChildren(
     ...insights.map((insight) => {
       const article = document.createElement("article");
@@ -185,10 +247,16 @@ const renderAnalysis = (analysis) => {
   hubbyElements.generateWeekly.hidden = false;
 };
 
-const renderWeeklyPreview = () => {
+const renderWeeklyPreview = ({
+  persist = true,
+  forceNew = true,
+  scroll = true,
+} = {}) => {
   hubbyState.weeklyPlan =
-    hubbyState.analysis?.weeklyPlan ||
-    hubbyEngine.buildWeeklyPlan(hubbyState.data);
+    !persist && hubbyState.weeklyPlan.length
+      ? hubbyState.weeklyPlan
+      : hubbyState.analysis?.weeklyPlan ||
+        hubbyEngine.buildWeeklyPlan(hubbyState.data);
   const fragment = document.createDocumentFragment();
 
   hubbyState.weeklyPlan.forEach((day) => {
@@ -225,20 +293,44 @@ const renderWeeklyPreview = () => {
   });
 
   hubbyElements.weeklyDays.replaceChildren(fragment);
+  hubbyElements.weeklyDayCount.textContent =
+    `${hubbyState.weeklyPlan.length} gün`;
   hubbyElements.weeklyPreview.hidden = false;
   hubbyElements.importActions.hidden = false;
-  hubbyElements.weeklyPreview.scrollIntoView({
-    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-      ? "auto"
-      : "smooth",
-    block: "nearest",
-  });
+  if (persist) {
+    const insights = hubbyEngine.buildInsights(hubbyState.data);
+    const plan = hubbyPlanStore.savePlan(
+      {
+        name: hubbyState.analysis?.fileName
+          ? `${hubbyState.analysis.fileName.replace(/\.[^.]+$/, "")} Çalışma Planı`
+          : "Haftalık Çalışma Planı",
+        sourceFileId: hubbyState.currentFileId,
+        sourceFileName: hubbyState.analysis?.fileName || "",
+        analysis: hubbyState.analysis,
+        days: hubbyState.weeklyPlan,
+        insights,
+        aiSummary: insights.map((item) => item.title).join(" "),
+      },
+      { forceNew },
+    );
+    hubbyState.currentPlanId = plan.id;
+  }
+  if (scroll) {
+    hubbyElements.weeklyPreview.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+      block: "nearest",
+    });
+  }
   showHubbyToast("Haftalık çalışma planı önizlemesi hazır.");
 };
 
 const resetFileStage = () => {
   window.clearInterval(hubbyState.progressTimer);
   hubbyState.analysis = null;
+  hubbyState.currentPlanId = "";
+  hubbyState.currentFileId = "";
   hubbyState.weeklyPlan = [];
   hubbyElements.file.value = "";
   hubbyElements.uploadStage.hidden = false;
@@ -260,6 +352,8 @@ const finishFileAnalysis = async (file) => {
         file,
         hubbyState.data,
       );
+    const fileRecord = hubbyFileStore.save(file, hubbyState.analysis);
+    hubbyState.currentFileId = fileRecord.id;
     hubbyElements.analysisTitle.textContent =
       hubbyState.analysis.requiresRemoteExtraction
         ? "Dosyan Planlama İçin Hazır"
@@ -319,6 +413,20 @@ const addMessage = (text, type) => {
   const message = document.createElement("div");
   message.className = `hubby-message hubby-message--${type}`;
   message.textContent = text;
+  hubbyElements.messages.append(message);
+  hubbyElements.messages.scrollTop = hubbyElements.messages.scrollHeight;
+};
+
+const addStoredPlanSummary = (plan) => {
+  if (!plan.aiSummary) return;
+  const exists = [...hubbyElements.messages.children].some(
+    (message) => message.dataset.planSummary === plan.id,
+  );
+  if (exists) return;
+  const message = document.createElement("div");
+  message.className = "hubby-message hubby-message--assistant";
+  message.dataset.planSummary = plan.id;
+  message.textContent = `Kaydedilmiş plan özeti: ${plan.aiSummary}`;
   hubbyElements.messages.append(message);
   hubbyElements.messages.scrollTop = hubbyElements.messages.scrollHeight;
 };
@@ -384,7 +492,9 @@ hubbyElements.file.addEventListener("change", () => {
   processFile(hubbyElements.file.files[0]);
 });
 hubbyElements.changeFile.addEventListener("click", resetFileStage);
-hubbyElements.generateWeekly.addEventListener("click", renderWeeklyPreview);
+hubbyElements.generateWeekly.addEventListener("click", () =>
+  renderWeeklyPreview(),
+);
 
 ["dragenter", "dragover"].forEach((type) => {
   hubbyElements.dropzone.addEventListener(type, (event) => {
@@ -411,17 +521,23 @@ hubbyElements.dropzone.addEventListener("keydown", (event) => {
 document.querySelectorAll("[data-import-action]").forEach((button) => {
   button.addEventListener("click", () => {
     if (!hubbyState.weeklyPlan.length) return;
-    window.localStorage.setItem(
-      "studyhub.hubby.weekly-plan.v1",
-      JSON.stringify({
-        createdAt: new Date().toISOString(),
-        sourceFile: hubbyState.analysis?.fileName || "",
-        days: hubbyState.weeklyPlan,
-      }),
-    );
-    showHubbyToast(
-      "Plan taslağı kaydedildi. Modül aktarımı alan eşleştirme onayıyla etkinleşecek.",
-    );
+    const action = button.dataset.importAction;
+    const result = studyHubStore.importWeeklyPlan({
+      days: hubbyState.weeklyPlan,
+      sourceFile: hubbyState.analysis?.fileName || "",
+      action,
+    });
+    hubbyState.data = hubbyEngine.getState();
+    if (hubbyState.currentPlanId) {
+      hubbyPlanStore.markImported(
+        hubbyState.currentPlanId,
+        result,
+        action,
+      );
+    }
+    renderInsights();
+    renderReport();
+    showImportResult(result, action);
   });
 });
 
@@ -437,4 +553,74 @@ hubbyElements.form.addEventListener("submit", (event) => {
 });
 
 window.addEventListener("storage", loadHubby);
+window.addEventListener("hubby:open-plan", (event) => {
+  const { plan, scrollToPreview = false } = event.detail;
+  hubbyState.currentPlanId = plan.id;
+  hubbyState.currentFileId = plan.sourceFileId || "";
+  hubbyState.analysis = plan.analysis;
+  hubbyState.weeklyPlan = plan.days || [];
+  hubbyElements.uploadStage.hidden = true;
+  hubbyElements.analysisStage.hidden = false;
+  hubbyElements.analysisTitle.textContent = "Kaydedilmiş Plan Analizi";
+  hubbyElements.fileStatus.textContent =
+    plan.sourceFileName || "Hubby çalışma planı";
+  hubbyElements.progress.style.setProperty("--analysis-progress", "100%");
+  hubbyElements.progress.setAttribute("aria-valuenow", "100");
+  if (plan.analysis) renderAnalysis(plan.analysis);
+  renderWeeklyPreview({
+    persist: false,
+    scroll: scrollToPreview,
+  });
+  renderInsights(plan.insights);
+  addStoredPlanSummary(plan);
+});
+window.addEventListener("hubby:open-file", (event) => {
+  const { file } = event.detail;
+  hubbyState.currentPlanId = "";
+  hubbyState.currentFileId = file.id;
+  hubbyState.analysis = file.analysis;
+  hubbyState.weeklyPlan = file.analysis?.weeklyPlan || [];
+  hubbyElements.uploadStage.hidden = true;
+  hubbyElements.analysisStage.hidden = false;
+  hubbyElements.analysisTitle.textContent = "Kaydedilmiş Dosya Analizi";
+  hubbyElements.fileStatus.textContent =
+    `${file.name} · ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+  hubbyElements.progress.style.setProperty("--analysis-progress", "100%");
+  hubbyElements.progress.setAttribute("aria-valuenow", "100");
+  renderAnalysis(file.analysis);
+  hubbyElements.analysisStage.scrollIntoView({
+    behavior: "smooth",
+    block: "nearest",
+  });
+});
+window.addEventListener("hubby:regenerate-plan", (event) => {
+  const { plan } = event.detail;
+  hubbyState.currentPlanId = "";
+  hubbyState.currentFileId = plan.sourceFileId || "";
+  hubbyState.analysis = plan.analysis;
+  hubbyState.weeklyPlan = plan.days || [];
+  renderWeeklyPreview({ persist: true, forceNew: true });
+});
+window.addEventListener("hubby:reimport-plan", (event) => {
+  const { plan } = event.detail;
+  hubbyState.currentPlanId = plan.id;
+  hubbyState.analysis = plan.analysis;
+  hubbyState.weeklyPlan = plan.days || [];
+  const result = studyHubStore.importWeeklyPlan({
+    days: plan.days,
+    sourceFile: plan.sourceFileName || "",
+    action: "all",
+  });
+  hubbyPlanStore.markImported(plan.id, result, "all");
+  showImportResult(result, "all");
+});
+
 loadHubby();
+const restoredPlan = hubbyPlanStore.getCurrent();
+if (restoredPlan) {
+  window.dispatchEvent(
+    new CustomEvent("hubby:open-plan", {
+      detail: { plan: restoredPlan, scrollToPreview: false },
+    }),
+  );
+}

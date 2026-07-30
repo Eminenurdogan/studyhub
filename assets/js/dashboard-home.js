@@ -181,3 +181,4 @@ window.addEventListener("storage", (event) => {
     renderDashboardHome();
   }
 });
+window.addEventListener("studyhub:data-changed", renderDashboardHome);

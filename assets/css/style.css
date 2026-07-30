@@ -10381,3 +10381,452 @@ body .studyhub-brand:focus-visible {
     animation: none;
   }
 }
+
+.hubby-page .hubby-toast--success {
+  display: flex;
+  width: min(390px, calc(100vw - 32px));
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px;
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid color-mix(in srgb, var(--color-mint) 48%, var(--color-border));
+  backdrop-filter: blur(16px);
+}
+
+.hubby-page .hubby-toast--success strong {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 14px;
+}
+
+.hubby-page .hubby-toast--success ul {
+  display: grid;
+  gap: 3px;
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  list-style: none;
+}
+
+.hubby-page .hubby-toast--success button {
+  flex-shrink: 0;
+  padding: 9px 12px;
+  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-lavender) 12%, white);
+  border: 1px solid color-mix(in srgb, var(--color-lavender) 25%, var(--color-border));
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+@media (max-width: 480px) {
+  .hubby-page .hubby-toast--success {
+    right: 16px;
+    bottom: 16px;
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
+
+/* HUBBY AI — PLAN CENTER */
+.hubby-page .hubby-plan-center {
+  display: grid;
+  gap: var(--ds-space-3);
+  margin-bottom: var(--ds-space-4);
+}
+
+.hubby-page .hubby-plan-center[hidden],
+.hubby-page .hubby-active-plan[hidden] {
+  display: none;
+}
+
+.hubby-page .hubby-plan-center__heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--ds-space-3);
+}
+
+.hubby-page .hubby-plan-center__heading h2 {
+  margin-bottom: 7px;
+  font-size: clamp(23px, 2.2vw, 30px);
+}
+
+.hubby-page .hubby-plan-center__heading > div > p:last-child,
+.hubby-page .hubby-history-panel__head p {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+}
+
+.hubby-page .hubby-memory-note {
+  display: grid;
+  max-width: 460px;
+  grid-template-columns: 34px 1fr;
+  align-items: start;
+  gap: 10px;
+  padding: 12px 14px;
+  background: color-mix(in srgb, var(--color-lavender) 9%, white);
+  border: 1px solid color-mix(in srgb, var(--color-lavender) 22%, var(--color-border));
+  border-radius: 14px;
+}
+
+.hubby-page .hubby-memory-note > span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  color: var(--color-lavender);
+  background: white;
+  border-radius: 10px;
+}
+
+.hubby-page .hubby-memory-note p {
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.hubby-page .hubby-active-plan {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr);
+  gap: 18px;
+  padding: clamp(22px, 3vw, 30px);
+  background:
+    radial-gradient(circle at 100% 0, color-mix(in srgb, var(--color-sky) 20%, transparent), transparent 35%),
+    linear-gradient(130deg, rgba(255, 255, 255, 0.94), color-mix(in srgb, var(--color-lavender) 8%, white));
+  border: 1px solid color-mix(in srgb, var(--color-lavender) 25%, var(--color-border));
+  border-radius: var(--ds-card-radius);
+  box-shadow: var(--ds-card-shadow);
+}
+
+.hubby-page .hubby-active-plan__icon {
+  display: grid;
+  width: 62px;
+  height: 62px;
+  place-items: center;
+  background: linear-gradient(135deg, var(--color-coral), var(--color-lavender), var(--color-sky));
+  border-radius: 19px;
+  box-shadow: 0 14px 30px color-mix(in srgb, var(--color-lavender) 22%, transparent);
+  font-size: 26px;
+}
+
+.hubby-page .hubby-active-plan p:first-child {
+  margin-bottom: 5px;
+  color: var(--color-lavender);
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.hubby-page .hubby-active-plan > div > div:nth-child(2) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hubby-page .hubby-active-plan h3 {
+  font-size: 20px;
+}
+
+.hubby-page .hubby-active-plan time {
+  display: block;
+  margin-top: 5px;
+  color: var(--color-text-secondary);
+  font-size: 11px;
+}
+
+.hubby-page .hubby-plan-status {
+  display: inline-flex;
+  width: max-content;
+  padding: 5px 8px;
+  border-radius: 999px;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+.hubby-page .hubby-plan-status--draft {
+  color: #7959c5;
+  background: color-mix(in srgb, var(--color-lavender) 16%, white);
+}
+
+.hubby-page .hubby-plan-status--imported {
+  color: #24779f;
+  background: color-mix(in srgb, var(--color-sky) 17%, white);
+}
+
+.hubby-page .hubby-plan-status--completed {
+  color: #258568;
+  background: color-mix(in srgb, var(--color-mint) 18%, white);
+}
+
+.hubby-page .hubby-plan-status--archived {
+  color: var(--color-text-secondary);
+  background: var(--color-background);
+}
+
+.hubby-page .hubby-active-plan__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 9px;
+  margin: 18px 0;
+}
+
+.hubby-page .hubby-active-plan__stats > span {
+  padding: 11px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+
+.hubby-page .hubby-active-plan__stats small,
+.hubby-page .hubby-active-plan__stats strong {
+  display: block;
+}
+
+.hubby-page .hubby-active-plan__stats small {
+  margin-bottom: 4px;
+  color: var(--color-text-secondary);
+  font-size: 9px;
+}
+
+.hubby-page .hubby-active-plan__stats strong {
+  font-size: 11px;
+}
+
+.hubby-page .hubby-active-plan__actions,
+.hubby-page .hubby-plan-history__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.hubby-page .hubby-active-plan__actions button,
+.hubby-page .hubby-plan-history__actions button {
+  padding: 9px 12px;
+  color: var(--color-text-secondary);
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 750;
+}
+
+.hubby-page .hubby-active-plan__actions button.is-primary {
+  color: white;
+  background: linear-gradient(110deg, var(--color-lavender), var(--color-sky));
+  border-color: transparent;
+}
+
+.hubby-page .hubby-history-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+  gap: var(--ds-space-3);
+}
+
+.hubby-page .hubby-history-panel {
+  padding: var(--ds-card-padding);
+  background: rgba(255, 255, 255, 0.88);
+  border: var(--ds-card-border);
+  border-radius: var(--ds-card-radius);
+  box-shadow: var(--ds-card-shadow);
+}
+
+.hubby-page .hubby-history-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.hubby-page .hubby-history-panel__head h3 {
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+
+.hubby-page .hubby-history-tabs {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  background: var(--color-background);
+  border-radius: 10px;
+}
+
+.hubby-page .hubby-history-tabs button {
+  padding: 7px 9px;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border-radius: 8px;
+  font-size: 9px;
+}
+
+.hubby-page .hubby-history-tabs button.is-active {
+  color: var(--color-text);
+  background: white;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-text) 6%, transparent);
+}
+
+.hubby-page .hubby-plan-history,
+.hubby-page .hubby-file-history {
+  display: grid;
+  gap: 12px;
+}
+
+.hubby-page .hubby-plan-history article {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.hubby-page .hubby-plan-history article:hover {
+  border-color: color-mix(in srgb, var(--color-lavender) 42%, var(--color-border));
+  box-shadow: 0 12px 28px color-mix(in srgb, var(--color-lavender) 11%, transparent);
+  transform: translateY(-1px);
+}
+
+.hubby-page .hubby-plan-history__content {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+  text-align: left;
+}
+
+.hubby-page .hubby-plan-history__title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hubby-page .hubby-plan-history__title strong {
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 15px;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hubby-page .hubby-plan-history__content > span:not(.hubby-plan-status) {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.hubby-page .hubby-plan-history__actions {
+  flex-wrap: nowrap;
+}
+
+.hubby-page .hubby-plan-history__actions button {
+  min-width: 64px;
+  padding: 10px 14px;
+  font-size: 12px;
+}
+
+.hubby-page .hubby-plan-history__actions button.is-primary {
+  color: white;
+  background: linear-gradient(110deg, var(--color-lavender), var(--color-sky));
+  border-color: transparent;
+}
+
+.hubby-page .hubby-plan-history .is-danger {
+  color: var(--color-coral);
+}
+
+.hubby-page .hubby-file-history button {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  color: var(--color-text);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  text-align: left;
+}
+
+.hubby-page .hubby-file-history button > span:first-child {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  background: white;
+  border-radius: 11px;
+  font-size: 18px;
+}
+
+.hubby-page .hubby-file-history button > span:last-child {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.hubby-page .hubby-file-history strong {
+  overflow: hidden;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hubby-page .hubby-file-history small,
+.hubby-page .hubby-history-empty {
+  color: var(--color-text-secondary);
+  font-size: 9px;
+}
+
+.hubby-page .hubby-history-empty {
+  padding: 16px;
+  background: var(--color-background);
+  border-radius: 11px;
+  text-align: center;
+}
+
+@media (max-width: 1100px) {
+  .hubby-page .hubby-plan-center__heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .hubby-page .hubby-memory-note {
+    max-width: none;
+  }
+
+  .hubby-page .hubby-history-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+  .hubby-page .hubby-active-plan {
+    grid-template-columns: 1fr;
+  }
+
+  .hubby-page .hubby-active-plan__icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .hubby-page .hubby-active-plan__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .hubby-page .hubby-plan-history article {
+    grid-template-columns: 1fr;
+  }
+
+  .hubby-page .hubby-plan-history__actions button {
+    flex: 1;
+  }
+}

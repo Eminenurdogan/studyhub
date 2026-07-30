@@ -188,8 +188,13 @@ const loadTasks = () => {
   pomodoroElements.taskSelect.append(placeholder);
   activeTasks.forEach((task) => {
     const option = document.createElement("option");
+    const plannedSessions = Array.isArray(task.pomodoroPlan?.segments)
+      ? task.pomodoroPlan.segments.length
+      : 0;
     option.value = task.id;
-    option.textContent = task.title;
+    option.textContent = plannedSessions
+      ? `${task.title} · ${plannedSessions} oturum`
+      : task.title;
     pomodoroElements.taskSelect.append(option);
   });
   if (activeTasks.some((task) => task.id === pomodoroState.selectedTaskId)) {
@@ -517,6 +522,7 @@ const initializePomodoro = () => {
   window.addEventListener("storage", (event) => {
     if (event.key === POMODORO_KEYS.tasks) loadTasks();
   });
+  window.addEventListener("studyhub:data-changed", loadTasks);
   if (pomodoroState.isRunning) {
     tick();
     if (pomodoroState.isRunning) {

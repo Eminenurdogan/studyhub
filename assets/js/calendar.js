@@ -151,6 +151,9 @@ const createDayTaskItem = (task) => {
     CALENDAR_PRIORITY_LABELS[task.priority],
   );
   appendCalendarDetail(details, "Durum", CALENDAR_STATUS_LABELS[task.status]);
+  if (Number(task.duration) > 0) {
+    appendCalendarDetail(details, "Tahmini süre", `${Number(task.duration)} dk`);
+  }
   appendCalendarDetail(details, "Son teslim", formatCalendarDay(parseDateKey(task.dueDate)));
 
   article.append(title, details);
@@ -406,6 +409,7 @@ const initializeCalendar = () => {
       refreshCalendarData();
     }
   });
+  window.addEventListener("studyhub:data-changed", refreshCalendarData);
 };
 
 initializeCalendar();
